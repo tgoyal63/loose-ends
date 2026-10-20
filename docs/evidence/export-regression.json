@@ -1,0 +1,15 @@
+{
+  "kind": "Synthetic browser export regression with explicit pre-fix source replay",
+  "parser": "CommonMark 0.9.1 (temporary development dependency)",
+  "originalQuote": "- Send &amp; &#65; &copy; to Lee; [brackets] stay literal.",
+  "observed": {
+    "before-fix-replay": {
+      "sourceText": "Send & &#65; \u00a9 to Lee; [brackets] stay literal.",
+      "matchesOriginal": false
+    },
+    "current": {
+      "sourceText": "- Send &amp; &#65; &copy; to Lee; [brackets] stay literal.",
+      "matchesOriginal": true
+    }
+  }
+}

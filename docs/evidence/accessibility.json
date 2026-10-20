@@ -1,0 +1,44 @@
+{
+  "kind": "Automated axe accessibility checks on synthetic browser fixtures; does not establish screen-reader usability",
+  "states": [
+    {
+      "name": "Desktop initial empty state",
+      "version": "4.13.0",
+      "violations": [],
+      "passes": 24,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": [
+            {
+              "target": [
+                ".paper-tick:nth-child(1)"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            },
+            {
+              "target": [
+                ".second-tick"
+              ],
+              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Desktop action with full source context",
+      "version": "4.13.0",
+      "violations": [],
+      "passes": 27,
+      "incomplete": []
+    },
+    {
+      "name": "Mobile editing state",
+      "version": "4.13.0",
+      "violations": [],
+      "passes": 27,
+      "incomplete": []
+    }
+  ]
+}

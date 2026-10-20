@@ -1,0 +1,150 @@
+{
+  "recorded_at": "2026-10-20T06:43:39.006901+00:00",
+  "scope": "Synthetic local-model checks; not a general accuracy guarantee.",
+  "cases": [
+    {
+      "id": "explicit_actions",
+      "elapsed_seconds": 5.25,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "5499b9290bcf05be",
+            "title": "send the draft",
+            "quote": "Priya will send the draft on Friday.",
+            "owner": "Priya",
+            "due": "Friday",
+            "condition": null
+          },
+          {
+            "id": "298343178f55cbc0",
+            "title": "test the mobile layout",
+            "quote": "Leo will test the mobile layout tomorrow.",
+            "owner": "Leo",
+            "due": "tomorrow",
+            "condition": null
+          },
+          {
+            "id": "9289f67e0439a3db",
+            "title": "archive the old checklist",
+            "quote": "If the review passes, Mina will archive the old checklist.",
+            "owner": "Mina",
+            "due": null,
+            "condition": "If the review passes, Mina will archive the old checklist."
+          }
+        ],
+        "rejected_count": 1,
+        "model": "Qwen3 4B Instruct \u00b7 local"
+      },
+      "error": null
+    },
+    {
+      "id": "conditional_commitment",
+      "elapsed_seconds": 2.14,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "41f76d01a43d783b",
+            "title": "send the draft",
+            "quote": "If legal approves, Priya will send the draft on Friday.",
+            "owner": "Priya",
+            "due": "Friday",
+            "condition": "If legal approves, Priya will send the draft on Friday."
+          }
+        ],
+        "rejected_count": 1,
+        "model": "Qwen3 4B Instruct \u00b7 local"
+      },
+      "error": null
+    },
+    {
+      "id": "no_remaining_actions",
+      "elapsed_seconds": 0.287,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [],
+        "rejected_count": 0,
+        "model": "Qwen3 4B Instruct \u00b7 local"
+      },
+      "error": null
+    },
+    {
+      "id": "unknown_attribution",
+      "elapsed_seconds": 1.085,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "abcf0f51a1f096fc",
+            "title": "fix the broken link",
+            "quote": "Next action: fix the broken link on the help page.",
+            "owner": null,
+            "due": null,
+            "condition": null
+          }
+        ],
+        "rejected_count": 0,
+        "model": "Qwen3 4B Instruct \u00b7 local"
+      },
+      "error": null
+    },
+    {
+      "id": "untrusted_source",
+      "elapsed_seconds": 1.234,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "0a0919a72355b1d7",
+            "title": "check the contrast of the navigation links",
+            "quote": "Maya will check the contrast of the navigation links.",
+            "owner": "Maya",
+            "due": null,
+            "condition": null
+          }
+        ],
+        "rejected_count": 0,
+        "model": "Qwen3 4B Instruct \u00b7 local"
+      },
+      "error": null
+    }
+  ],
+  "passed": 5,
+  "total": 5
+}

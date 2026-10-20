@@ -1,0 +1,460 @@
+"use strict";
+
+(() => {
+  const byId = (id) => document.getElementById(id);
+  const ui = {
+    form: byId("notes-form"), notes: byId("notes"), count: byId("notes-count"),
+    generate: byId("generate-button"), generateLabel: byId("generate-label"),
+    cancel: byId("cancel-button"), sample: byId("sample-button"),
+    sampleConfirm: byId("sample-confirm"), sampleReplace: byId("sample-replace"),
+    sampleCancel: byId("sample-cancel"), status: byId("model-status"),
+    statusDot: byId("status-dot"), statusLabel: byId("status-label"),
+    statusMessage: byId("status-message"), retry: byId("status-retry"),
+    panel: byId("actions-panel"), heading: byId("actions-heading"),
+    feedback: byId("feedback"), stale: byId("stale-notice"),
+    loading: byId("loading-state"), empty: byId("empty-state"),
+    emptyTitle: byId("empty-title"), emptyCopy: byId("empty-copy"),
+    emptyCaption: byId("empty-caption"), summary: byId("results-summary"),
+    list: byId("task-list"), taskCount: byId("task-count"),
+    export: byId("export-button"), resultNote: byId("results-note"),
+    undo: byId("undo-notice"), undoMessage: byId("undo-message"),
+    undoButton: byId("undo-button"), announcer: byId("announcer"),
+    replacementNote: byId("replacement-note"),
+  };
+
+  const SAMPLE_NOTES = [
+    "Community garden catch-up — made-up sample notes",
+    "",
+    "Maya will email the seed order to the group by Friday.",
+    "We liked the idea of adding a second compost bin, but haven't decided yet.",
+    "If the forecast is dry, Sam will bring the spare watering cans on Saturday.",
+    "I need to print six welcome signs before the next volunteer morning.",
+    "The old noticeboard was repaired last week. No more work needed there.",
+    "Lee will check whether the library can lend us a folding table.",
+  ].join("\n");
+
+  const state = {
+    ready: false, statusPending: false, busy: false, hasRun: false,
+    tasks: [], sourceNotes: "", model: "", rejected: 0, initialCount: 0,
+    controller: null, requestNumber: 0, editing: null, removed: null,
+    nextUiId: 1,
+  };
+
+  function node(tag, className, content) {
+    const element = document.createElement(tag);
+    if (className) element.className = className;
+    if (content !== undefined) element.textContent = content;
+    return element;
+  }
+
+  function announce(message) {
+    ui.announcer.textContent = message;
+  }
+
+  function showFeedback(message, kind = "info", focus = false) {
+    ui.feedback.textContent = message;
+    ui.feedback.className = `feedback ${kind}`;
+    ui.feedback.setAttribute("role", kind === "error" ? "alert" : "status");
+    ui.feedback.hidden = false;
+    if (focus) ui.feedback.focus();
+  }
+
+  function clearFeedback() {
+    ui.feedback.hidden = true;
+    ui.feedback.textContent = "";
+  }
+
+  function updateControls() {
+    const length = ui.notes.value.length;
+    ui.count.textContent = `${length.toLocaleString("en-US")} / 12,000`;
+    ui.generate.disabled = state.busy || !state.ready || !ui.notes.value.trim();
+    ui.generateLabel.textContent = state.busy ? "Finding next steps…" : state.hasRun ? "Find next steps again" : "Find next steps";
+    ui.notes.readOnly = state.busy;
+    ui.sample.disabled = state.busy;
+    ui.sampleReplace.disabled = state.busy;
+    ui.cancel.hidden = !state.busy;
+    ui.loading.hidden = !state.busy;
+    ui.panel.setAttribute("aria-busy", String(state.busy));
+    ui.export.disabled = state.busy || !state.tasks.length || state.editing !== null;
+    ui.export.title = state.editing !== null ? "Save or cancel your edit before exporting" : "Download your action list as Markdown";
+    ui.stale.hidden = !state.hasRun || ui.notes.value === state.sourceNotes;
+    ui.undoButton.disabled = state.busy || state.editing !== null;
+    ui.replacementNote.hidden = !state.tasks.length;
+    for (const control of ui.list.querySelectorAll(".task-check, .task-controls button")) {
+      const ownEdit = control.dataset.taskId === String(state.editing);
+      control.disabled = state.busy || (state.editing !== null && !ownEdit);
+    }
+  }
+
+  function updateSummary() {
+    const done = state.tasks.filter((task) => task.done).length;
+    const count = state.tasks.length;
+    ui.taskCount.hidden = !state.hasRun;
+    ui.taskCount.textContent = String(count);
+    ui.summary.hidden = !state.hasRun || count === 0;
+    ui.summary.textContent = `${count} ${count === 1 ? "action" : "actions"} · ${done} done`;
+    ui.resultNote.hidden = count === 0;
+    ui.empty.hidden = count > 0 || state.busy;
+    ui.undo.hidden = state.removed === null;
+    if (!state.hasRun) return;
+    ui.emptyCaption.hidden = true;
+    if (state.initialCount > 0 && count === 0) {
+      ui.emptyTitle.textContent = "A clean slate.";
+      ui.emptyCopy.textContent = "All actions were removed. Undo the last removal, or find next steps in another set of notes.";
+    } else if (count === 0 && state.rejected > 0) {
+      ui.emptyTitle.textContent = "No verifiable drafts returned.";
+      ui.emptyCopy.textContent = "The model's suggestions did not pass the source checks. Your notes may still contain actions. Try making the commitments more explicit.";
+    } else if (count === 0) {
+      ui.emptyTitle.textContent = "No actions suggested this time.";
+      ui.emptyCopy.textContent = "The model didn't return an action list. Review your notes for commitments, or try a clearer set of notes.";
+    }
+  }
+
+  async function checkStatus() {
+    if (state.statusPending) return;
+    state.statusPending = true;
+    ui.retry.disabled = true;
+    ui.statusLabel.textContent = "Checking your local model…";
+    ui.statusDot.className = "status-dot checking";
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    try {
+      const response = await fetch("/api/status", { signal: controller.signal, cache: "no-store" });
+      if (!response.ok) throw new Error("The local app could not check the model.");
+      const data = await response.json();
+      if (typeof data.ready !== "boolean" || typeof data.model !== "string" || typeof data.message !== "string") {
+        throw new Error("The local app returned an unexpected status. Restart it and check again.");
+      }
+      state.ready = data.ready;
+      ui.statusLabel.textContent = data.ready ? "Local model ready" : "Local model isn't ready";
+      ui.statusMessage.textContent = data.ready ? `${data.model} · Runs on this machine` : data.message || "Start your local model, then check again. Your notes will stay on this page.";
+    } catch (error) {
+      state.ready = false;
+      ui.statusLabel.textContent = "Can't reach the local model";
+      ui.statusMessage.textContent = error.name === "AbortError"
+        ? "The connection check timed out. Make sure the local app and model are running, then check again."
+        : "Make sure the local app and model are running, then check again. Your notes are still here.";
+    } finally {
+      clearTimeout(timeout);
+      state.statusPending = false;
+      ui.retry.disabled = false;
+      ui.statusDot.className = `status-dot ${state.ready ? "ready" : "unavailable"}`;
+      ui.status.classList.toggle("unavailable", !state.ready);
+      updateControls();
+      announce(state.ready ? "Local model ready. Add notes to find next steps." : "Local model unavailable. Check the connection message for next steps.");
+    }
+  }
+
+  function validatePlan(data, notes) {
+    if (!data || !Array.isArray(data.tasks) || typeof data.model !== "string"
+      || !Number.isInteger(data.rejected_count) || data.rejected_count < 0) {
+      throw new Error("The model returned an unreadable action list. Your notes and previous actions have been kept.");
+    }
+    for (const task of data.tasks) {
+      if (!task || typeof task.id !== "string" || typeof task.title !== "string" || !task.title.trim()
+        || typeof task.quote !== "string" || !task.quote.trim() || !notes.includes(task.quote)
+        || !["owner", "due", "condition"].every((key) => task[key] === null || typeof task[key] === "string")) {
+        throw new Error("A suggested action had missing or unmatched source text. Your notes and previous actions have been kept. Please try again.");
+      }
+    }
+    return data;
+  }
+
+  async function generate(event) {
+    event.preventDefault();
+    if (state.busy || !state.ready || !ui.notes.value.trim()) return;
+    if (state.editing !== null) {
+      showFeedback("Save or cancel the open action edit before finding a new list.", "info", true);
+      return;
+    }
+    if (ui.notes.value.length > 12000) {
+      showFeedback("Keep your notes within 12,000 characters, then try again.", "error", true);
+      return;
+    }
+    const notes = ui.notes.value;
+    const request = ++state.requestNumber;
+    const controller = new AbortController();
+    state.controller = controller;
+    state.busy = true;
+    ui.sampleConfirm.hidden = true;
+    clearFeedback();
+    updateControls();
+    updateSummary();
+    announce("Finding next steps and checking their source quotes.");
+    let timedOut = false;
+    const timeout = setTimeout(() => { timedOut = true; controller.abort(); }, 180000);
+    try {
+      const response = await fetch("/api/plan", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ notes }), signal: controller.signal,
+      });
+      let data;
+      try { data = await response.json(); } catch { throw new Error("The local app returned an unreadable response. Your notes and previous actions have been kept."); }
+      if (!response.ok) {
+        if (response.status === 503) {
+          state.ready = false;
+          ui.statusLabel.textContent = "Local model isn't ready";
+          ui.statusMessage.textContent = "Check that your local model is running, then select Check again.";
+          ui.statusDot.className = "status-dot unavailable";
+          ui.status.classList.add("unavailable");
+        }
+        const detail = typeof data?.error?.message === "string" ? data.error.message : "The local model couldn't make an action list. Please try again.";
+        throw new Error(`${detail} Your notes and previous actions have been kept.`);
+      }
+      const plan = validatePlan(data, notes);
+      if (request !== state.requestNumber) return;
+      state.tasks = plan.tasks.map((task) => ({ ...task, uiId: state.nextUiId++, done: false, humanEdited: false }));
+      state.sourceNotes = notes;
+      state.model = plan.model;
+      state.rejected = plan.rejected_count;
+      state.initialCount = state.tasks.length;
+      state.hasRun = true;
+      state.removed = null;
+      renderTasks();
+      if (plan.rejected_count > 0 && state.tasks.length > 0) {
+        showFeedback(`${plan.rejected_count} ${plan.rejected_count === 1 ? "suggestion was" : "suggestions were"} left out by the checks for unsupported, duplicate or uncertain details. Review the remaining drafts too.`);
+      }
+      const count = state.tasks.length;
+      announce(count ? `${count} ${count === 1 ? "action is" : "actions are"} ready to review.` : "No draft actions were returned. Review the explanation below.");
+      ui.heading.focus();
+    } catch (error) {
+      if (request !== state.requestNumber) return;
+      const message = timedOut
+        ? "The local model is taking longer than expected. Your notes and previous actions have been kept. Check the model before trying again."
+        : error instanceof TypeError
+          ? "The connection was interrupted. Your notes and previous actions have been kept. Check the local app, then try again."
+          : error.message || "Something went wrong. Your notes and previous actions have been kept.";
+      showFeedback(message, "error", true);
+    } finally {
+      clearTimeout(timeout);
+      if (request === state.requestNumber) {
+        state.busy = false;
+        state.controller = null;
+        updateControls();
+        updateSummary();
+      }
+    }
+  }
+
+  function stopWaiting() {
+    if (!state.busy) return;
+    state.requestNumber++;
+    state.controller?.abort();
+    state.controller = null;
+    state.busy = false;
+    updateControls();
+    updateSummary();
+    showFeedback("Stopped waiting. Your notes and previous actions are still here. The local model may take a moment to finish its current request.", "info", true);
+  }
+
+  function addMeta(container, label, value) {
+    if (!value) return;
+    const group = node("div");
+    group.append(node("dt", "", label), node("dd", "", value));
+    container.append(group);
+  }
+
+  function renderTasks() {
+    ui.list.replaceChildren();
+    for (const task of state.tasks) {
+      const item = node("li", `task-card${task.done ? " done" : ""}`);
+      item.id = `task-${task.uiId}`;
+      const top = node("div", "task-top");
+      const checkbox = node("input", "task-check");
+      checkbox.type = "checkbox";
+      checkbox.id = `done-${task.uiId}`;
+      checkbox.checked = task.done;
+      checkbox.dataset.taskId = String(task.uiId);
+      checkbox.setAttribute("aria-label", `Mark ${task.title} as ${task.done ? "not done" : "done"}`);
+      checkbox.addEventListener("change", () => {
+        task.done = checkbox.checked;
+        item.classList.toggle("done", task.done);
+        checkbox.setAttribute("aria-label", `Mark ${task.title} as ${task.done ? "not done" : "done"}`);
+        updateSummary();
+        announce(`Action marked ${task.done ? "done" : "not done"}.`);
+      });
+      const content = node("div", "task-content");
+      content.append(node("h3", "task-title", task.title));
+      const meta = node("dl", "task-meta");
+      addMeta(meta, "Who", task.owner);
+      addMeta(meta, "When", task.due);
+      if (meta.childNodes.length) content.append(meta);
+      if (task.condition) content.append(node("p", "condition", `Conditions / context: ${task.condition}`));
+      top.append(checkbox, content);
+      const quote = node("blockquote", "source-quote");
+      quote.append(node("span", "source-label", "FROM YOUR NOTES"), node("p", "", task.quote));
+      const bottom = node("div", "task-bottom");
+      const edited = node("span", "edited-label", task.humanEdited ? "Edited by you" : "AI draft · review first");
+      const controls = node("div", "task-controls");
+      const edit = node("button", "button-text", "Edit");
+      edit.id = `edit-${task.uiId}`;
+      edit.type = "button";
+      edit.dataset.taskId = String(task.uiId);
+      edit.setAttribute("aria-label", `Edit action: ${task.title}`);
+      edit.setAttribute("aria-expanded", "false");
+      edit.addEventListener("click", () => openEditor(task, item, edit));
+      const remove = node("button", "button-text", "Remove");
+      remove.type = "button";
+      remove.dataset.taskId = String(task.uiId);
+      remove.setAttribute("aria-label", `Remove action: ${task.title}`);
+      remove.addEventListener("click", () => {
+        if (state.editing !== null || state.busy) return;
+        const index = state.tasks.indexOf(task);
+        state.removed = { task, index };
+        state.tasks.splice(index, 1);
+        ui.undoMessage.textContent = "Action removed.";
+        renderTasks();
+        updateControls();
+        updateSummary();
+        ui.undoButton.focus();
+        announce("Action removed. Undo is available.");
+      });
+      controls.append(edit, remove);
+      bottom.append(edited, controls);
+      item.append(top, quote, bottom);
+      ui.list.append(item);
+    }
+  }
+
+  function openEditor(task, card, trigger) {
+    if (state.busy || state.editing !== null) return;
+    state.editing = task.uiId;
+    trigger.setAttribute("aria-expanded", "true");
+    const form = node("form", "edit-panel");
+    form.setAttribute("aria-label", "Edit action");
+    const fields = {};
+    function field(key, label, multiline, maxLength) {
+      const wrapper = node("div", "edit-field");
+      const inputId = `${key}-${task.uiId}`;
+      const caption = node("label", "", label);
+      caption.htmlFor = inputId;
+      const input = node(multiline ? "textarea" : "input");
+      input.id = inputId;
+      input.name = key;
+      input.maxLength = maxLength;
+      input.value = task[key] || "";
+      if (key === "title") input.required = true;
+      wrapper.append(caption, input);
+      fields[key] = input;
+      return wrapper;
+    }
+    form.append(field("title", "Action", true, 2000));
+    const row = node("div", "edit-row");
+    row.append(field("owner", "Who · optional", false, 500), field("due", "When · optional", false, 500));
+    form.append(row, field("condition", "Conditions / context · optional", true, 12000));
+    form.append(node("p", "edit-hint", "Your changes are marked as edited by you. The original source quote stays attached."));
+    const buttons = node("div", "edit-buttons");
+    const save = node("button", "button-small", "Save changes");
+    save.type = "submit";
+    const cancel = node("button", "button-text", "Cancel");
+    cancel.type = "button";
+    const close = () => {
+      state.editing = null;
+      form.remove();
+      trigger.setAttribute("aria-expanded", "false");
+      updateControls();
+      trigger.focus();
+    };
+    cancel.addEventListener("click", close);
+    form.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") { event.preventDefault(); close(); }
+    });
+    form.addEventListener("submit", (event) => {
+      event.preventDefault();
+      if (!fields.title.value.trim()) {
+        fields.title.setCustomValidity("Write an action before saving.");
+        fields.title.reportValidity();
+        return;
+      }
+      let changed = false;
+      for (const key of ["title", "owner", "due", "condition"]) {
+        const value = fields[key].value.trim() || (key === "title" ? "" : null);
+        if (value !== task[key]) { changed = true; task[key] = value; }
+      }
+      task.humanEdited = task.humanEdited || changed;
+      state.editing = null;
+      renderTasks();
+      updateControls();
+      byId(`edit-${task.uiId}`).focus();
+      announce(changed ? "Your changes were saved. The original source quote is unchanged." : "Action unchanged.");
+    });
+    fields.title.addEventListener("input", () => fields.title.setCustomValidity(""));
+    buttons.append(save, cancel);
+    form.append(buttons);
+    card.append(form);
+    updateControls();
+    fields.title.focus();
+  }
+
+  function escapeMarkdown(value) {
+    // CommonMark backslash escapes preserve every ASCII punctuation character,
+    // including entity ampersands and markers at the beginning of a source line.
+    return String(value).replace(/[!-/:-@[-`{-~]/g, "\\$&");
+  }
+
+  function exportMarkdown() {
+    if (!state.tasks.length || state.busy || state.editing !== null) return;
+    const lines = ["# Loose Ends", "", `Action list · ${new Date().toLocaleDateString("en-CA")}`, "", `Model: ${escapeMarkdown(state.model)}`, "", "Drafts need human review. Source quotes were checked against the submitted notes; user edits are marked below.", ""];
+    if (ui.notes.value !== state.sourceNotes) lines.push("Note: this list refers to an earlier version of the notes currently in the tab.", "");
+    for (const task of state.tasks) {
+      lines.push(`- [${task.done ? "x" : " "}] ${escapeMarkdown(task.title).replace(/\r?\n/g, " ")}`);
+      for (const [key, label] of [["owner", "Who"], ["due", "When"], ["condition", "Conditions / context"]]) {
+        if (task[key]) lines.push(`  - ${label}: ${escapeMarkdown(task[key]).replace(/\r?\n/g, " ")}`);
+      }
+      lines.push(`  - ${task.humanEdited ? "Edited by you; original source quote retained." : "AI draft."}`, "", "  Source:", "");
+      for (const line of task.quote.split(/\r?\n/)) lines.push(`  > ${escapeMarkdown(line)}`);
+      lines.push("");
+    }
+    const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const anchor = node("a");
+    anchor.href = url;
+    anchor.download = `loose-ends-${new Date().toISOString().slice(0, 10)}.md`;
+    document.body.append(anchor);
+    anchor.click();
+    anchor.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+    announce("Your action list was exported as a Markdown file.");
+  }
+
+  function useSample() {
+    if (state.busy) return;
+    ui.notes.value = SAMPLE_NOTES;
+    ui.sampleConfirm.hidden = true;
+    updateControls();
+    ui.notes.focus();
+    announce("Made-up sample notes inserted. Select Find next steps to run the local model.");
+  }
+
+  ui.form.addEventListener("submit", generate);
+  ui.notes.addEventListener("input", updateControls);
+  ui.cancel.addEventListener("click", stopWaiting);
+  ui.retry.addEventListener("click", checkStatus);
+  ui.export.addEventListener("click", exportMarkdown);
+  ui.sample.addEventListener("click", () => {
+    if (state.busy) return;
+    if (ui.notes.value.trim()) { ui.sampleConfirm.hidden = false; ui.sampleCancel.focus(); }
+    else useSample();
+  });
+  ui.sampleReplace.addEventListener("click", useSample);
+  ui.sampleCancel.addEventListener("click", () => { ui.sampleConfirm.hidden = true; ui.sample.focus(); });
+  ui.undoButton.addEventListener("click", () => {
+    if (!state.removed || state.busy || state.editing !== null) return;
+    const { task, index } = state.removed;
+    state.tasks.splice(Math.min(index, state.tasks.length), 0, task);
+    state.removed = null;
+    renderTasks();
+    updateControls();
+    updateSummary();
+    byId(`edit-${task.uiId}`).focus();
+    announce("Removed action restored.");
+  });
+  window.addEventListener("beforeunload", (event) => {
+    if (ui.notes.value.trim() || state.tasks.length || state.busy) {
+      event.preventDefault();
+      event.returnValue = "";
+    }
+  });
+  updateControls();
+  checkStatus();
+})();

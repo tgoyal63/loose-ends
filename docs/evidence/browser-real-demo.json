@@ -1,0 +1,74 @@
+{
+  "kind": "Actual local-model browser demo on explicitly synthetic notes",
+  "started": "2026-10-20T06:44:35.351Z",
+  "finished": "2026-10-20T06:44:47.523Z",
+  "freshBrowserContext": true,
+  "mockRoutesInstalled": false,
+  "baseURL": "http://127.0.0.1:62140",
+  "httpStatus": 200,
+  "elapsedMs": 5799,
+  "notes": "Community garden catch-up \u2014 made-up sample notes\n\nMaya will email the seed order to the group by Friday.\nWe liked the idea of adding a second compost bin, but haven't decided yet.\nIf the forecast is dry, Sam will bring the spare watering cans on Saturday.\nI need to print six welcome signs before the next volunteer morning.\nThe old noticeboard was repaired last week. No more work needed there.\nLee will check whether the library can lend us a folding table.",
+  "response": {
+    "tasks": [
+      {
+        "id": "5eca27760ecb572d",
+        "title": "email the seed order to the group",
+        "quote": "Maya will email the seed order to the group by Friday.",
+        "owner": "Maya",
+        "due": "Friday",
+        "condition": null
+      },
+      {
+        "id": "0447b56c87ddae1f",
+        "title": "print six welcome signs",
+        "quote": "I need to print six welcome signs before the next volunteer morning.",
+        "owner": "I",
+        "due": "before the next volunteer morning",
+        "condition": null
+      },
+      {
+        "id": "b46729f22df15d17",
+        "title": "bring the spare watering cans",
+        "quote": "If the forecast is dry, Sam will bring the spare watering cans on Saturday.",
+        "owner": "Sam",
+        "due": "Saturday",
+        "condition": "If the forecast is dry, Sam will bring the spare watering cans on Saturday."
+      },
+      {
+        "id": "7c4180080dfb83a2",
+        "title": "check whether the library can lend us a folding table",
+        "quote": "Lee will check whether the library can lend us a folding table.",
+        "owner": "Lee",
+        "due": null,
+        "condition": null
+      }
+    ],
+    "rejected_count": 0,
+    "model": "Qwen3 4B Instruct \u00b7 local"
+  },
+  "renderedTasks": 4,
+  "editedTask": "email the seed order to the group \u2014 draft first",
+  "originalQuote": "Maya will email the seed order to the group by Friday.",
+  "sourceUnchanged": true,
+  "markedEdited": true,
+  "doneCount": 1,
+  "mobileOverflow": false,
+  "errors": [],
+  "externalRequests": [],
+  "artifacts": [
+    "docs/demo/desktop.png",
+    "docs/demo/desktop-reviewed.png",
+    "docs/demo/mobile.png",
+    "docs/demo/action-list.md",
+    "docs/demo/walkthrough.webm"
+  ],
+  "sourceSha256": {
+    "web/index.html": "425222c28bb75cf0f1bfdac1e3d55cb4c002205806e981bedff18de0c6eab7c8",
+    "web/app.js": "bbf8c1335880fa334716b59d2f7f0146d25dd94617088e9db08c04b4999378f4",
+    "web/styles.css": "2e1fbbab6ddf1239d8afde65aea6827d6a90f3c9cf2eb0e9ab93ac0bc56629fd",
+    "server.py": "f7553899c2dd94a3dda3b8d9a5ccbb533ac830b4228ce1bb53ac533462e9a270",
+    "loose_ends/__init__.py": "c73f92d943c41dac8aba5e504a47ca3ebe2ecd0d710b61910087d15eeab2005e",
+    "loose_ends/extraction.py": "133dbd842925a7fba44529492663e2be1ad3532520f5044d46fe1786353d4ae0",
+    "loose_ends/model.py": "eb72e19f41c7df05d7cf4087188fd4a518ce00aaa388906efb213a35f885aa3f"
+  }
+}
