@@ -54,44 +54,61 @@ the full-condition-context correction. It is not substituted for this final run.
 
 ## Browser behavior
 
-The frontend specialist ran [46 browser assertions](evidence/browser-fixtures.json) using explicitly synthetic
-API responses. They cover keyboard focus and editing, completion, remove/undo,
-export, safe text rendering, failed requests, stale notes, cancellation and late
-responses, double submission, model availability, memory-only browser state and
-responsive widths of 320, 390, 768 and 1,280 pixels.
+Following the UI refinement, an independent reviewer ran
+[53 browser assertions](evidence/browser-fixtures.json) through the native T3
+preview using explicitly synthetic API responses. They cover keyboard focus and
+editing, completion, remove/undo, export, safe text rendering, failed requests,
+stale notes, cancellation and late responses, double submission, model
+availability, memory-only browser state and responsive widths of 320, 390, 768
+and 1,280 pixels. Measurements used the actual browser viewport and scroll width.
+With 20 tasks at 1,280 × 800, the primary action's bottom edge was 675 pixels,
+so a growing results list did not push the input controls off-screen.
 
 A [focused export regression](evidence/export-regression.json) separately reproduced the original Markdown bug and
 verified the correction with a CommonMark renderer. Literal `&amp;`, `&#65;`,
 `&copy;`, brackets and a leading list marker now preserve their rendered text.
 Browser fixtures do not count as real model inference.
 
-[Axe 4.13.0 checks](evidence/accessibility.json) found **zero WCAG A/AA violations**
-in desktop empty, desktop populated and mobile editing states after correcting
-step-number contrast. Two decorative, aria-hidden checkmarks retain an automated
-contrast review notice. The desktop and mobile renders were visually inspected.
-This is not a full accessibility or screen-reader audit.
+[Axe 4.13.0 checks](evidence/accessibility.json) on the refined UI found
+**zero WCAG A/AA violations and zero incomplete checks** in desktop empty,
+desktop populated and 320-pixel mobile editing states. The earlier decorative
+checkmarks were removed with the empty-state illustration. The desktop and mobile
+renders were visually inspected. This is not a full screen-reader audit.
+
+The reviewer also independently rendered the current exported Markdown through
+CommonMark: all three source quotes, including compound prerequisites and
+literal entities/HTML-looking text, were preserved. A fourth check confirmed
+there was no executable script markup. See the
+[refinement export receipt](evidence/ui-refinement-export.json).
 
 ### Demonstration with actual inference
 
-A [fresh-context browser run](evidence/browser-real-demo.json) installed no mocks
-and called the actual app/model at 06:44 UTC. Its labelled synthetic garden notes
-produced four actions in 5.799 seconds. Full conditional context was retained.
+A [reloaded native-browser run](evidence/browser-real-demo.json) verified that
+the fixture harness was absent and called the actual app/model at 07:25 UTC.
+Its labelled synthetic garden notes produced four actions in 6.794 seconds.
+Full conditional context was retained.
 One action was edited, marked done and exported while its original quote stayed
 unchanged. No browser errors, external requests or mobile overflow were observed.
-The receipt records the SHA-256 hashes of the seven application source files.
+The receipt records seven application source hashes: the three UI files match
+both independent reviews, and the backend bytes match the previously validated
+implementation.
 
-- [Recorded walkthrough, MP4](demo/walkthrough.mp4) and [original WebM](demo/walkthrough.webm)
+- [Recorded walkthrough, MP4](demo/walkthrough.mp4)
 - [Desktop actions](demo/desktop.png), [reviewed actions](demo/desktop-reviewed.png)
   and [mobile layout](demo/mobile.png)
-- [Actual exported Markdown](demo/action-list.md)
+- [Exported Markdown](demo/action-list.md), with only the terminal blank line
+  removed; the receipt retains the exact downloaded text.
 
-The video is a continuous browser recording of the synthetic demo; the MP4 is a
-format conversion of the original WebM. No inference result was substituted.
-Neither file establishes a public contest submission.
+The video is the unmodified native recorder output of the synthetic demo.
+Its encoded duration differs from capture wall time; the cause was not verified,
+so it is not used to substantiate latency. No inference result was substituted.
+The earlier design's [WebM](demo/archive/initial-walkthrough.webm) is archived
+separately. Neither recording establishes a public contest submission.
 
 ## Independent review
 
-Two specialists reviewed the actual implementation independently of its authors.
+For the initial implementation, two specialists reviewed the actual source
+independently of its authors.
 Their initial findings identified incomplete compound conditions, malformed
 JSON/Unicode exceptions escaping the API contract, and Markdown export changing
 literal source text. Corrections preserve full conditional context, normalize
@@ -104,7 +121,25 @@ receipts against the current validator. The product reviewer independently
 verified seven export-to-CommonMark source-text comparisons, ran 23 extraction
 and client tests, and checked the final mobile image, export and browser receipt.
 Both reviewers found their material issues resolved. The product review's seven
-application fingerprints match the final real-demo receipt.
+application fingerprints matched the initial demo receipt, retained in the
+original commit `ddcc5ed`.
+
+### UI refinement review
+
+The interface was subsequently refined into a compact document workspace:
+clear sans-serif headings, neutral surfaces, one blue action color and ruled
+task entries with visible source annotations. The marketing headline, decorative
+empty-state papers and repeated rounded cards were removed. JavaScript changes
+are presentation strings; request handling, source validation and export logic
+are unchanged.
+
+Two independent reviewers examined this later candidate. The source reviewer
+checked the full diff, all DOM bindings, semantics, safe rendering, source
+immutability and export behavior. The browser reviewer executed the 53
+assertions and accessibility checks above. A potential editor-stretch problem
+was corrected and the 20-task geometry was verified. Neither review has an
+unresolved material finding. Their final three UI hashes match the current
+browser receipts. The 37 backend tests were also rerun and passed.
 
 ## Scope of the checks
 

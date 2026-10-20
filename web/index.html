@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f7f6f0">
+    <meta name="theme-color" content="#f3f4f5">
     <meta name="description" content="Turn messy notes into a small, source-backed action list. Runs locally with an open model.">
-    <title>Loose Ends — notes into next steps</title>
+    <title>Loose Ends — action workspace</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="/styles.css">
     <script src="/app.js" defer></script>
@@ -20,27 +20,26 @@
           </svg>
           <span>Loose Ends</span>
         </a>
-        <div class="header-note"><span class="small-dot" aria-hidden="true"></span>A little less mental clutter.</div>
+        <div class="header-note"><span>Local workspace</span><span class="header-divider" aria-hidden="true">/</span><span class="header-context">Notes → actions</span></div>
       </header>
 
       <main>
         <section class="introduction" aria-labelledby="page-title">
           <div>
-            <p class="eyebrow">NOTES IN. NEXT STEPS OUT.</p>
-            <h1 id="page-title">Untangle your <em>next steps.</em></h1>
-            <p class="intro-copy">Drop in the messy bits. Find what needs doing, with the original words to back it up.</p>
+            <h1 id="page-title">Notes to actions</h1>
+            <p class="intro-copy">Extract a draft list, then check it against the original text.</p>
           </div>
           <p class="privacy-note">
             <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg>
-            <span>Runs locally. <br>Nothing is saved until you export.</span>
+            <span>Processed on this machine.<br>Export your work before closing the tab.</span>
           </p>
         </section>
 
         <div class="workspace">
           <section class="notes-panel panel" aria-labelledby="notes-heading">
             <div class="panel-heading">
-              <div class="heading-with-number"><span class="step-number" aria-hidden="true">01</span><h2 id="notes-heading">The messy bits</h2></div>
-              <button id="sample-button" class="button-text" type="button">Try sample notes <span aria-hidden="true">↗</span></button>
+              <div class="heading-with-number"><span class="step-number" aria-hidden="true">01</span><h2 id="notes-heading">Your notes</h2></div>
+              <button id="sample-button" class="button-text" type="button">Use an example</button>
             </div>
             <div id="sample-confirm" class="inline-confirm" hidden>
               <p>Replace your notes with a made-up example?</p>
@@ -48,13 +47,15 @@
             </div>
             <form id="notes-form">
               <label for="notes" class="sr-only">Your notes</label>
-              <textarea id="notes" name="notes" maxlength="12000" placeholder="Meeting notes, a brain dump, a conversation…&#10;&#10;Paste it here. It doesn't have to be tidy." aria-describedby="notes-help notes-count" required></textarea>
-              <div class="notes-meta"><span id="notes-help">Keep each action and its conditions on one line.</span><span id="notes-count">0 / 12,000</span></div>
-              <div class="notes-actions">
-                <button id="generate-button" class="button-primary" type="submit" disabled><span id="generate-label">Find next steps</span><svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
-                <button id="cancel-button" class="button-text" type="button" hidden>Stop waiting</button>
+              <textarea id="notes" name="notes" maxlength="12000" placeholder="Paste your notes here.&#10;&#10;Keep each action, its owner, deadline and conditions together on one line." aria-describedby="notes-help notes-count" required></textarea>
+              <div class="notes-tools">
+                <div class="notes-meta"><span id="notes-help">One action and its conditions per line.</span><span id="notes-count">0 / 12,000</span></div>
+                <div class="notes-actions">
+                  <button id="generate-button" class="button-primary" type="submit" disabled><span id="generate-label">Find actions</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
+                  <button id="cancel-button" class="button-text" type="button" hidden>Stop waiting</button>
+                </div>
+                <p id="replacement-note" class="replacement-note" hidden>Finding actions again replaces this list. Export it first to keep a copy.</p>
               </div>
-              <p id="replacement-note" class="replacement-note" hidden>Finding next steps again replaces this list. Export it first if you want to keep it.</p>
             </form>
             <div class="model-status" id="model-status">
               <div class="status-first-line"><span id="status-dot" class="status-dot checking" aria-hidden="true"></span><span id="status-label">Checking your local model…</span><button id="status-retry" class="button-text" type="button" aria-label="Check local model connection again">Check again</button></div>
@@ -64,29 +65,31 @@
 
           <section class="actions-panel" aria-labelledby="actions-heading" aria-busy="false" id="actions-panel">
             <div class="actions-heading panel-heading">
-              <div class="heading-with-number"><span class="step-number" aria-hidden="true">02</span><h2 id="actions-heading" tabindex="-1">A little more clarity</h2><span id="task-count" class="count-badge" hidden>0</span></div>
+              <div class="heading-with-number"><span class="step-number" aria-hidden="true">02</span><h2 id="actions-heading" tabindex="-1">Review actions</h2><span id="task-count" class="count-badge" hidden>0</span></div>
               <button id="export-button" class="button-outline" type="button" disabled><svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" aria-hidden="true"><path d="M12 3v12m-5-5 5 5 5-5M5 16v4h14v-4"/></svg>Export<span class="export-suffix"> .md</span></button>
             </div>
 
-            <div id="feedback" class="feedback" hidden tabindex="-1"></div>
-            <div id="stale-notice" class="context-note" hidden>Your notes have changed. These actions still refer to the previous version.</div>
-            <div id="loading-state" class="loading-state" hidden><span class="spinner" aria-hidden="true"></span><div><p>Untangling the next steps…</p><span>Finding actions and checking their source quotes. This may take a moment.</span></div></div>
+            <div class="actions-body">
+              <div id="feedback" class="feedback" hidden tabindex="-1"></div>
+              <div id="stale-notice" class="context-note" hidden>Your notes have changed. These actions still refer to the previous version.</div>
+              <div id="loading-state" class="loading-state" hidden><span class="spinner" aria-hidden="true"></span><div><p>Finding draft actions…</p><span>Checking suggestions against your source text. This may take a moment.</span></div></div>
 
-            <div id="empty-state" class="empty-state">
-              <div class="empty-art" aria-hidden="true"><div class="paper paper-back"></div><div class="paper paper-front"><span class="paper-tick">✓</span><span class="paper-line line-long"></span><span class="paper-line line-short"></span><span class="paper-tick second-tick">✓</span><span class="paper-line line-long second-line"></span><span class="paper-line line-short last-line"></span></div><span class="art-spark">✳</span></div>
-              <h3 id="empty-title">Your next steps start here.</h3>
-              <p id="empty-copy">Add some notes on the left.<br>We’ll look for actions, not more things to read.</p>
-              <span id="empty-caption" class="empty-caption">A small list. A clearer head.</span>
+              <div id="empty-state" class="empty-state">
+                <p class="empty-kicker" aria-hidden="true">ACTION LIST</p>
+                <h3 id="empty-title">No draft actions yet.</h3>
+                <p id="empty-copy">Add your notes and select Find actions. Each suggestion will appear here with its original source line.</p>
+                <span id="empty-caption" class="empty-caption">Review and edit the drafts, then export your list.</span>
+              </div>
+
+              <div id="results-summary" class="results-summary" hidden></div>
+              <ul id="task-list" class="task-list" aria-label="Extracted actions"></ul>
+              <div id="undo-notice" class="undo-notice" hidden><span id="undo-message">Action removed.</span><button id="undo-button" class="button-text" type="button">Undo</button></div>
+              <p id="results-note" class="results-note" hidden>Source lines are checked against your notes. Review the suggested actions, owners, dates and conditions before using them.</p>
             </div>
-
-            <div id="results-summary" class="results-summary" hidden></div>
-            <ul id="task-list" class="task-list" aria-label="Extracted actions"></ul>
-            <div id="undo-notice" class="undo-notice" hidden><span id="undo-message">Action removed.</span><button id="undo-button" class="button-text" type="button">Undo</button></div>
-            <p id="results-note" class="results-note" hidden>Source lines are checked against your notes. Review the suggested actions, owners, dates and conditions before using them.</p>
           </section>
         </div>
 
-        <footer class="page-footer"><p>Open model. A quieter kind of productivity.</p><details><summary>How this works</summary><p>Your notes go to a model running on this machine. It suggests actions and attaches a complete source line to each one, keeping its conditions in view. Source lines must match your notes; suggestions can still be wrong. Put each action and its conditions together on one line for clearer drafts. Edit, tick off or remove any action, then export your list. Refreshing or closing this tab clears your work.</p></details></footer>
+        <footer class="page-footer"><p>AI drafts need your review. Nothing is sent or scheduled.</p><details><summary>How it works &amp; privacy</summary><p>Your notes go to a model running on this machine. It suggests actions and attaches a complete source line to each one, keeping its conditions in view. Source lines must match your notes; suggestions can still be wrong. Put each action and its conditions together on one line for clearer drafts. Edit, tick off or remove any action, then export your list. Refreshing or closing this tab clears your work.</p></details></footer>
       </main>
     </div>
     <div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>

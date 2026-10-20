@@ -68,7 +68,7 @@
     const length = ui.notes.value.length;
     ui.count.textContent = `${length.toLocaleString("en-US")} / 12,000`;
     ui.generate.disabled = state.busy || !state.ready || !ui.notes.value.trim();
-    ui.generateLabel.textContent = state.busy ? "Finding next steps…" : state.hasRun ? "Find next steps again" : "Find next steps";
+    ui.generateLabel.textContent = state.busy ? "Finding actions…" : state.hasRun ? "Find actions again" : "Find actions";
     ui.notes.readOnly = state.busy;
     ui.sample.disabled = state.busy;
     ui.sampleReplace.disabled = state.busy;
@@ -99,8 +99,8 @@
     if (!state.hasRun) return;
     ui.emptyCaption.hidden = true;
     if (state.initialCount > 0 && count === 0) {
-      ui.emptyTitle.textContent = "A clean slate.";
-      ui.emptyCopy.textContent = "All actions were removed. Undo the last removal, or find next steps in another set of notes.";
+      ui.emptyTitle.textContent = "All actions removed.";
+      ui.emptyCopy.textContent = "Undo the last removal, or find actions in another set of notes.";
     } else if (count === 0 && state.rejected > 0) {
       ui.emptyTitle.textContent = "No verifiable drafts returned.";
       ui.emptyCopy.textContent = "The model's suggestions did not pass the source checks. Your notes may still contain actions. Try making the commitments more explicit.";
@@ -141,7 +141,7 @@
       ui.statusDot.className = `status-dot ${state.ready ? "ready" : "unavailable"}`;
       ui.status.classList.toggle("unavailable", !state.ready);
       updateControls();
-      announce(state.ready ? "Local model ready. Add notes to find next steps." : "Local model unavailable. Check the connection message for next steps.");
+      announce(state.ready ? "Local model ready. Add notes to find actions." : "Local model unavailable. Check the connection message for next steps.");
     }
   }
 
@@ -180,7 +180,7 @@
     clearFeedback();
     updateControls();
     updateSummary();
-    announce("Finding next steps and checking their source quotes.");
+    announce("Finding draft actions and checking their source quotes.");
     let timedOut = false;
     const timeout = setTimeout(() => { timedOut = true; controller.abort(); }, 180000);
     try {
@@ -276,13 +276,13 @@
       const content = node("div", "task-content");
       content.append(node("h3", "task-title", task.title));
       const meta = node("dl", "task-meta");
-      addMeta(meta, "Who", task.owner);
-      addMeta(meta, "When", task.due);
+      addMeta(meta, "Owner", task.owner);
+      addMeta(meta, "Due", task.due);
       if (meta.childNodes.length) content.append(meta);
       if (task.condition) content.append(node("p", "condition", `Conditions / context: ${task.condition}`));
       top.append(checkbox, content);
       const quote = node("blockquote", "source-quote");
-      quote.append(node("span", "source-label", "FROM YOUR NOTES"), node("p", "", task.quote));
+      quote.append(node("span", "source-label", "Source"), node("p", "", task.quote));
       const bottom = node("div", "task-bottom");
       const edited = node("span", "edited-label", task.humanEdited ? "Edited by you" : "AI draft · review first");
       const controls = node("div", "task-controls");
@@ -340,7 +340,7 @@
     }
     form.append(field("title", "Action", true, 2000));
     const row = node("div", "edit-row");
-    row.append(field("owner", "Who · optional", false, 500), field("due", "When · optional", false, 500));
+    row.append(field("owner", "Owner · optional", false, 500), field("due", "Due · optional", false, 500));
     form.append(row, field("condition", "Conditions / context · optional", true, 12000));
     form.append(node("p", "edit-hint", "Your changes are marked as edited by you. The original source quote stays attached."));
     const buttons = node("div", "edit-buttons");
@@ -423,7 +423,7 @@
     ui.sampleConfirm.hidden = true;
     updateControls();
     ui.notes.focus();
-    announce("Made-up sample notes inserted. Select Find next steps to run the local model.");
+    announce("Made-up sample notes inserted. Select Find actions to run the local model.");
   }
 
   ui.form.addEventListener("submit", generate);

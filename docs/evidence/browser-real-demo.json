@@ -1,13 +1,14 @@
 {
-  "kind": "Actual local-model browser demo on explicitly synthetic notes",
-  "started": "2026-10-20T06:44:35.351Z",
-  "finished": "2026-10-20T06:44:47.523Z",
-  "freshBrowserContext": true,
-  "mockRoutesInstalled": false,
-  "baseURL": "http://127.0.0.1:62140",
-  "httpStatus": 200,
-  "elapsedMs": 5799,
-  "notes": "Community garden catch-up \u2014 made-up sample notes\n\nMaya will email the seed order to the group by Friday.\nWe liked the idea of adding a second compost bin, but haven't decided yet.\nIf the forecast is dry, Sam will bring the spare watering cans on Saturday.\nI need to print six welcome signs before the next volunteer morning.\nThe old noticeboard was repaired last week. No more work needed there.\nLee will check whether the library can lend us a folding table.",
+  "startedAt": "2026-10-20T07:25:21.199Z",
+  "errors": [],
+  "network": [
+    {
+      "url": "/api/plan",
+      "status": 200
+    }
+  ],
+  "fixtureAbsent": true,
+  "browser": "T3 native preview",
   "response": {
     "tasks": [
       {
@@ -44,31 +45,52 @@
       }
     ],
     "rejected_count": 0,
-    "model": "Qwen3 4B Instruct \u00b7 local"
+    "model": "Qwen3 4B Instruct · local"
   },
-  "renderedTasks": 4,
-  "editedTask": "email the seed order to the group \u2014 draft first",
-  "originalQuote": "Maya will email the seed order to the group by Friday.",
-  "sourceUnchanged": true,
-  "markedEdited": true,
-  "doneCount": 1,
-  "mobileOverflow": false,
-  "errors": [],
-  "externalRequests": [],
-  "artifacts": [
-    "docs/demo/desktop.png",
-    "docs/demo/desktop-reviewed.png",
-    "docs/demo/mobile.png",
-    "docs/demo/action-list.md",
-    "docs/demo/walkthrough.webm"
+  "status": 200,
+  "durationMs": 6794.0999999940395,
+  "exported": "# Loose Ends\n\nAction list · 2026-10-20\n\nModel: Qwen3 4B Instruct · local\n\nDrafts need human review. Source quotes were checked against the submitted notes; user edits are marked below.\n\n- [x] Email the seed order and confirm quantities with the group\n  - Who: Maya\n  - When: Friday\n  - Edited by you; original source quote retained.\n\n  Source:\n\n  > Maya will email the seed order to the group by Friday\\.\n\n- [ ] print six welcome signs\n  - Who: I\n  - When: before the next volunteer morning\n  - AI draft.\n\n  Source:\n\n  > I need to print six welcome signs before the next volunteer morning\\.\n\n- [ ] bring the spare watering cans\n  - Who: Sam\n  - When: Saturday\n  - Conditions / context: If the forecast is dry\\, Sam will bring the spare watering cans on Saturday\\.\n  - AI draft.\n\n  Source:\n\n  > If the forecast is dry\\, Sam will bring the spare watering cans on Saturday\\.\n\n- [ ] check whether the library can lend us a folding table\n  - Who: Lee\n  - AI draft.\n\n  Source:\n\n  > Lee will check whether the library can lend us a folding table\\.\n",
+  "finishedAt": "2026-10-20T07:25:59.741Z",
+  "sourceRetained": true,
+  "humanEditMarked": true,
+  "firstDone": true,
+  "summary": "4 actions · 1 done",
+  "resources": [
+    "http://127.0.0.1:62140/styles.css",
+    "http://127.0.0.1:62140/app.js",
+    "http://127.0.0.1:62140/api/status",
+    "http://127.0.0.1:62140/api/plan"
   ],
-  "sourceSha256": {
-    "web/index.html": "425222c28bb75cf0f1bfdac1e3d55cb4c002205806e981bedff18de0c6eab7c8",
-    "web/app.js": "bbf8c1335880fa334716b59d2f7f0146d25dd94617088e9db08c04b4999378f4",
-    "web/styles.css": "2e1fbbab6ddf1239d8afde65aea6827d6a90f3c9cf2eb0e9ab93ac0bc56629fd",
+  "overflow": false,
+  "kind": "Real local Qwen3 inference with synthetic garden notes in reloaded native T3 preview; no mocked responses",
+  "instrumentation": "A transparent fetch wrapper observed the real response without replacing it; URL.createObjectURL was observed to save the actual export.",
+  "sourceHashes": {
+    "web/index.html": "b32af79909b0cd7268442929f4e71cb7e2cb51544a35c4c05c26380e9fe60d73",
+    "web/styles.css": "18c20af5a5fb888254597ac17d7d259730254afeac8d2d86715bc16215daee93",
+    "web/app.js": "aec246b1316de71afa6a6d39fd3ae11b35d314d7ac3e3ea67bd01a0b41682296",
     "server.py": "f7553899c2dd94a3dda3b8d9a5ccbb533ac830b4228ce1bb53ac533462e9a270",
     "loose_ends/__init__.py": "c73f92d943c41dac8aba5e504a47ca3ebe2ecd0d710b61910087d15eeab2005e",
     "loose_ends/extraction.py": "133dbd842925a7fba44529492663e2be1ad3532520f5044d46fe1786353d4ae0",
     "loose_ends/model.py": "eb72e19f41c7df05d7cf4087188fd4a518ce00aaa388906efb213a35f885aa3f"
-  }
+  },
+  "notes": "Community garden catch-up — made-up sample notes\n\nMaya will email the seed order to the group by Friday.\nWe liked the idea of adding a second compost bin, but haven't decided yet.\nIf the forecast is dry, Sam will bring the spare watering cans on Saturday.\nI need to print six welcome signs before the next volunteer morning.\nThe old noticeboard was repaired last week. No more work needed there.\nLee will check whether the library can lend us a folding table.",
+  "viewportChecks": {
+    "desktop": {
+      "width": 1280,
+      "height": 800
+    },
+    "mobile": {
+      "width": 390,
+      "height": 844,
+      "scrollWidth": 390
+    }
+  },
+  "recording": {
+    "mimeType": "video/mp4",
+    "sizeBytes": 1327295,
+    "createdAt": "2026-10-20T07:25:59.725Z",
+    "artifact": "docs/demo/walkthrough.mp4",
+    "note": "Unmodified native recorder output; encoded duration differs from capture wall time. API latency is measured separately."
+  },
+  "sourceFingerprintVerification": "UI hashes match both independent reviews; backend bytes match the previously validated ddcc5ed implementation."
 }

@@ -1,43 +1,42 @@
 {
-  "kind": "Automated axe accessibility checks on synthetic browser fixtures; does not establish screen-reader usability",
+  "kind": "Axe 4.13.0 in the native T3 preview, synthetic notes; not a full screen-reader audit",
+  "sourceHashes": {
+    "web/index.html": "b32af79909b0cd7268442929f4e71cb7e2cb51544a35c4c05c26380e9fe60d73",
+    "web/styles.css": "18c20af5a5fb888254597ac17d7d259730254afeac8d2d86715bc16215daee93",
+    "web/app.js": "aec246b1316de71afa6a6d39fd3ae11b35d314d7ac3e3ea67bd01a0b41682296"
+  },
   "states": [
     {
-      "name": "Desktop initial empty state",
-      "version": "4.13.0",
-      "violations": [],
-      "passes": 24,
-      "incomplete": [
-        {
-          "id": "color-contrast",
-          "nodes": [
-            {
-              "target": [
-                ".paper-tick:nth-child(1)"
-              ],
-              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
-            },
-            {
-              "target": [
-                ".second-tick"
-              ],
-              "summary": "Fix any of the following:\n  Element content contains only non-text characters"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "name": "Desktop action with full source context",
+      "state": "desktop-populated-final",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
       "version": "4.13.0",
       "violations": [],
       "passes": 27,
       "incomplete": []
     },
     {
-      "name": "Mobile editing state",
+      "state": "mobile-320-editing-final",
+      "viewport": {
+        "width": 320,
+        "height": 844
+      },
       "version": "4.13.0",
       "violations": [],
       "passes": 27,
+      "incomplete": []
+    },
+    {
+      "state": "desktop-empty-final",
+      "viewport": {
+        "width": 1280,
+        "height": 800
+      },
+      "version": "4.13.0",
+      "violations": [],
+      "passes": 24,
       "incomplete": []
     }
   ]

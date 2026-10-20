@@ -1,0 +1,11 @@
+{
+  "kind": "Independent CommonMark rendered-source fidelity check against synthetic browser export",
+  "passed": 4,
+  "source_comparisons": 3,
+  "quotes": [
+    "Maya will email the seed order by Friday.",
+    "If legal approves and security signs off, Priya will send the draft on Friday.",
+    "- Jamie will print &amp; &#65; &copy; [brackets] <img src=x onerror=alert(1)> sign."
+  ],
+  "no_executable_script_markup": true
+}

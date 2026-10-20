@@ -6,7 +6,7 @@ Model: Qwen3 4B Instruct · local
 
 Drafts need human review. Source quotes were checked against the submitted notes; user edits are marked below.
 
-- [x] email the seed order to the group — draft first
+- [x] Email the seed order and confirm quantities with the group
   - Who: Maya
   - When: Friday
   - Edited by you; original source quote retained.
