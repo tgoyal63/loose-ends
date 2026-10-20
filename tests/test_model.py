@@ -4,6 +4,7 @@ import unittest
 from unittest.mock import MagicMock, Mock
 
 from loose_ends.model import LocalModel, ModelResponseError
+from loose_ends.transcript import TRANSCRIPT_PROMPT, parse_turns
 
 
 class ModelTests(unittest.TestCase):
@@ -54,6 +55,37 @@ class ModelTests(unittest.TestCase):
             model.request = Mock(return_value=value)
             with self.subTest(value=value), self.assertRaises(ModelResponseError):
                 model.propose("A note")
+
+    def test_transcript_prompt_sends_all_turns_and_later_qualifications(self):
+        notes = (
+            "Synthetic planning meeting\n"
+            "Mira Shah 09:10:00\nI will\nsend the sample.\n"
+            "Lee Park 09:10:30\nOnly after approval.\n"
+            "Mira Shah 09:10:45\nActually cancel that plan."
+        )
+        model = LocalModel("http://127.0.0.1:62141/v1", "selected")
+        model.request = Mock(return_value={"choices": [{"message": {"content": '{"tasks":[]}'}}]})
+        model.propose(notes)
+        payload = model.request.call_args.args[1]
+        self.assertEqual(payload["messages"][0]["content"], TRANSCRIPT_PROMPT)
+        source = json.loads(payload["messages"][1]["content"])
+        self.assertEqual(source["preamble"], "Synthetic planning meeting\n")
+        self.assertEqual(source["turns"], [turn.for_model() for turn in parse_turns(notes)])
+        self.assertIn("cancel that plan", source["turns"][-1]["text"])
+        self.assertEqual(payload["max_tokens"], 4800)
+        self.assertEqual(model.timeout, 120)
+
+    def test_long_transcript_request_does_not_silently_truncate(self):
+        notes = (
+            "Mira Shah 09:10:00\n" + "Background facts. " * 1800
+            + "\nLee Park 09:11:00\nI will send the sample."
+        )
+        model = LocalModel("http://127.0.0.1:62141/v1", "selected")
+        model.request = Mock(return_value={"choices": [{"message": {"content": '{"tasks":[]}'}}]})
+        model.propose(notes)
+        payload = json.loads(model.request.call_args.args[1]["messages"][1]["content"])
+        self.assertEqual(payload["turns"][0]["text"], parse_turns(notes)[0].text)
+        self.assertEqual(payload["turns"][-1]["text"], "I will send the sample.")
 
     def test_malformed_response_bytes_are_documented_errors(self):
         model = LocalModel("http://127.0.0.1:62141/v1", "selected")

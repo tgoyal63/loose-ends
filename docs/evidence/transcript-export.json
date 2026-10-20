@@ -1,0 +1,14 @@
+{
+  "checks": [
+    "Exported quote/context block 1 matches original after CommonMark rendering",
+    "Exported quote/context block 2 matches original after CommonMark rendering",
+    "Exported quote/context block 3 matches original after CommonMark rendering",
+    "Exported quote/context block 4 matches original after CommonMark rendering",
+    "Exported quote/context block 5 matches original after CommonMark rendering",
+    "Exported quote/context block 6 matches original after CommonMark rendering",
+    "All six expected evidence blocks exported",
+    "No executable script or image elements emitted"
+  ],
+  "passed": 8,
+  "quoteCount": 6
+}

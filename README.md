@@ -9,7 +9,7 @@ Built for Hacktoberfest 2026 Week 3, **Slow and Steady**.
 ![Loose Ends showing source-backed action drafts](docs/demo/desktop.png)
 
 [Watch the local-model demo](docs/demo/walkthrough.mp4) ·
-[See validation evidence](docs/validation.md)
+[See current validation evidence](docs/transcript-support.md)
 
 ## Run
 
@@ -31,10 +31,17 @@ The model service is a separate local process.
 The command uses the Python environment created by the MLX runtime instructions;
 an existing Python 3.11+ installation also works for the application.
 
-Use a note with each action and its conditions on one line. Load the labelled
-synthetic example to try it without personal data. Review the draft, edit or
-remove tasks, then export Markdown. Editing a card keeps the original source
-quote and marks the task as human-edited.
+Paste notes or a timestamped meeting transcript, up to 60,000 characters.
+For ordinary notes, keep each action and its conditions on one line.
+Transcripts with a `Speaker Name HH:MM:SS` header followed by that person's
+utterance are recognized automatically. Keep speaker names, timestamps and
+the complete exchanges; wrapped speech is supported.
+
+The whole supported input is sent in one bounded local-model request. Pasting
+over the limit keeps the text and shows an error; it is not silently truncated.
+Load the labelled synthetic example to try the ordinary notes flow without
+personal data. Review the drafts, edit or remove tasks, then export Markdown.
+Editing a task keeps its original source evidence and marks it as human-edited.
 
 An OpenAI-compatible local model server is required. This project does not use
 the OpenAI service, require an API key or silently fall back to a cloud provider.
@@ -43,17 +50,26 @@ can be configured explicitly. Verify their response format and model IDs.
 
 ## What the checks establish
 
-The model identifies potential actions and returns structured text. A separate
-validator rejects invented quotations, rewritten titles, cross-line attribution,
-duplicates and several obvious negated, completed or speculative phrases.
-Quoted evidence must be an entire original source line, at most 1,200 characters.
-For detected conditional tasks, the condition/context field preserves that whole
-line so a shortened model phrase cannot drop another prerequisite.
+The model identifies potential actions and returns structured text. For ordinary
+notes, the validator requires an entire original source line, at most 1,200
+characters, with verbatim title and attribution. Detected conditional tasks
+retain the complete line.
+
+For transcripts, the model selects a stable turn ID. The server attaches the
+complete original turn, its speaker and timestamp, and an exact surrounding
+excerpt containing up to two turns on either side. Whitespace normalization
+allows wrapped action text; it does not allow invented quotations or rewritten
+titles. Speaker attribution requires support for the selected action, rather
+than assuming that every action mentioned belongs to the person speaking.
+Nearby conversation is reviewable in the interface and retained in the export.
 
 These checks reduce unsupported output. They do **not** prove every task follows
 from its source, detect every form of negation, recover context from every earlier
-paragraph, or find every valid action. Relative dates remain relative. A missing
-owner or date stays unknown. Human review is part of the workflow.
+paragraph, or find every valid action. The model reads the full transcript, but
+later corrections and cancellations still need human review; an attached nearby
+excerpt may not contain a distant qualification. Relative dates remain relative.
+A missing owner or date stays unknown. Up to 20 drafts are returned. Human review
+is part of the workflow.
 
 ## Privacy and boundaries
 
@@ -79,6 +95,13 @@ With both local services running, evaluate five synthetic source-fidelity cases:
 
 ```bash
 python3 scripts/evaluate_model.py --output logs/model-evaluation.json
+```
+
+Exercise fragmented speech, separate speakers, a long transcript and later
+cancellation through the running local application:
+
+```sh
+python3 scripts/evaluate_transcripts.py --output logs/transcript-evaluation.json
 ```
 
 This is a small reproducible check, not a universal model benchmark. Real model

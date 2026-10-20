@@ -59,6 +59,8 @@ h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spac
 .notes-meta { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 6px 16px; color: var(--muted); font-size: 12px; padding: 8px 0 20px; }
 #notes-help { max-width: 235px; }
 #notes-count { margin-left: auto; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.input-error { margin: -4px 0 16px; color: var(--danger); font-size: 13px; line-height: 1.6; }
+#notes[aria-invalid="true"] { border-color: var(--danger); }
 .notes-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
 .replacement-note { color: var(--muted); font-size: 12px; line-height: 1.65; margin: 13px 0 0; }
 .button-primary { display: inline-flex; align-items: center; justify-content: center; gap: 28px; min-height: 44px; background: var(--accent); color: #fff; border: 1px solid var(--accent); border-radius: 4px; padding: 10px 15px; font-size: 14px; font-weight: 600; }
@@ -115,6 +117,8 @@ h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spac
 .condition { font-size: 12px; color: var(--muted); margin: 10px 0 0; line-height: 1.7; overflow-wrap: anywhere; white-space: pre-wrap; }
 .source-quote { margin: 16px 0 0 36px; padding: 0 0 0 12px; border-left: 2px solid var(--line-strong); }
 .source-label { display: block; color: var(--muted); font-size: 12px; font-weight: 550; margin-bottom: 5px; }
+.source-context { margin-top: 10px; }
+.source-context summary { cursor: pointer; padding: 10px 0; color: var(--accent); font-size: 12px; min-height: 40px; }
 .source-quote p { font-size: 13px; color: #596372; margin: 0; line-height: 1.75; white-space: pre-wrap; overflow-wrap: anywhere; }
 .task-bottom { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 12px; margin-left: 36px; padding-top: 7px; }
 .task-controls { display: flex; align-items: center; gap: 14px; margin-left: auto; }

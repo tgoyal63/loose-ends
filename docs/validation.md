@@ -1,5 +1,10 @@
 # Validation — 20 October 2026
 
+This document records the initial implementation and UI refinement through
+`f31d708`. For the later transcript fix and current input behavior, see
+[transcript support and validation](transcript-support.md). Historical receipts
+below retain their original source fingerprints.
+
 This is local development evidence for a new Hacktoberfest Week 3 project.
 It does not establish hosted checks, public deployment, contest acceptance,
 sticker credit, or general model accuracy.

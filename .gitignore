@@ -6,6 +6,7 @@ logs/
 node_modules/
 test-results/
 playwright-report/
+.playwright-cli/
 .DS_Store
 .env*
 !.env.example

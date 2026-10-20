@@ -7,7 +7,9 @@ import json
 import re
 from typing import Any
 
-MAX_NOTES = 12_000
+from .transcript import parse_turns, validate_transcript
+
+MAX_NOTES = 60_000
 MAX_TASKS = 20
 
 SYSTEM_PROMPT = """You extract actionable, explicitly stated commitments from notes.
@@ -73,6 +75,9 @@ def parse_proposals(content: str) -> list[Any]:
 
 def validate_proposals(notes: str, proposals: list[Any]) -> tuple[list[dict[str, Any]], int]:
     """Keep only structurally supported proposals; semantic review is still needed."""
+    turns = parse_turns(notes)
+    if turns:
+        return validate_transcript(notes, proposals, turns, MAX_TASKS)
     tasks: list[dict[str, Any]] = []
     rejected = 0
     seen: set[tuple[str, str]] = set()

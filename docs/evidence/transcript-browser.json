@@ -1,0 +1,102 @@
+{
+  "kind": "Synthetic independent browser fixtures; this is not real model inference.",
+  "checks": [
+    "Textarea has no silent native truncation limit",
+    "More than 12000 characters reach request intact",
+    "Counter measures Unicode codepoints instead of UTF16 units",
+    "Exactly 60000 astral codepoints accepted without truncation",
+    "Overlimit input makes no API request",
+    "Overlimit full input remains present",
+    "Overlimit state visibly announces invalid input",
+    "Submit overlimit explains recovery as accessible alert",
+    "Shorter text clears invalid state",
+    "Timestamped multiline transcript renders three drafts",
+    "Each full multiline source turn stays byte-exact in DOM",
+    "Distinct same-first-name speakers and timestamps remain labeled",
+    "Nearby conversation preserves complete original substring",
+    "Prerequisite remains visible",
+    "Transcript results explain context and attribution limits",
+    "Transcript HTML-looking content remains inert",
+    "Success moves keyboard focus to action heading",
+    "Keyboard expands nearby conversation",
+    "Editing focuses title and disables export",
+    "Human changes remain clearly marked",
+    "Editing preserves exact source and nearby context",
+    "Human HTML-looking edits remain inert",
+    "Keyboard completion updates action count",
+    "Removal focuses Undo",
+    "Undo restores exact source and list position",
+    "Export retains completion and human edit markers",
+    "Export includes nearby transcript context",
+    "Export preserves distinct speaker and timestamp evidence",
+    "Changing transcript marks earlier results stale",
+    "Forged context is rejected with previous list retained",
+    "Evidence rejection retains human edits and updated transcript",
+    "Unmatched timestamp is rejected",
+    "Invalid input kind fails visibly",
+    "API failure retains prior reviewed actions",
+    "In-flight request locks captured input",
+    "Cancellation ignores late response and releases input",
+    "Rejected-only transcript result communicates completed request and uncertainty",
+    "Rejected-only transcript gives relevant recovery guidance",
+    "Offline model disables generation without clearing transcript",
+    "Status retry restores generation",
+    "Legacy note response without new metadata remains supported",
+    "Legacy notes restore notes-specific review guidance",
+    "No browser runtime errors",
+    "Application creates no browser storage",
+    "Browser input accepts a full paste longer than the old limit",
+    "Transcript source and context fit 320px viewport",
+    "Transcript source and context fit 390px viewport",
+    "Transcript source and context fit 768px viewport",
+    "Transcript source and context fit 1280px viewport",
+    "Transcript editor fits 320px viewport",
+    "Escape closes editor and restores trigger focus",
+    "Overlimit recovery text fits 320px viewport"
+  ],
+  "errors": [],
+  "exported": "# Loose Ends\n\nAction list \u00b7 2026-10-20\n\nModel: Synthetic independent\\-review fixture\n\nDrafts need human review. Source quotes were checked against the submitted text; user edits are marked below.\n\n- [x] \\<script\\>no execution\\<\\/script\\> Prepare the confirmed test listing\n  - Who: Mina Goyal \\(confirmed\\)\n  - Conditions / context: Once access works\n  - Edited by you; original source quote retained.\n\n  Source:\n\n  > Mina Goyal 10\\:00\\:15\n  > Once access works\\,\n  > I\\'ll prepare the test listing and let Noel know\\.\n\n  Nearby conversation (review for prerequisites and corrections):\n\n  > Mina Sharma 10\\:00\\:00\n  > The staging system is still inaccessible\\.\n  > Mina Goyal 10\\:00\\:15\n  > Once access works\\,\n  > I\\'ll prepare the test listing and let Noel know\\.\n  > Noel Chen 10\\:00\\:25\n  > I\\'ll buy the test listing after Mina confirms it is ready\\.\n  > Mina Sharma 10\\:00\\:35\n  > I will print \\&amp\\; \\[brackets\\] \\<img src\\=x onerror\\=alert\\(1\\)\\> labels\\.\n\n- [ ] buy the test listing\n  - Who: Noel Chen\n  - Conditions / context: after Mina confirms it is ready\n  - AI draft.\n\n  Source:\n\n  > Noel Chen 10\\:00\\:25\n  > I\\'ll buy the test listing after Mina confirms it is ready\\.\n\n  Nearby conversation (review for prerequisites and corrections):\n\n  > Mina Sharma 10\\:00\\:00\n  > The staging system is still inaccessible\\.\n  > Mina Goyal 10\\:00\\:15\n  > Once access works\\,\n  > I\\'ll prepare the test listing and let Noel know\\.\n  > Noel Chen 10\\:00\\:25\n  > I\\'ll buy the test listing after Mina confirms it is ready\\.\n  > Mina Sharma 10\\:00\\:35\n  > I will print \\&amp\\; \\[brackets\\] \\<img src\\=x onerror\\=alert\\(1\\)\\> labels\\.\n\n- [ ] print \\&amp\\; \\[brackets\\] \\<img src\\=x onerror\\=alert\\(1\\)\\> labels\n  - Who: Mina Sharma\n  - AI draft.\n\n  Source:\n\n  > Mina Sharma 10\\:00\\:35\n  > I will print \\&amp\\; \\[brackets\\] \\<img src\\=x onerror\\=alert\\(1\\)\\> labels\\.\n\n  Nearby conversation (review for prerequisites and corrections):\n\n  > Mina Sharma 10\\:00\\:00\n  > The staging system is still inaccessible\\.\n  > Mina Goyal 10\\:00\\:15\n  > Once access works\\,\n  > I\\'ll prepare the test listing and let Noel know\\.\n  > Noel Chen 10\\:00\\:25\n  > I\\'ll buy the test listing after Mina confirms it is ready\\.\n  > Mina Sharma 10\\:00\\:35\n  > I will print \\&amp\\; \\[brackets\\] \\<img src\\=x onerror\\=alert\\(1\\)\\> labels\\.\n",
+  "notes": "Mina Sharma 10:00:00\nThe staging system is still inaccessible.\nMina Goyal 10:00:15\nOnce access works,\nI'll prepare the test listing and let Noel know.\nNoel Chen 10:00:25\nI'll buy the test listing after Mina confirms it is ready.\nMina Sharma 10:00:35\nI will print &amp; [brackets] <img src=x onerror=alert(1)> labels.",
+  "turns": [
+    "Mina Goyal 10:00:15\nOnce access works,\nI'll prepare the test listing and let Noel know.",
+    "Noel Chen 10:00:25\nI'll buy the test listing after Mina confirms it is ready.",
+    "Mina Sharma 10:00:35\nI will print &amp; [brackets] <img src=x onerror=alert(1)> labels."
+  ],
+  "accessibility": [
+    {
+      "state": "mobile-320-transcript",
+      "violations": [],
+      "incomplete": [],
+      "passes": 27,
+      "axeVersion": "4.12.1"
+    },
+    {
+      "state": "desktop-context-expanded",
+      "violations": [],
+      "incomplete": [],
+      "passes": 27,
+      "axeVersion": "4.12.1"
+    },
+    {
+      "state": "mobile-320-input-overlimit",
+      "violations": [],
+      "incomplete": [],
+      "passes": 28,
+      "axeVersion": "4.12.1"
+    }
+  ],
+  "sourceHashes": {
+    "web/index.html": "f86e1afd038aa55fc3dccb9a8e94b1062d833e007c7fc8372193f565455f8e5f",
+    "web/styles.css": "b6033e8682501a37764068915a1cdfc3c13e9e4804b9edee8bc908d7abdaec52",
+    "web/app.js": "018d6202f1729a5ab90edc4b437c1a4fef065ee3032cc481d779726fcdca91a2"
+  },
+  "browser": "Isolated Playwright CLI headed Chromium fallback; native preview failed twice.",
+  "nativeErrors": [
+    "Preview automation snapshot timed out after 15000ms. (two attempts)",
+    "No preview automation host was available for evaluate in the local environment."
+  ],
+  "toolingNotes": [
+    "First Playwright run-code invocation required async(page)=>function form.",
+    "Inline axe injection was blocked by application CSP; local same-origin fixture route supplied existing axe4.12.1 without changing product CSP."
+  ]
+}

@@ -47,9 +47,10 @@
             </div>
             <form id="notes-form">
               <label for="notes" class="sr-only">Your notes</label>
-              <textarea id="notes" name="notes" maxlength="12000" placeholder="Paste your notes here.&#10;&#10;Keep each action, its owner, deadline and conditions together on one line." aria-describedby="notes-help notes-count" required></textarea>
+              <textarea id="notes" name="notes" placeholder="Paste notes or a meeting transcript.&#10;&#10;For transcripts, keep the speaker names, timestamps and full conversation." aria-describedby="notes-help notes-count notes-error" required></textarea>
               <div class="notes-tools">
-                <div class="notes-meta"><span id="notes-help">One action and its conditions per line.</span><span id="notes-count">0 / 12,000</span></div>
+                <div class="notes-meta"><span id="notes-help">Notes or timestamped meeting transcripts.</span><span id="notes-count">0 / 60,000</span></div>
+                <p id="notes-error" class="input-error" role="alert" hidden></p>
                 <div class="notes-actions">
                   <button id="generate-button" class="button-primary" type="submit" disabled><span id="generate-label">Find actions</span><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 12h15m-6-6 6 6-6 6"/></svg></button>
                   <button id="cancel-button" class="button-text" type="button" hidden>Stop waiting</button>
@@ -72,24 +73,24 @@
             <div class="actions-body">
               <div id="feedback" class="feedback" hidden tabindex="-1"></div>
               <div id="stale-notice" class="context-note" hidden>Your notes have changed. These actions still refer to the previous version.</div>
-              <div id="loading-state" class="loading-state" hidden><span class="spinner" aria-hidden="true"></span><div><p>Finding draft actions…</p><span>Checking suggestions against your source text. This may take a moment.</span></div></div>
+              <div id="loading-state" class="loading-state" hidden><span class="spinner" aria-hidden="true"></span><div><p>Finding draft actions…</p><span>Reading the text and checking its sources. Long transcripts can take longer; your text stays here if you stop waiting.</span></div></div>
 
               <div id="empty-state" class="empty-state">
                 <p class="empty-kicker" aria-hidden="true">ACTION LIST</p>
                 <h3 id="empty-title">No draft actions yet.</h3>
-                <p id="empty-copy">Add your notes and select Find actions. Each suggestion will appear here with its original source line.</p>
+                <p id="empty-copy">Add notes or a meeting transcript and select Find actions. Each suggestion will keep its original source text.</p>
                 <span id="empty-caption" class="empty-caption">Review and edit the drafts, then export your list.</span>
               </div>
 
               <div id="results-summary" class="results-summary" hidden></div>
               <ul id="task-list" class="task-list" aria-label="Extracted actions"></ul>
               <div id="undo-notice" class="undo-notice" hidden><span id="undo-message">Action removed.</span><button id="undo-button" class="button-text" type="button">Undo</button></div>
-              <p id="results-note" class="results-note" hidden>Source lines are checked against your notes. Review the suggested actions, owners, dates and conditions before using them.</p>
+              <p id="results-note" class="results-note" hidden>Quotes are checked against your text. Review the suggested actions, owners, dates and conditions before using them.</p>
             </div>
           </section>
         </div>
 
-        <footer class="page-footer"><p>AI drafts need your review. Nothing is sent or scheduled.</p><details><summary>How it works &amp; privacy</summary><p>Your notes go to a model running on this machine. It suggests actions and attaches a complete source line to each one, keeping its conditions in view. Source lines must match your notes; suggestions can still be wrong. Put each action and its conditions together on one line for clearer drafts. Edit, tick off or remove any action, then export your list. Refreshing or closing this tab clears your work.</p></details></footer>
+        <footer class="page-footer"><p>AI drafts need your review. Nothing is sent or scheduled.</p><details><summary>How it works &amp; privacy</summary><p>Your text goes to a model running on this machine. For notes, keep each action and its conditions on one line. Transcripts with speaker names and timestamps are recognized automatically; keep the full conversation so qualifications remain available. Drafts retain original source text and nearby transcript context. Source matching does not prove that an action, owner or condition is correct, or that every action was found. Remove sensitive information before sharing an export. Refreshing or closing this tab clears your work.</p></details></footer>
       </main>
     </div>
     <div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>

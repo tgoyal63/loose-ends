@@ -4,7 +4,8 @@ import threading
 import unittest
 
 from loose_ends.model import ModelUnavailable
-from server import AppServer
+from loose_ends.extraction import MAX_NOTES
+from server import AppServer, MAX_BODY
 
 
 class FakeModel:
@@ -73,6 +74,8 @@ class HTTPTests(unittest.TestCase):
         self.assertEqual(status, 200)
         self.assertEqual(len(result["tasks"]), 1)
         self.assertEqual(result["rejected_count"], 1)
+        self.assertEqual(result["input_kind"], "notes")
+        self.assertNotIn("source", result["tasks"][0])
         self.assertEqual(headers["Cache-Control"], "no-store")
         self.assertNotIn("Access-Control-Allow-Origin", headers)
 
@@ -96,7 +99,7 @@ class HTTPTests(unittest.TestCase):
         self.assertEqual(self.model.calls, 0)
 
     def test_note_validation(self):
-        for body in [{"notes": ""}, {"notes": " "}, {"notes": []}, {"notes": "x" * 12001}, [], {}]:
+        for body in [{"notes": ""}, {"notes": " "}, {"notes": []}, {"notes": "x" * (MAX_NOTES + 1)}, [], {}]:
             with self.subTest(body=str(body)[:40]):
                 self.assertEqual(self.request(body=body)[0], 400)
         self.assertEqual(self.model.calls, 0)
@@ -107,7 +110,50 @@ class HTTPTests(unittest.TestCase):
         self.assertEqual(self.model.calls, 0)
 
     def test_request_body_size_limit(self):
-        self.assertEqual(self.request(body={"notes": "x" * 70000})[0], 413)
+        # The server rejects the advertised length before reading an oversized
+        # body. Send headers only to avoid a client-side broken-pipe race.
+        conn = http.client.HTTPConnection("127.0.0.1", self.port, timeout=3)
+        try:
+            conn.putrequest("POST", "/api/plan")
+            conn.putheader("Origin", f"http://127.0.0.1:{self.port}")
+            conn.putheader("Content-Type", "application/json")
+            conn.putheader("Content-Length", str(MAX_BODY + 1))
+            conn.endheaders()
+            response = conn.getresponse()
+            self.assertEqual(response.status, 413)
+            self.assertIn("60,000", json.loads(response.read())["error"]["message"])
+            self.assertEqual(self.model.calls, 0)
+        finally:
+            conn.close()
+
+    def test_full_unicode_character_limit_is_accepted_without_truncation(self):
+        for character in ("a", "é", "😀"):
+            with self.subTest(character=character):
+                status, data, _ = self.request(body={"notes": character * MAX_NOTES})
+                self.assertEqual(status, 200)
+                self.assertEqual(json.loads(data)["tasks"], [])
+        self.assertEqual(self.model.calls, 3)
+
+    def test_transcript_contract_has_exact_source_and_attribution(self):
+        note = "Mira Shah 09:10:00\nI will\nsend the sample on Friday."
+        self.model.output = json.dumps({"tasks": [{
+            "turn_id": "turn-1", "title": "send the sample", "owner": "Mira Shah",
+            "due": "Friday", "condition": None,
+        }]})
+        status, data, _ = self.request(body={"notes": note})
+        result = json.loads(data)
+        self.assertEqual(status, 200)
+        self.assertEqual(result["input_kind"], "transcript")
+        self.assertEqual(result["tasks"][0]["quote"], note)
+        self.assertEqual(result["tasks"][0]["source"], {
+            "speaker": "Mira Shah", "timestamp": "09:10:00", "context": note,
+        })
+
+    def test_long_transcript_reaches_model_without_old_twelve_thousand_limit(self):
+        note = "Mira Shah 09:10:00\n" + "Background discussion. " * 800 + "\nI will send the sample."
+        self.assertGreater(len(note), 12_000)
+        self.assertEqual(self.request(body={"notes": note})[0], 200)
+        self.assertEqual(self.model.calls, 1)
 
     def test_inference_busy_is_explicit(self):
         self.server.inference.acquire()

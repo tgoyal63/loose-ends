@@ -2,8 +2,10 @@
 
 (() => {
   const byId = (id) => document.getElementById(id);
+  const MAX_NOTES = 60000;
   const ui = {
     form: byId("notes-form"), notes: byId("notes"), count: byId("notes-count"),
+    inputError: byId("notes-error"),
     generate: byId("generate-button"), generateLabel: byId("generate-label"),
     cancel: byId("cancel-button"), sample: byId("sample-button"),
     sampleConfirm: byId("sample-confirm"), sampleReplace: byId("sample-replace"),
@@ -35,6 +37,7 @@
 
   const state = {
     ready: false, statusPending: false, busy: false, hasRun: false,
+    inputKind: "notes",
     tasks: [], sourceNotes: "", model: "", rejected: 0, initialCount: 0,
     controller: null, requestNumber: 0, editing: null, removed: null,
     nextUiId: 1,
@@ -65,8 +68,14 @@
   }
 
   function updateControls() {
-    const length = ui.notes.value.length;
-    ui.count.textContent = `${length.toLocaleString("en-US")} / 12,000`;
+    const length = Array.from(ui.notes.value).length;
+    const tooLong = length > MAX_NOTES;
+    ui.count.textContent = `${length.toLocaleString("en-US")} / 60,000`;
+    ui.notes.setAttribute("aria-invalid", String(tooLong));
+    ui.inputError.hidden = !tooLong;
+    ui.inputError.textContent = tooLong
+      ? "Your full text is still here. Choose an excerpt of 60,000 characters or fewer before finding actions."
+      : "";
     ui.generate.disabled = state.busy || !state.ready || !ui.notes.value.trim();
     ui.generateLabel.textContent = state.busy ? "Finding actions…" : state.hasRun ? "Find actions again" : "Find actions";
     ui.notes.readOnly = state.busy;
@@ -94,6 +103,9 @@
     ui.summary.hidden = !state.hasRun || count === 0;
     ui.summary.textContent = `${count} ${count === 1 ? "action" : "actions"} · ${done} done`;
     ui.resultNote.hidden = count === 0;
+    ui.resultNote.textContent = state.inputKind === "transcript"
+      ? "Review each draft against its source and nearby conversation, including prerequisites and later corrections. Unclear owners stay unassigned; other commitments may be missed."
+      : "Quotes are checked against your text. Review the suggested actions, owners, dates and conditions before using them.";
     ui.empty.hidden = count > 0 || state.busy;
     ui.undo.hidden = state.removed === null;
     if (!state.hasRun) return;
@@ -102,11 +114,13 @@
       ui.emptyTitle.textContent = "All actions removed.";
       ui.emptyCopy.textContent = "Undo the last removal, or find actions in another set of notes.";
     } else if (count === 0 && state.rejected > 0) {
-      ui.emptyTitle.textContent = "No verifiable drafts returned.";
-      ui.emptyCopy.textContent = "The model's suggestions did not pass the source checks. Your notes may still contain actions. Try making the commitments more explicit.";
+      ui.emptyTitle.textContent = "The drafts could not be verified.";
+      ui.emptyCopy.textContent = state.inputKind === "transcript"
+        ? "The request finished, but none of the model's suggestions could be grounded in the transcript. This does not mean there are no actions. Try a shorter complete exchange, keeping its speaker names and timestamps."
+        : "The request finished, but none of the model's suggestions passed the source checks. This does not mean there are no actions. Try a shorter excerpt with each commitment and its conditions together.";
     } else if (count === 0) {
       ui.emptyTitle.textContent = "No actions suggested this time.";
-      ui.emptyCopy.textContent = "The model didn't return an action list. Review your notes for commitments, or try a clearer set of notes.";
+      ui.emptyCopy.textContent = "The model didn't identify any actions in this run. It may have missed commitments. Review the source or try a shorter complete exchange.";
     }
   }
 
@@ -147,7 +161,8 @@
 
   function validatePlan(data, notes) {
     if (!data || !Array.isArray(data.tasks) || typeof data.model !== "string"
-      || !Number.isInteger(data.rejected_count) || data.rejected_count < 0) {
+      || !Number.isInteger(data.rejected_count) || data.rejected_count < 0
+      || (data.input_kind !== undefined && !["notes", "transcript"].includes(data.input_kind))) {
       throw new Error("The model returned an unreadable action list. Your notes and previous actions have been kept.");
     }
     for (const task of data.tasks) {
@@ -155,6 +170,14 @@
         || typeof task.quote !== "string" || !task.quote.trim() || !notes.includes(task.quote)
         || !["owner", "due", "condition"].every((key) => task[key] === null || typeof task[key] === "string")) {
         throw new Error("A suggested action had missing or unmatched source text. Your notes and previous actions have been kept. Please try again.");
+      }
+      if (task.source !== undefined) {
+        const source = task.source;
+        if (!source || !["speaker", "timestamp", "context"].every((key) => typeof source[key] === "string" && source[key].trim())
+          || !notes.includes(source.context) || !source.context.includes(task.quote)
+          || !task.quote.includes(source.speaker) || !task.quote.includes(source.timestamp)) {
+          throw new Error("A draft's transcript evidence did not match your text. Your notes and previous actions have been kept. Please try again.");
+        }
       }
     }
     return data;
@@ -167,8 +190,8 @@
       showFeedback("Save or cancel the open action edit before finding a new list.", "info", true);
       return;
     }
-    if (ui.notes.value.length > 12000) {
-      showFeedback("Keep your notes within 12,000 characters, then try again.", "error", true);
+    if (Array.from(ui.notes.value).length > MAX_NOTES) {
+      showFeedback("Your full text has been kept. Choose an excerpt of 60,000 characters or fewer, then try again.", "error", true);
       return;
     }
     const notes = ui.notes.value;
@@ -206,6 +229,7 @@
       state.tasks = plan.tasks.map((task) => ({ ...task, uiId: state.nextUiId++, done: false, humanEdited: false }));
       state.sourceNotes = notes;
       state.model = plan.model;
+      state.inputKind = plan.input_kind || "notes";
       state.rejected = plan.rejected_count;
       state.initialCount = state.tasks.length;
       state.hasRun = true;
@@ -282,7 +306,13 @@
       if (task.condition) content.append(node("p", "condition", `Conditions / context: ${task.condition}`));
       top.append(checkbox, content);
       const quote = node("blockquote", "source-quote");
-      quote.append(node("span", "source-label", "Source"), node("p", "", task.quote));
+      const sourceLabel = task.source ? `Source · ${task.source.speaker} · ${task.source.timestamp}` : "Source";
+      quote.append(node("span", "source-label", sourceLabel), node("p", "", task.quote));
+      if (task.source && task.source.context !== task.quote) {
+        const context = node("details", "source-context");
+        context.append(node("summary", "", "Nearby conversation"), node("p", "", task.source.context));
+        quote.append(context);
+      }
       const bottom = node("div", "task-bottom");
       const edited = node("span", "edited-label", task.humanEdited ? "Edited by you" : "AI draft · review first");
       const controls = node("div", "task-controls");
@@ -394,7 +424,7 @@
 
   function exportMarkdown() {
     if (!state.tasks.length || state.busy || state.editing !== null) return;
-    const lines = ["# Loose Ends", "", `Action list · ${new Date().toLocaleDateString("en-CA")}`, "", `Model: ${escapeMarkdown(state.model)}`, "", "Drafts need human review. Source quotes were checked against the submitted notes; user edits are marked below.", ""];
+    const lines = ["# Loose Ends", "", `Action list · ${new Date().toLocaleDateString("en-CA")}`, "", `Model: ${escapeMarkdown(state.model)}`, "", "Drafts need human review. Source quotes were checked against the submitted text; user edits are marked below.", ""];
     if (ui.notes.value !== state.sourceNotes) lines.push("Note: this list refers to an earlier version of the notes currently in the tab.", "");
     for (const task of state.tasks) {
       lines.push(`- [${task.done ? "x" : " "}] ${escapeMarkdown(task.title).replace(/\r?\n/g, " ")}`);
@@ -403,6 +433,10 @@
       }
       lines.push(`  - ${task.humanEdited ? "Edited by you; original source quote retained." : "AI draft."}`, "", "  Source:", "");
       for (const line of task.quote.split(/\r?\n/)) lines.push(`  > ${escapeMarkdown(line)}`);
+      if (task.source && task.source.context !== task.quote) {
+        lines.push("", "  Nearby conversation (review for prerequisites and corrections):", "");
+        for (const line of task.source.context.split(/\r?\n/)) lines.push(`  > ${escapeMarkdown(line)}`);
+      }
       lines.push("");
     }
     const blob = new Blob([lines.join("\n")], { type: "text/markdown;charset=utf-8" });

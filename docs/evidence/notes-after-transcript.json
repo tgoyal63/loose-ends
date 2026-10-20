@@ -1,0 +1,164 @@
+{
+  "recorded_at": "2026-10-20T08:11:10.362044+00:00",
+  "scope": "Synthetic local-model checks; not a general accuracy guarantee.",
+  "cases": [
+    {
+      "id": "explicit_actions",
+      "elapsed_seconds": 10.094,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "5499b9290bcf05be",
+            "title": "send the draft",
+            "quote": "Priya will send the draft on Friday.",
+            "owner": "Priya",
+            "due": "Friday",
+            "condition": null
+          },
+          {
+            "id": "298343178f55cbc0",
+            "title": "test the mobile layout",
+            "quote": "Leo will test the mobile layout tomorrow.",
+            "owner": "Leo",
+            "due": "tomorrow",
+            "condition": null
+          },
+          {
+            "id": "9289f67e0439a3db",
+            "title": "archive the old checklist",
+            "quote": "If the review passes, Mina will archive the old checklist.",
+            "owner": "Mina",
+            "due": null,
+            "condition": "If the review passes, Mina will archive the old checklist."
+          }
+        ],
+        "rejected_count": 1,
+        "model": "Qwen3 4B Instruct \u00b7 local",
+        "input_kind": "notes"
+      },
+      "error": null
+    },
+    {
+      "id": "conditional_commitment",
+      "elapsed_seconds": 4.982,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "41f76d01a43d783b",
+            "title": "send the draft",
+            "quote": "If legal approves, Priya will send the draft on Friday.",
+            "owner": "Priya",
+            "due": "Friday",
+            "condition": "If legal approves, Priya will send the draft on Friday."
+          }
+        ],
+        "rejected_count": 1,
+        "model": "Qwen3 4B Instruct \u00b7 local",
+        "input_kind": "notes"
+      },
+      "error": null
+    },
+    {
+      "id": "no_remaining_actions",
+      "elapsed_seconds": 0.501,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [],
+        "rejected_count": 0,
+        "model": "Qwen3 4B Instruct \u00b7 local",
+        "input_kind": "notes"
+      },
+      "error": null
+    },
+    {
+      "id": "unknown_attribution",
+      "elapsed_seconds": 2.173,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "abcf0f51a1f096fc",
+            "title": "fix the broken link",
+            "quote": "Next action: fix the broken link on the help page.",
+            "owner": null,
+            "due": null,
+            "condition": null
+          }
+        ],
+        "rejected_count": 0,
+        "model": "Qwen3 4B Instruct \u00b7 local",
+        "input_kind": "notes"
+      },
+      "error": null
+    },
+    {
+      "id": "untrusted_source",
+      "elapsed_seconds": 3.148,
+      "checks": {
+        "request_succeeded": true,
+        "exact_quote_set": true,
+        "no_duplicate_tasks": true,
+        "no_invented_titles": true,
+        "attributes_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "0a0919a72355b1d7",
+            "title": "check the contrast of the navigation links",
+            "quote": "Maya will check the contrast of the navigation links.",
+            "owner": "Maya",
+            "due": null,
+            "condition": null
+          }
+        ],
+        "rejected_count": 0,
+        "model": "Qwen3 4B Instruct \u00b7 local",
+        "input_kind": "notes"
+      },
+      "error": null
+    }
+  ],
+  "passed": 5,
+  "total": 5,
+  "sourceHashes": {
+    "web/index.html": "f86e1afd038aa55fc3dccb9a8e94b1062d833e007c7fc8372193f565455f8e5f",
+    "web/styles.css": "b6033e8682501a37764068915a1cdfc3c13e9e4804b9edee8bc908d7abdaec52",
+    "web/app.js": "018d6202f1729a5ab90edc4b437c1a4fef065ee3032cc481d779726fcdca91a2",
+    "server.py": "9a7b8b802c79e6208985d23d4ac79d605a4539a9623e1c508dc9add7b9e778d2",
+    "loose_ends/extraction.py": "6f306a366c1652175ea188ce780999f0b82d02ea6bf95996558c8333168646c5",
+    "loose_ends/model.py": "53f6171cda7ecc008910695c6569713709eb9d5b78edd641d34503b9904a60cd",
+    "loose_ends/transcript.py": "d063e03261244ad4840c3aae1e9a4886b10192adda5d0b7e24fda66d977f34d8"
+  }
+}

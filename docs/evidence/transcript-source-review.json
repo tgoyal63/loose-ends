@@ -1,0 +1,232 @@
+{
+  "kind": "synthetic-only independent reviewer checks; no inference or live app calls",
+  "checks": [
+    {
+      "check": "own commitment: 'I will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "own commitment: \"I'll send the sample.\"",
+      "pass": true
+    },
+    {
+      "check": "own commitment: 'I\u2019ll send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "own commitment: 'I am going to send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "own commitment: \"I'm going to send the sample.\"",
+      "pass": true
+    },
+    {
+      "check": "own commitment: 'I\u2019m going to send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "own commitment: 'I will\\nsend the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'I will review the invoice and Jordan will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'Jordan said, \"I will send the sample on Friday.\"'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'Jordan said, \"I will send the sample. The report is separate.\"'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'I will ask Jordan to send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'I will have Jordan send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'I will let Jordan send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'We will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'You will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject wrong Mira attribution: 'Jordan will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "explicit different owner survives",
+      "pass": true
+    },
+    {
+      "check": "ambiguous owner stays null: 'We will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "ambiguous owner stays null: 'You will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject cropped negation/uncertainty: 'I will not send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject cropped negation/uncertainty: 'I will\\nnot\\nsend the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject cropped negation/uncertainty: \"I won't send the sample.\"",
+      "pass": true
+    },
+    {
+      "check": "reject cropped negation/uncertainty: 'Do not send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject cropped negation/uncertainty: 'Maybe I will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject cropped negation/uncertainty: 'I could send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject cropped negation/uncertainty: 'For example, I will send the sample.'",
+      "pass": true
+    },
+    {
+      "check": "reject cropped negation/uncertainty: 'Will I send the sample?'",
+      "pass": true
+    },
+    {
+      "check": "CRLF three distinct speakers",
+      "pass": true
+    },
+    {
+      "check": "CRLF exact offsets",
+      "pass": true
+    },
+    {
+      "check": "compound and adjacent context retained",
+      "pass": true
+    },
+    {
+      "check": "source quote exactly original",
+      "pass": true
+    },
+    {
+      "check": "source metadata exact",
+      "pass": true
+    },
+    {
+      "check": "17 malformed/forged proposals rejected",
+      "pass": true
+    },
+    {
+      "check": "unpaired source surrogate fails closed",
+      "pass": true
+    },
+    {
+      "check": "duplicate proposal is rejected",
+      "pass": true
+    },
+    {
+      "check": "ID stable on repeat",
+      "pass": true
+    },
+    {
+      "check": "legacy multiline attribution unchanged",
+      "pass": true
+    },
+    {
+      "check": "60k Unicode code-point limit declared",
+      "pass": true
+    },
+    {
+      "check": "60k escaped supplementary input fits body cap",
+      "pass": true
+    },
+    {
+      "check": "100-proposal parser bound",
+      "pass": true
+    },
+    {
+      "check": "transcript string-null owner becomes unknown",
+      "pass": true
+    },
+    {
+      "check": "transcript string-null due becomes unknown",
+      "pass": true
+    },
+    {
+      "check": "transcript string-null condition becomes unknown",
+      "pass": true
+    },
+    {
+      "check": "prerequisite alone is not action: 'Only after finance approves the test.'",
+      "pass": true
+    },
+    {
+      "check": "prerequisite alone is not action: 'Only after finance approves the test.'",
+      "pass": true
+    },
+    {
+      "check": "prerequisite alone is not action: 'Once account access works.'",
+      "pass": true
+    },
+    {
+      "check": "prerequisite alone is not action: 'If finance approves.'",
+      "pass": true
+    },
+    {
+      "check": "qualified commitment survives null repair",
+      "pass": true
+    },
+    {
+      "check": "legacy optional string-null is not normalized",
+      "pass": true
+    },
+    {
+      "check": "source ID sentinel is not repaired",
+      "pass": true
+    },
+    {
+      "check": "forged nonempty ownership remains rejected",
+      "pass": true
+    },
+    {
+      "check": "omitted model condition retains full own conditional source",
+      "pass": true
+    },
+    {
+      "check": "omitted model condition retains adjacent prerequisites",
+      "pass": true
+    },
+    {
+      "check": "unsolicited completed-work condition still rejects",
+      "pass": true
+    }
+  ],
+  "passed": 54,
+  "total": 54,
+  "sourceHashes": {
+    "loose_ends/extraction.py": "6f306a366c1652175ea188ce780999f0b82d02ea6bf95996558c8333168646c5",
+    "loose_ends/transcript.py": "d063e03261244ad4840c3aae1e9a4886b10192adda5d0b7e24fda66d977f34d8",
+    "loose_ends/model.py": "53f6171cda7ecc008910695c6569713709eb9d5b78edd641d34503b9904a60cd",
+    "server.py": "9a7b8b802c79e6208985d23d4ac79d605a4539a9623e1c508dc9add7b9e778d2",
+    "web/app.js": "018d6202f1729a5ab90edc4b437c1a4fef065ee3032cc481d779726fcdca91a2",
+    "web/index.html": "f86e1afd038aa55fc3dccb9a8e94b1062d833e007c7fc8372193f565455f8e5f",
+    "web/styles.css": "b6033e8682501a37764068915a1cdfc3c13e9e4804b9edee8bc908d7abdaec52"
+  }
+}

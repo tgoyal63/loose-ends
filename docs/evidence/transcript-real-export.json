@@ -1,0 +1,15 @@
+{
+  "checks": [
+    "Actual export source/context block 1 exactly matches original after CommonMark rendering",
+    "Actual export source/context block 2 exactly matches original after CommonMark rendering",
+    "Actual export source/context block 3 exactly matches original after CommonMark rendering",
+    "Actual export source/context block 4 exactly matches original after CommonMark rendering",
+    "Actual export source/context block 5 exactly matches original after CommonMark rendering",
+    "Actual export source/context block 6 exactly matches original after CommonMark rendering",
+    "Actual export source/context block 7 exactly matches original after CommonMark rendering",
+    "Actual export source/context block 8 exactly matches original after CommonMark rendering",
+    "All eight real evidence blocks exported",
+    "No executable HTML elements in real export"
+  ],
+  "passed": 10
+}

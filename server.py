@@ -13,9 +13,11 @@ from urllib.parse import urlsplit
 
 from loose_ends.extraction import InvalidModelOutput, MAX_NOTES, parse_proposals, valid_unicode, validate_proposals
 from loose_ends.model import LocalModel, ModelResponseError, ModelUnavailable
+from loose_ends.transcript import parse_turns
 
 ROOT = Path(__file__).resolve().parent
-MAX_BODY = 65_536
+# JSON may encode each supplementary Unicode character as two \\uXXXX escapes.
+MAX_BODY = MAX_NOTES * 12 + 4096
 DEFAULT_MODEL = "default_model"
 
 
@@ -125,7 +127,7 @@ class Handler(BaseHTTPRequestHandler):
             self.error(411, "missing_length", "A valid content length is required.")
             return
         if not 1 <= length <= MAX_BODY:
-            self.error(413, "body_too_large", "The note is too large.")
+            self.error(413, "body_too_large", f"Notes and transcripts must fit within {MAX_NOTES:,} characters.")
             return
         try:
             raw = self.rfile.read(length)
@@ -151,7 +153,10 @@ class Handler(BaseHTTPRequestHandler):
         try:
             content = self.server.model.propose(notes)
             tasks, rejected = validate_proposals(notes, parse_proposals(content))
-            self.json_reply(200, {"tasks": tasks, "rejected_count": rejected, "model": self.server.model.label})
+            self.json_reply(200, {
+                "tasks": tasks, "rejected_count": rejected, "model": self.server.model.label,
+                "input_kind": "transcript" if parse_turns(notes) else "notes",
+            })
         except ModelUnavailable:
             self.error(503, "model_unavailable", "The local model could not be reached. Check its status and try again.")
         except (ModelResponseError, InvalidModelOutput):

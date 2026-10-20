@@ -8,6 +8,7 @@ from urllib.parse import urlsplit
 from urllib.request import HTTPRedirectHandler, ProxyHandler, Request, build_opener
 
 from .extraction import SYSTEM_PROMPT
+from .transcript import TRANSCRIPT_PROMPT, parse_turns
 
 MAX_RESPONSE = 512_000
 
@@ -75,16 +76,22 @@ class LocalModel:
         )
 
     def propose(self, notes: str) -> str:
+        turns = parse_turns(notes)
+        source = {"notes": notes}
+        if turns:
+            # Preserve any preamble and every original turn in one bounded
+            # request. No silent truncation or independent chunk extraction.
+            source = {"preamble": notes[:turns[0].start], "turns": [turn.for_model() for turn in turns]}
         result = self.request(
             "/chat/completions",
             {
                 "model": self.model,
                 "messages": [
-                    {"role": "system", "content": SYSTEM_PROMPT},
-                    {"role": "user", "content": json.dumps({"notes": notes}, ensure_ascii=False)},
+                    {"role": "system", "content": TRANSCRIPT_PROMPT if turns else SYSTEM_PROMPT},
+                    {"role": "user", "content": json.dumps(source, ensure_ascii=False)},
                 ],
                 "temperature": 0,
-                "max_tokens": 2400,
+                "max_tokens": 4800 if turns else 2400,
                 "stream": False,
             },
         )

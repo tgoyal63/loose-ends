@@ -119,7 +119,10 @@ it `SIGTERM`; process IDs can be reused.
 MLX-LM provides an OpenAI-compatible chat-completions shape:
 `POST /v1/chat/completions`, a `messages` array, and generated text under
 `choices[0].message.content`. The application uses non-streamed requests,
-temperature zero and a 2,400-token output cap.
+temperature zero and a 2,400-token output cap for ordinary notes. Transcript
+requests use a 4,800-token output cap and the same 120-second client timeout.
+The app accepts up to 60,000 input characters; the whole transcript is included
+in one request. The retained cache setting above is not an input-context limit.
 
 Inspection of the installed 0.32.2 server and its
 [tagged source](https://github.com/ml-explore/mlx-lm/blob/v0.32.2/mlx_lm/server.py)

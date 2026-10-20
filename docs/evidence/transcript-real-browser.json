@@ -1,0 +1,109 @@
+{
+  "kind": "Actual local-model browser run using the repository's synthetic meeting transcript.",
+  "startedAt": "2026-10-20T08:12:35.060Z",
+  "finishedAt": "2026-10-20T08:14:07.809Z",
+  "fixtureGlobalsAbsent": true,
+  "requests": [
+    {
+      "status": 200,
+      "elapsedSeconds": 16.76979999998212,
+      "body": {
+        "notes": "Mira Shah 09:10:00\nThanks for joining.\nWe still need access to the staging account.\nLee Park 09:10:12\nOnce account access works and the sample is ready,\nwe can run the test.\nMira Shah 09:10:25\nI will\ncreate the sample listing on Friday.\nLee Park 09:10:36\nOnly after finance approves the test.\nMira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.\nLee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.\nLee Patel 09:11:14\nI will review the sample on Monday.\n"
+      },
+      "response": {
+        "tasks": [
+          {
+            "id": "f1b24e18bda58456",
+            "title": "create the sample listing on Friday",
+            "quote": "Mira Shah 09:10:25\nI will\ncreate the sample listing on Friday.",
+            "owner": "Mira Shah",
+            "due": "Friday",
+            "condition": null,
+            "source": {
+              "speaker": "Mira Shah",
+              "timestamp": "09:10:25",
+              "context": "Mira Shah 09:10:00\nThanks for joining.\nWe still need access to the staging account.\nLee Park 09:10:12\nOnce account access works and the sample is ready,\nwe can run the test.\nMira Shah 09:10:25\nI will\ncreate the sample listing on Friday.\nLee Park 09:10:36\nOnly after finance approves the test.\nMira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee."
+            }
+          },
+          {
+            "id": "7a35b63e33e2bd74",
+            "title": "notify Lee",
+            "quote": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.",
+            "owner": "Mira Shah",
+            "due": null,
+            "condition": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.",
+            "source": {
+              "speaker": "Mira Shah",
+              "timestamp": "09:10:42",
+              "context": "Mira Shah 09:10:25\nI will\ncreate the sample listing on Friday.\nLee Park 09:10:36\nOnly after finance approves the test.\nMira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.\nLee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday."
+            }
+          },
+          {
+            "id": "6c6def96f2217dbe",
+            "title": "review the sample on Monday",
+            "quote": "Lee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.",
+            "owner": "Lee Park",
+            "due": "Monday",
+            "condition": null,
+            "source": {
+              "speaker": "Lee Park",
+              "timestamp": "09:11:02",
+              "context": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.\nLee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.\nLee Patel 09:11:14\nI will review the sample on Monday."
+            }
+          },
+          {
+            "id": "b69d3c1a4a8ca02e",
+            "title": "review the sample on Monday",
+            "quote": "Lee Patel 09:11:14\nI will review the sample on Monday.",
+            "owner": "Lee Patel",
+            "due": "Monday",
+            "condition": null,
+            "source": {
+              "speaker": "Lee Patel",
+              "timestamp": "09:11:14",
+              "context": "Lee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.\nLee Patel 09:11:14\nI will review the sample on Monday."
+            }
+          }
+        ],
+        "rejected_count": 0,
+        "model": "Qwen3 4B Instruct \u00b7 local",
+        "input_kind": "transcript"
+      }
+    }
+  ],
+  "checks": [
+    "Real endpoint returns a transcript plan",
+    "Four explicit remaining commitments extracted",
+    "Expected actions retain distinct speaker attribution",
+    "Every real source turn and context exactly matches input",
+    "Completed, speculative and standalone prerequisite statements omitted",
+    "Cross-turn prerequisites remain in nearby conversation",
+    "Actual response produces four reviewable browser cards",
+    "Browser retains each real multiline source exactly",
+    "Fresh browser has no earlier fetch-fixture globals",
+    "Actual source context opens for review",
+    "Actual result accepts and marks human edit",
+    "Actual edit retains original source turn",
+    "Actual edit retains complete nearby context",
+    "Actual export retains human edit and completion",
+    "Actual export retains both cross-turn prerequisites",
+    "Actual transcript results fit 320px",
+    "Actual transcript results fit 390px",
+    "No browser runtime errors in actual model flow",
+    "No remote resource requests during actual flow",
+    "Actual flow creates no browser storage"
+  ],
+  "errors": [],
+  "exported": "# Loose Ends\n\nAction list \u00b7 2026-10-20\n\nModel: Qwen3 4B Instruct \u00b7 local\n\nDrafts need human review. Source quotes were checked against the submitted text; user edits are marked below.\n\n- [x] Create the sample listing and confirm it is visible\n  - Who: Mira Shah\n  - When: Friday\n  - Edited by you; original source quote retained.\n\n  Source:\n\n  > Mira Shah 09\\:10\\:25\n  > I will\n  > create the sample listing on Friday\\.\n\n  Nearby conversation (review for prerequisites and corrections):\n\n  > Mira Shah 09\\:10\\:00\n  > Thanks for joining\\.\n  > We still need access to the staging account\\.\n  > Lee Park 09\\:10\\:12\n  > Once account access works and the sample is ready\\,\n  > we can run the test\\.\n  > Mira Shah 09\\:10\\:25\n  > I will\n  > create the sample listing on Friday\\.\n  > Lee Park 09\\:10\\:36\n  > Only after finance approves the test\\.\n  > Mira Shah 09\\:10\\:42\n  > Yes\\, after finance approves the test\\,\n  > I will notify Lee\\.\n\n- [ ] notify Lee\n  - Who: Mira Shah\n  - Conditions / context: Mira Shah 09\\:10\\:42 Yes\\, after finance approves the test\\, I will notify Lee\\.\n  - AI draft.\n\n  Source:\n\n  > Mira Shah 09\\:10\\:42\n  > Yes\\, after finance approves the test\\,\n  > I will notify Lee\\.\n\n  Nearby conversation (review for prerequisites and corrections):\n\n  > Mira Shah 09\\:10\\:25\n  > I will\n  > create the sample listing on Friday\\.\n  > Lee Park 09\\:10\\:36\n  > Only after finance approves the test\\.\n  > Mira Shah 09\\:10\\:42\n  > Yes\\, after finance approves the test\\,\n  > I will notify Lee\\.\n  > Lee Patel 09\\:10\\:51\n  > Maybe we could automate this someday\\.\n  > Lee Park 09\\:11\\:02\n  > I already sent the checklist\\.\n  > I will review the sample on Monday\\.\n\n- [ ] review the sample on Monday\n  - Who: Lee Park\n  - When: Monday\n  - AI draft.\n\n  Source:\n\n  > Lee Park 09\\:11\\:02\n  > I already sent the checklist\\.\n  > I will review the sample on Monday\\.\n\n  Nearby conversation (review for prerequisites and corrections):\n\n  > Mira Shah 09\\:10\\:42\n  > Yes\\, after finance approves the test\\,\n  > I will notify Lee\\.\n  > Lee Patel 09\\:10\\:51\n  > Maybe we could automate this someday\\.\n  > Lee Park 09\\:11\\:02\n  > I already sent the checklist\\.\n  > I will review the sample on Monday\\.\n  > Lee Patel 09\\:11\\:14\n  > I will review the sample on Monday\\.\n\n- [ ] review the sample on Monday\n  - Who: Lee Patel\n  - When: Monday\n  - AI draft.\n\n  Source:\n\n  > Lee Patel 09\\:11\\:14\n  > I will review the sample on Monday\\.\n\n  Nearby conversation (review for prerequisites and corrections):\n\n  > Lee Patel 09\\:10\\:51\n  > Maybe we could automate this someday\\.\n  > Lee Park 09\\:11\\:02\n  > I already sent the checklist\\.\n  > I will review the sample on Monday\\.\n  > Lee Patel 09\\:11\\:14\n  > I will review the sample on Monday\\.\n",
+  "sourceHashes": {
+    "server.py": "9a7b8b802c79e6208985d23d4ac79d605a4539a9623e1c508dc9add7b9e778d2",
+    "loose_ends/extraction.py": "6f306a366c1652175ea188ce780999f0b82d02ea6bf95996558c8333168646c5",
+    "loose_ends/model.py": "53f6171cda7ecc008910695c6569713709eb9d5b78edd641d34503b9904a60cd",
+    "loose_ends/transcript.py": "d063e03261244ad4840c3aae1e9a4886b10192adda5d0b7e24fda66d977f34d8",
+    "web/index.html": "f86e1afd038aa55fc3dccb9a8e94b1062d833e007c7fc8372193f565455f8e5f",
+    "web/styles.css": "b6033e8682501a37764068915a1cdfc3c13e9e4804b9edee8bc908d7abdaec52",
+    "web/app.js": "018d6202f1729a5ab90edc4b437c1a4fef065ee3032cc481d779726fcdca91a2"
+  },
+  "syntheticInputFixture": "tests/fixtures/meeting_transcript.txt",
+  "browser": "Isolated headed Playwright CLI fallback; transparent fetch observer, no mocked responses."
+}
