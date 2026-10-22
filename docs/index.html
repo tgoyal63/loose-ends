@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="A recorded demonstration of Loose Ends: editable action drafts with their original source. Built with a local open-weight model.">
   <title>Loose Ends — notes to actions</title>
+  <link rel="icon" href="data:,">
   <style>
     :root { color-scheme: light; font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; color: #232931; background: #f3f4f6; }
     * { box-sizing: border-box; }
@@ -24,6 +25,14 @@
     figure { margin: 0; }
     video { display: block; width: 100%; height: auto; background: #fff; border: 1px solid #c7cdd7; border-radius: 4px; }
     figcaption { margin-top: 12px; color: #4b586e; font-size: 14px; line-height: 1.6; }
+    .chapters { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
+    .chapters button { font: inherit; font-size: 13px; color: #25334c; background: #fff; border: 1px solid #c7cdd7; border-radius: 4px; padding: 9px 12px; cursor: pointer; }
+    .chapters button:hover { background: #e9edfa; }
+    button:focus-visible, summary:focus-visible { outline: 3px solid #1d3db5; outline-offset: 3px; }
+    .transcript { margin-top: 22px; border-top: 1px solid #c7cdd7; padding-top: 16px; }
+    summary { cursor: pointer; font-weight: 600; }
+    .transcript h3 { font-size: 16px; margin-bottom: 0; }
+    .transcript p { margin-top: 6px; max-width: 820px; }
     .details { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; padding: 36px 0 12px; }
     h2 { font-size: 21px; letter-spacing: -.5px; }
     ol { padding-left: 23px; }
@@ -48,12 +57,25 @@
     <p>Turn scattered notes into editable action drafts. Check each draft beside its original words, then take your list away as Markdown.</p>
   </section>
   <figure>
-    <video controls playsinline preload="metadata" poster="demo/release-desktop.png" aria-label="Recorded local Qwen demonstration of generating, reviewing and exporting action drafts">
-      <source src="demo/release-walkthrough.mp4" type="video/mp4">
-      <a href="demo/release-walkthrough.mp4">Download the walkthrough</a>.
+    <video id="demo-video" controls playsinline preload="metadata" poster="demo/narrated-poster.png" aria-label="Narrated walkthrough of generating, reviewing and exporting action drafts" tabindex="0">
+      <source src="demo/narrated-walkthrough.mp4" type="video/mp4">
+      <track kind="captions" src="demo/narrated-captions.vtt" srclang="en" label="English">
+      <a href="demo/narrated-walkthrough.mp4">Download the walkthrough</a>.
     </video>
-    <figcaption>Recorded October 22, 2026 · actual local Qwen3 4B inference · synthetic notes · silent, approximately 70 seconds. This page hosts a recording; run the app locally using the setup guide. <a href="demo/release-walkthrough.mp4">Open video directly</a>.</figcaption>
+    <figcaption>2 minutes 28 seconds · narrated and captioned · actual local Qwen3 4B inference with synthetic notes. This edited tutorial includes close-ups and labelled reading holds; the inference wait plays at its original speed. <a href="demo/narrated-walkthrough.mp4">Open video directly</a> · <a href="demo/narrated-captions.vtt">Download captions</a>. Run the app locally using the setup guide.</figcaption>
   </figure>
+  <nav class="chapters" aria-label="Video chapters">
+    <button type="button" data-time="0">0:00 Why conditions matter</button>
+    <button type="button" data-time="14">0:14 Paste notes</button>
+    <button type="button" data-time="27">0:27 Run locally</button>
+    <button type="button" data-time="46">0:46 Review drafts</button>
+    <button type="button" data-time="61">1:01 Keep the condition</button>
+    <button type="button" data-time="78">1:18 Edit</button>
+    <button type="button" data-time="96">1:36 Export</button>
+    <button type="button" data-time="110">1:50 Privacy</button>
+    <button type="button" data-time="122">2:02 Limits</button>
+    <button type="button" data-time="136">2:16 Source code</button>
+  </nav>
   <div class="details">
     <section aria-labelledby="walkthrough">
       <h2 id="walkthrough">Inside the walkthrough</h2>
@@ -63,7 +85,7 @@
         <li>Edit a draft and mark it done. The original evidence stays attached.</li>
         <li>Download the action list as Markdown.</li>
       </ol>
-      <p><a href="demo/release-action-list.md">Read the exported list</a> · <a href="demo/release-mobile.png">See the mobile view</a></p>
+      <p><a href="demo/narrated-action-list.md">Read the exported list</a> · <a href="demo/release-mobile.png">See the mobile view</a></p>
     </section>
     <section aria-labelledby="processing">
       <h2 id="processing">An open model, a small chore</h2>
@@ -76,7 +98,42 @@
     <h2 id="limits">Review the source, even when the list looks finished.</h2>
     <p>Long meetings remain a known weakness. The latest recorded hosted test found nine of ten expected actions in a synthetic 120-turn meeting and failed acceptance. Source checks help you inspect a draft; they do not establish completeness or correct interpretation.</p>
   </section>
-  <footer>Built and documented with AI agents. The app does not send messages, schedule tasks or execute actions. Demo inputs are synthetic; no private meeting is published here.</footer>
+  <details class="transcript">
+    <summary>Read the narration transcript</summary>
+    <h3>Keep the condition with the task</h3>
+    <p>A task can change meaning when its condition disappears. Loose Ends turns notes into editable action drafts, keeping the original source beside each one for review.</p>
+    <h3>Paste the handoff notes</h3>
+    <p>Here’s a staged, synthetic project handoff with Priya, Leo and Mina. Paste it into Your notes, keeping each action and its condition on one line.</p>
+    <h3>Choose local processing</h3>
+    <p>Under Process with, choose This Mac, local. Once Local model ready appears, select Find actions. This example uses the local Qwen model.</p>
+    <h3>Review drafts and attribution</h3>
+    <p>This recorded run produced three drafts; the checks left one suggestion out. Check Owner and Due: Priya has Friday, and Leo has tomorrow. Relative dates stay as written.</p>
+    <h3>Read the whole condition</h3>
+    <p>Mina’s source says, “If the review passes, Mina will archive the old checklist.” Archiving depends on that review passing. The complete line stays visible with the condition and source.</p>
+    <h3>Edit with the source attached</h3>
+    <p>To clarify Priya’s draft, select Edit and change Action to “Send the draft to the project team.” Save changes. “Edited by you” identifies your addition; the original quote stays attached.</p>
+    <h3>Mark done and export</h3>
+    <p>For this demonstration, mark Priya’s task done, then select Export. The Markdown keeps completion, edits and source evidence. Export before closing the tab.</p>
+    <h3>Understand hosted processing</h3>
+    <p>Hosted Groq is optional. Selecting Find actions there sends the complete submitted text to Groq and may use paid API credit.</p>
+    <h3>Know what still needs review</h3>
+    <p>Review is still essential: a longer meeting test using hosted processing missed a conditional commitment. A matching quote doesn’t prove every action is correct or present.</p>
+    <h3>Explore the open source</h3>
+    <p>Loose Ends is an MIT-licensed app using open-weight models under their own licenses. Explore the source and setup guide on GitHub.</p>
+  </details>
+  <footer>Built and documented with AI agents. Synthetic narration generated locally with Kokoro-82M (af_heart) through kokoro-onnx; no paid voice credits were used. Model weights: Apache-2.0; kokoro-onnx code: MIT. The app does not send messages, schedule tasks or execute actions. Demo inputs are synthetic; no private meeting is published here. <a href="demo/release-walkthrough.mp4">Original continuous silent recording</a>.</footer>
 </main>
+<script>
+  const video = document.getElementById('demo-video');
+  document.querySelectorAll('[data-time]').forEach(button => {
+    button.addEventListener('click', () => {
+      const seek = () => { video.currentTime = Number(button.dataset.time); video.play().catch(() => {}); };
+      if (video.readyState >= 1) seek();
+      else video.addEventListener('loadedmetadata', seek, { once: true });
+      video.scrollIntoView({ block: 'center' });
+      video.focus({ preventScroll: true });
+    });
+  });
+</script>
 </body>
 </html>

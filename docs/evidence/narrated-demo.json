@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-22",
+  "synthetic_example": true,
+  "mocked_api": false,
+  "processing_mode": "local",
+  "application_source_sha256": {
+    "server.py": "67078c88c59e4e0a3aa38aca0f8df8deb2507eca6e158b4c1df7192b516df37e",
+    "loose_ends/model.py": "6e0b2b35e1198c48e4e846da0b9480c84bd459df7b53c446e71516c900ff9884",
+    "loose_ends/hosted.py": "76b5478688c438206fce12280a727014acd8017adf9fb93f1d357e58d94ca74a",
+    "loose_ends/extraction.py": "6f306a366c1652175ea188ce780999f0b82d02ea6bf95996558c8333168646c5",
+    "loose_ends/transcript.py": "65e90cc5f42542d9cd5c8eb3e9ad6602f298e06784cb40a269503183fe516ed8",
+    "web/app.js": "b0955eacf3dd7b5e43ae782c251ae2fe305ca722d21be7634610d2a0f06ea78c",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "28b37f05ea069d9dfdddeaf1b1caaba8163bbaf31fda30655f64a431c0f1b145"
+  },
+  "real_request": {
+    "notes": "Project handoff notes (synthetic example)\nPriya will send the draft on Friday.\nLeo will test the mobile layout tomorrow.\nIf the review passes, Mina will archive the old checklist.\nDo not publish the announcement yet.\nThe migration is completed.",
+    "mode": "local"
+  },
+  "real_response": {
+    "tasks": [
+      {
+        "id": "5499b9290bcf05be",
+        "title": "send the draft",
+        "quote": "Priya will send the draft on Friday.",
+        "owner": "Priya",
+        "due": "Friday",
+        "condition": null
+      },
+      {
+        "id": "298343178f55cbc0",
+        "title": "test the mobile layout",
+        "quote": "Leo will test the mobile layout tomorrow.",
+        "owner": "Leo",
+        "due": "tomorrow",
+        "condition": null
+      },
+      {
+        "id": "9289f67e0439a3db",
+        "title": "archive the old checklist",
+        "quote": "If the review passes, Mina will archive the old checklist.",
+        "owner": "Mina",
+        "due": null,
+        "condition": "If the review passes, Mina will archive the old checklist."
+      }
+    ],
+    "rejected_count": 1,
+    "model": "Qwen3 4B Instruct \u00b7 local",
+    "mode": "local",
+    "input_kind": "notes"
+  },
+  "browser_request_duration_ms": 5563,
+  "timing_scope": "Single observation; not a latency promise. Tutorial is edited and not used as timing evidence.",
+  "raw_scene_sha256": {
+    "02_paste": "a4f75f9cdc7ea1137f73111ffd0192b79337e085bae87f82f52aa6da1d24108b",
+    "03_local": "9005b9b02496fea5337f922931f6747486c58541537deee305e291a6c54721f1",
+    "04_review": "9a10dea29e50f50d70783272309170f16a760e5afee3eb8135e834b71ec6f123",
+    "05_condition": "1b56ba5fcefa1313487afa17c99dbecaa755f3a0dbaf21f2f6b1760ced3b5eba",
+    "06_edit": "67b9c0f058198ee3c8a3732b1fbb5710fd2d234a6a75bc318de7991f12543788",
+    "07_export": "65ce91c1e0050b39b3a0f700e50096c90d5091fed79fd9a5e0ed61398bed3740",
+    "08_privacy": "7e93aa9262568050062b616b5fa1699b714ce919676752fd6540cde0a14057e7"
+  },
+  "video": {
+    "duration_seconds": 148,
+    "size": [
+      1920,
+      1080
+    ],
+    "fps": 25,
+    "treatment": "Edited original-speed clips, labelled screenshots, editorial cards, full actual inference wait retained."
+  },
+  "narration": {
+    "model": "Kokoro-82M v1.0",
+    "voice": "af_heart",
+    "engine": "kokoro-onnx",
+    "mode": "local CPU",
+    "paid_voice_credits": 0,
+    "word_count": 251,
+    "programmatic_checks": 401,
+    "local_asr_check": "Complete substantive script recovered; model/name spelling variants observed. Human listening review not performed."
+  },
+  "known_limit": "Long natural hosted meeting acceptance remains failed at 9 of 10 expected actions; not rerun for this update.",
+  "public_assets_sha256": {
+    "narrated-walkthrough.mp4": "a97899afa5b6e2a2489e3a9d7809d3839ec33b960fd2af51a9d3fb14b867f504",
+    "narrated-captions.vtt": "03c9ca3c47cd83c83b5a559d3645717735f5442b0caef16f94ac5d122fb69f3c",
+    "narrated-poster.png": "c5141f0941fe1db9b4d8c0cdd01ad6b9500c85c9cde43ce029b60df1ffc2c7bb",
+    "narrated-action-list.md": "b3b53201611ec00c5c32cc936910256ca41cfffa827524f39e3d420fb8ca4c17"
+  }
+}

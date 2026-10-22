@@ -1,0 +1,76 @@
+WEBVTT
+
+00:00:00.350 --> 00:00:04.125
+A task can change meaning when its condition disappears.
+
+00:00:04.445 --> 00:00:12.019
+Loose Ends turns notes into editable action drafts, keeping the original source beside each one for review.
+
+00:00:14.350 --> 00:00:19.247
+Here’s a staged, synthetic project handoff with Priya, Leo and Mina.
+
+00:00:19.567 --> 00:00:24.539
+Paste it into Your notes, keeping each action and its condition on one line.
+
+00:00:27.350 --> 00:00:30.387
+Under Process with, choose This Mac, local.
+
+00:00:30.707 --> 00:00:34.611
+Once Local model ready appears, select Find actions.
+
+00:00:34.931 --> 00:00:38.069
+This example uses the local Qwen model.
+
+00:00:46.350 --> 00:00:51.397
+This recorded run produced three drafts; the checks left one suggestion out.
+
+00:00:51.717 --> 00:00:55.801
+Check Owner and Due: Priya has Friday, and Leo has tomorrow.
+
+00:00:56.121 --> 00:00:58.152
+Relative dates stay as written.
+
+00:01:01.350 --> 00:01:06.685
+Mina’s source says, “If the review passes, Mina will archive the old checklist.”
+
+00:01:07.005 --> 00:01:09.815
+Archiving depends on that review passing.
+
+00:01:10.135 --> 00:01:13.975
+The complete line stays visible with the condition and source.
+
+00:01:18.350 --> 00:01:24.697
+To clarify Priya’s draft, select Edit and change Action to “Send the draft to the project team.”
+
+00:01:25.017 --> 00:01:26.339
+Save changes.
+
+00:01:26.659 --> 00:01:32.045
+“Edited by you” identifies your addition; the original quote stays attached.
+
+00:01:36.350 --> 00:01:41.155
+For this demonstration, mark Priya’s task done, then select Export.
+
+00:01:41.475 --> 00:01:45.316
+The Markdown keeps completion, edits and source evidence.
+
+00:01:45.636 --> 00:01:47.891
+Export before closing the tab.
+
+00:01:50.350 --> 00:01:52.296
+Hosted Groq is optional.
+
+00:01:52.616 --> 00:02:00.072
+Selecting Find actions there sends the complete submitted text to Groq and may use paid API credit.
+
+00:02:02.350 --> 00:02:10.086
+Review is still essential: a longer meeting test using hosted processing missed a conditional commitment.
+
+00:02:10.406 --> 00:02:14.747
+A matching quote doesn’t prove every action is correct or present.
+
+00:02:16.350 --> 00:02:22.717
+Loose Ends is an MIT-licensed app using open-weight models under their own licenses.
+
+00:02:23.037 --> 00:02:26.082
+Explore the source and setup guide on GitHub.
