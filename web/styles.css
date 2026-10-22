@@ -160,6 +160,29 @@ h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spac
 .skip-link:focus { top: 12px; }
 .noscript-note { padding: 20px; background: var(--warning-wash); text-align: center; }
 
+/* Motion follows real state changes; content and controls are available immediately. */
+@media (prefers-reduced-motion: no-preference) {
+  .button-primary, .button-outline, .button-small, .button-text {
+    transition: background-color 140ms ease, border-color 140ms ease, color 140ms ease, transform 100ms ease;
+  }
+  .button-primary:active:not(:disabled), .button-outline:active:not(:disabled),
+  .button-small:active:not(:disabled), .button-text:active:not(:disabled) { transform: translateY(1px); }
+  .button-primary svg { transition: transform 140ms ease; }
+  .button-primary:hover:not(:disabled) svg { transform: translateX(2px); }
+  .model-status { transition: background-color 180ms ease; }
+  .status-dot.checking { animation: connection-check 1200ms ease-in-out infinite; }
+  .status-dot.ready, .status-dot.unavailable { animation: state-appear 180ms ease-out; }
+  .loading-state:not([hidden]), .feedback:not([hidden]), .context-note:not([hidden]),
+  .undo-notice:not([hidden]), .inline-confirm:not([hidden]), .edit-panel { animation: state-appear 180ms ease-out; }
+  /* Only a newly accepted model result receives this class, never an edit/remove rerender. */
+  .task-card.task-enter { animation: task-arrive 240ms ease-out; }
+  .task-check { transition: background-color 140ms ease, border-color 140ms ease; }
+  .task-title { transition: color 180ms ease; }
+  @keyframes state-appear { from { opacity: .65; } to { opacity: 1; } }
+  @keyframes task-arrive { from { opacity: .65; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes connection-check { 50% { opacity: .4; } }
+}
+
 @media (min-width: 1250px) and (min-height: 900px) { #notes { min-height: 410px; } }
 @media (max-width: 1100px) {
   .page-shell { padding: 0 28px; }

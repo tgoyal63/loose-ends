@@ -368,7 +368,7 @@
       state.initialCount = state.tasks.length;
       state.hasRun = true;
       state.removed = null;
-      renderTasks();
+      renderTasks(true);
       if (plan.rejected_count > 0 && state.tasks.length > 0) {
         showFeedback(`${plan.rejected_count} ${plan.rejected_count === 1 ? "suggestion was" : "suggestions were"} left out by the checks for unsupported, duplicate or uncertain details. Review the remaining drafts too.`);
       }
@@ -413,10 +413,11 @@
     container.append(group);
   }
 
-  function renderTasks() {
+  function renderTasks(animateNew = false) {
     ui.list.replaceChildren();
     for (const task of state.tasks) {
       const item = node("li", `task-card${task.done ? " done" : ""}`);
+      if (animateNew) item.classList.add("task-enter");
       item.id = `task-${task.uiId}`;
       const top = node("div", "task-top");
       const checkbox = node("input", "task-check");
