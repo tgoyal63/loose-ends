@@ -61,29 +61,78 @@
     "08_privacy": "7e93aa9262568050062b616b5fa1699b714ce919676752fd6540cde0a14057e7"
   },
   "video": {
-    "duration_seconds": 148,
+    "duration_seconds": 118,
     "size": [
       1920,
       1080
     ],
     "fps": 25,
-    "treatment": "Edited original-speed clips, labelled screenshots, editorial cards, full actual inference wait retained."
+    "treatment": "Edited original-speed clips, labelled screenshots, editorial cards, full actual inference wait retained.",
+    "captions": "Optional external WebVTT; off by default, no burned-in dialogue captions."
   },
   "narration": {
     "model": "Kokoro-82M v1.0",
-    "voice": "af_heart",
+    "voice": "af_bella",
     "engine": "kokoro-onnx",
     "mode": "local CPU",
     "paid_voice_credits": 0,
-    "word_count": 251,
-    "programmatic_checks": 401,
-    "local_asr_check": "Complete substantive script recovered; model/name spelling variants observed. Human listening review not performed."
+    "word_count": 254,
+    "local_asr_check": "All ten scenes match the script after punctuation/case normalization and documented proper-name spelling equivalents. Human full-listening review not performed.",
+    "speed": 1.0,
+    "generation": "One connected paragraph and one inference per scene; shared gain.",
+    "delivered_scene_audio_seconds": 95.590667,
+    "caption_cues": 47,
+    "caption_timing": "Native ONNX duration output, mapped via Misaki word/phoneme spans; adjusted for model edge trim. Not uniform word allocation or ASR forced alignment.",
+    "caption_timing_limits": "Native word spans use 25ms model duration frames and may include trailing acoustic silence. Phrase/caption/sync edges are bounded by actual >=150ms pauses measured in 10ms RMS windows at -50dBFS. These are objective estimates, not human-verified exact word onsets; raw native spans and ASR timestamps are retained.",
+    "audio_manifest_sha256": "407174a1ad6ff92478507234d6018a6916a9a07563db798c70c138f2c5cda5c0"
   },
   "known_limit": "Long natural hosted meeting acceptance remains failed at 9 of 10 expected actions; not rerun for this update.",
   "public_assets_sha256": {
-    "narrated-walkthrough.mp4": "a97899afa5b6e2a2489e3a9d7809d3839ec33b960fd2af51a9d3fb14b867f504",
-    "narrated-captions.vtt": "03c9ca3c47cd83c83b5a559d3645717735f5442b0caef16f94ac5d122fb69f3c",
-    "narrated-poster.png": "c5141f0941fe1db9b4d8c0cdd01ad6b9500c85c9cde43ce029b60df1ffc2c7bb",
+    "narrated-walkthrough.mp4": "b63b60d297966b41596dec6cfbd936576e2fe972b48e0795c5798f8434e82fb6",
+    "narrated-captions.vtt": "d05f44c4dd7e99632ac326882062084a425c44e1a5d054a74e1c886f91ff579b",
+    "narrated-poster.png": "5a3c0d331d8e639fdc7c7f20e3d1ec43869cfd7d47cb1f943bd4fb9c23b518f8",
     "narrated-action-list.md": "b3b53201611ec00c5c32cc936910256ca41cfffa827524f39e3d420fb8ca4c17"
-  }
+  },
+  "chapters": [
+    {
+      "start_seconds": 0,
+      "title": "Keep the condition with the task"
+    },
+    {
+      "start_seconds": 11,
+      "title": "Paste the handoff notes"
+    },
+    {
+      "start_seconds": 22,
+      "title": "Choose local processing"
+    },
+    {
+      "start_seconds": 38,
+      "title": "Review drafts and attribution"
+    },
+    {
+      "start_seconds": 50,
+      "title": "Read the whole condition"
+    },
+    {
+      "start_seconds": 62,
+      "title": "Edit with the source attached"
+    },
+    {
+      "start_seconds": 74,
+      "title": "Mark done and export"
+    },
+    {
+      "start_seconds": 86,
+      "title": "Understand hosted processing"
+    },
+    {
+      "start_seconds": 95,
+      "title": "Know what still needs review"
+    },
+    {
+      "start_seconds": 107,
+      "title": "Explore the open source"
+    }
+  ]
 }

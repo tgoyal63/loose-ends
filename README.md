@@ -12,7 +12,7 @@ Built for Hacktoberfest 2026 Week 3, **Slow and Steady**.
 [Watch the narrated local-model demo](https://loose-ends-demo.vercel.app/) ·
 [See release evidence and limits](docs/release.md)
 
-The narrated walkthrough includes captions, chapter navigation, real UI motion,
+The narrated walkthrough includes optional captions, chapter navigation, real UI motion,
 source close-ups and a locally generated voice. See [video notes and transcript](docs/demo/narrated-notes.md).
 
 The October 22 release demonstrates the ordinary-notes workflow. Long-meeting

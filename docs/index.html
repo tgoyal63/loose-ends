@@ -25,6 +25,9 @@
     figure { margin: 0; }
     video { display: block; width: 100%; height: auto; background: #fff; border: 1px solid #c7cdd7; border-radius: 4px; }
     figcaption { margin-top: 12px; color: #4b586e; font-size: 14px; line-height: 1.6; }
+    video::cue { color: #fff; background: rgba(16, 20, 28, .88); font-family: system-ui, sans-serif; }
+    .caption-toggle { font: inherit; color: #25334c; background: #fff; border: 1px solid #c7cdd7; border-radius: 4px; padding: 8px 12px; margin-top: 12px; cursor: pointer; }
+    .caption-toggle:hover { background: #e9edfa; }
     .chapters { display: flex; flex-wrap: wrap; gap: 8px; margin: 18px 0 0; }
     .chapters button { font: inherit; font-size: 13px; color: #25334c; background: #fff; border: 1px solid #c7cdd7; border-radius: 4px; padding: 9px 12px; cursor: pointer; }
     .chapters button:hover { background: #e9edfa; }
@@ -62,19 +65,21 @@
       <track kind="captions" src="demo/narrated-captions.vtt" srclang="en" label="English">
       <a href="demo/narrated-walkthrough.mp4">Download the walkthrough</a>.
     </video>
-    <figcaption>2 minutes 28 seconds · narrated and captioned · actual local Qwen3 4B inference with synthetic notes. This edited tutorial includes close-ups and labelled reading holds; the inference wait plays at its original speed. <a href="demo/narrated-walkthrough.mp4">Open video directly</a> · <a href="demo/narrated-captions.vtt">Download captions</a>. Run the app locally using the setup guide.</figcaption>
+    <figcaption>1 minute 58 seconds · Bella narration · optional captions · actual local Qwen3 4B inference with synthetic notes. This edited tutorial includes close-ups and labelled reading holds; the inference wait plays at its original speed. <a href="demo/narrated-walkthrough.mp4">Open video directly</a> · <a href="demo/narrated-captions.vtt">Download captions</a>. Captions are off by default; select Show captions to turn them on. Run the app locally using the setup guide.</figcaption>
+    <button id="caption-toggle" class="caption-toggle" type="button" aria-pressed="false" aria-controls="demo-video">Show captions</button>
+    <p id="caption-status" role="status" hidden></p>
   </figure>
   <nav class="chapters" aria-label="Video chapters">
     <button type="button" data-time="0">0:00 Why conditions matter</button>
-    <button type="button" data-time="14">0:14 Paste notes</button>
-    <button type="button" data-time="27">0:27 Run locally</button>
-    <button type="button" data-time="46">0:46 Review drafts</button>
-    <button type="button" data-time="61">1:01 Keep the condition</button>
-    <button type="button" data-time="78">1:18 Edit</button>
-    <button type="button" data-time="96">1:36 Export</button>
-    <button type="button" data-time="110">1:50 Privacy</button>
-    <button type="button" data-time="122">2:02 Limits</button>
-    <button type="button" data-time="136">2:16 Source code</button>
+    <button type="button" data-time="11">0:11 Paste notes</button>
+    <button type="button" data-time="22">0:22 Run locally</button>
+    <button type="button" data-time="38">0:38 Review drafts</button>
+    <button type="button" data-time="50">0:50 Keep the condition</button>
+    <button type="button" data-time="62">1:02 Edit</button>
+    <button type="button" data-time="74">1:14 Export</button>
+    <button type="button" data-time="86">1:26 Privacy</button>
+    <button type="button" data-time="95">1:35 Limits</button>
+    <button type="button" data-time="107">1:47 Source code</button>
   </nav>
   <div class="details">
     <section aria-labelledby="walkthrough">
@@ -101,30 +106,83 @@
   <details class="transcript">
     <summary>Read the narration transcript</summary>
     <h3>Keep the condition with the task</h3>
-    <p>A task can change meaning when its condition disappears. Loose Ends turns notes into editable action drafts, keeping the original source beside each one for review.</p>
+    <p>Here's Loose Ends. It turns notes into a draft action list, with the original words beside each task. That matters when a promise starts with if.</p>
     <h3>Paste the handoff notes</h3>
-    <p>Here’s a staged, synthetic project handoff with Priya, Leo and Mina. Paste it into Your notes, keeping each action and its condition on one line.</p>
+    <p>Let's use a short example with Priya, Leo and Mina. These notes are made up. Paste them here, keeping each action and its condition on the same line.</p>
     <h3>Choose local processing</h3>
-    <p>Under Process with, choose This Mac, local. Once Local model ready appears, select Find actions. This example uses the local Qwen model.</p>
+    <p>Choose This Mac to process the notes locally. When the model is ready, click Find actions. This is the actual wait from the recorded run.</p>
     <h3>Review drafts and attribution</h3>
-    <p>This recorded run produced three drafts; the checks left one suggestion out. Check Owner and Due: Priya has Friday, and Leo has tomorrow. Relative dates stay as written.</p>
+    <p>We got three drafts, and one suggestion didn't pass the checks. Priya's draft is due Friday; Leo's says tomorrow. Those dates stay just as they were written.</p>
     <h3>Read the whole condition</h3>
-    <p>Mina’s source says, “If the review passes, Mina will archive the old checklist.” Archiving depends on that review passing. The complete line stays visible with the condition and source.</p>
+    <p>Look at Mina's task. She'll archive the old checklist only if the review passes. That whole condition stays here, right beside the original quote.</p>
     <h3>Edit with the source attached</h3>
-    <p>To clarify Priya’s draft, select Edit and change Action to “Send the draft to the project team.” Save changes. “Edited by you” identifies your addition; the original quote stays attached.</p>
+    <p>Let's make Priya's task clearer. Open Edit, add to the project team, and save. The app marks that change as yours and keeps the original quote.</p>
     <h3>Mark done and export</h3>
-    <p>For this demonstration, mark Priya’s task done, then select Export. The Markdown keeps completion, edits and source evidence. Export before closing the tab.</p>
+    <p>Now mark Priya's task done for the demo, and export. The Markdown file keeps the checkmark, your edit and the original source. Save it before closing the tab.</p>
     <h3>Understand hosted processing</h3>
-    <p>Hosted Groq is optional. Selecting Find actions there sends the complete submitted text to Groq and may use paid API credit.</p>
+    <p>You can also choose Groq. That's optional: submitting there sends your notes to Groq, and it may use paid API credit.</p>
     <h3>Know what still needs review</h3>
-    <p>Review is still essential: a longer meeting test using hosted processing missed a conditional commitment. A matching quote doesn’t prove every action is correct or present.</p>
+    <p>You'll still need to review the results. A longer meeting test using Groq missed a conditional commitment. A matching quote doesn't mean the list has everything.</p>
     <h3>Explore the open source</h3>
-    <p>Loose Ends is an MIT-licensed app using open-weight models under their own licenses. Explore the source and setup guide on GitHub.</p>
+    <p>The app is open source under the MIT license. The model licenses are separate. You'll find the code and setup instructions on GitHub.</p>
   </details>
-  <footer>Built and documented with AI agents. Synthetic narration generated locally with Kokoro-82M (af_heart) through kokoro-onnx; no paid voice credits were used. Model weights: Apache-2.0; kokoro-onnx code: MIT. The app does not send messages, schedule tasks or execute actions. Demo inputs are synthetic; no private meeting is published here. <a href="demo/release-walkthrough.mp4">Original continuous silent recording</a>.</footer>
+  <footer>Built and documented with AI agents. Synthetic narration generated locally with Kokoro-82M (af_bella) through kokoro-onnx; no paid voice credits were used. Model weights: Apache-2.0; kokoro-onnx code: MIT. The app does not send messages, schedule tasks or execute actions. Demo inputs are synthetic; no private meeting is published here. <a href="demo/release-walkthrough.mp4">Original continuous silent recording</a>.</footer>
 </main>
 <script>
   const video = document.getElementById('demo-video');
+  const captionToggle = document.getElementById('caption-toggle');
+  let captionElement = video.querySelector('track');
+  let captionTrack = captionElement.track;
+  const captionStatus = document.getElementById('caption-status');
+  const captionSource = captionElement.src;
+  let captionFailed = false;
+  let captionRetries = 0;
+  const syncCaptionToggle = () => {
+    const showing = !captionFailed && captionTrack.mode === 'showing';
+    captionToggle.setAttribute('aria-pressed', String(showing));
+    captionToggle.textContent = captionFailed ? 'Retry captions' : showing ? 'Hide captions' : 'Show captions';
+  };
+  const captionError = event => {
+    if (event.target !== captionElement) return;
+    captionFailed = true;
+    captionTrack.mode = 'disabled';
+    captionStatus.textContent = 'Captions could not load. Retry, or read the narration transcript below.';
+    captionStatus.hidden = false;
+    syncCaptionToggle();
+  };
+  const captionLoaded = event => {
+    if (event.target !== captionElement) return;
+    captionFailed = false;
+    captionStatus.textContent = '';
+    captionStatus.hidden = true;
+    syncCaptionToggle();
+  };
+  const watchCaptionTrack = element => {
+    element.addEventListener('error', captionError);
+    element.addEventListener('load', captionLoaded);
+  };
+  watchCaptionTrack(captionElement);
+  captionToggle.addEventListener('click', () => {
+    if (captionFailed) {
+      captionFailed = false;
+      captionStatus.textContent = 'Loading captions…';
+      const retrySource = new URL(captionSource);
+      retrySource.searchParams.set('retry', String(++captionRetries));
+      const replacement = captionElement.cloneNode(false);
+      replacement.src = retrySource.href;
+      watchCaptionTrack(replacement);
+      captionElement.replaceWith(replacement);
+      captionElement = replacement;
+      captionTrack = replacement.track;
+      captionTrack.mode = 'showing';
+      syncCaptionToggle();
+      return;
+    }
+    captionTrack.mode = captionTrack.mode === 'showing' ? 'disabled' : 'showing';
+    syncCaptionToggle();
+  });
+  video.textTracks.addEventListener('change', syncCaptionToggle);
+  syncCaptionToggle();
   document.querySelectorAll('[data-time]').forEach(button => {
     button.addEventListener('click', () => {
       const seek = () => { video.currentTime = Number(button.dataset.time); video.play().catch(() => {}); };
