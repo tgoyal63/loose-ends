@@ -9,7 +9,7 @@ Built for Hacktoberfest 2026 Week 3, **Slow and Steady**.
 
 ![Loose Ends showing three source-backed action drafts](docs/demo/release-desktop.png)
 
-[Watch the local-model demo](https://tgoyal63.github.io/loose-ends/) ·
+[Watch the local-model demo](https://loose-ends-demo.vercel.app/) ·
 [See release evidence and limits](docs/release.md)
 
 The October 22 release demonstrates the ordinary-notes workflow. Long-meeting
