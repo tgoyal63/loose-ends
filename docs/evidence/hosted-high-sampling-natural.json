@@ -1,0 +1,36 @@
+{
+  "recorded_at": "2026-10-22T09:27:58.850188+00:00",
+  "scope": "Synthetic model transcript cases; not a general accuracy or completeness guarantee.",
+  "mode": "hosted",
+  "cases": [
+    {
+      "id": "natural-meeting-with-demos-and-corrections",
+      "input_characters": 19306,
+      "input_sha256": "585da2ad6be0b5fac64d3942a0fca463b5670b34285007cae1ffaeaa9aec4ee7",
+      "elapsed_seconds": 0.242,
+      "checks": {
+        "request_succeeded": false,
+        "expected_actions_and_attribution": false,
+        "source_and_context_match": true,
+        "no_duplicate_ids": true,
+        "conditional_commitments_preserved": false
+      },
+      "passed": false,
+      "response": {
+        "error": {
+          "code": "hosted_input_limit",
+          "message": "Groq rejected this full input as too large. Check the provider request limits; your text has not been shortened.",
+          "details": {
+            "provider_status": 413,
+            "tokens_per_minute_limit": 8000,
+            "remaining_tokens": 8000,
+            "retry_after_seconds": 12
+          }
+        }
+      },
+      "error": "HTTPError: 413"
+    }
+  ],
+  "passed": 0,
+  "total": 1
+}

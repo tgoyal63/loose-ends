@@ -1,0 +1,77 @@
+{
+  "kind": "Synthetic hosted-mode accessibility and responsive checks",
+  "states": [
+    {
+      "name": "Hosted disconnected with retained actions at 320px",
+      "axeVersion": "4.13.0",
+      "violations": [],
+      "incomplete": [],
+      "passes": 29
+    },
+    {
+      "name": "Hosted disconnected with retained actions at 1280px",
+      "axeVersion": "4.13.0",
+      "violations": [],
+      "incomplete": [],
+      "passes": 29
+    },
+    {
+      "name": "Hosted connected at 320px",
+      "axeVersion": "4.13.0",
+      "violations": [],
+      "incomplete": [],
+      "passes": 30
+    },
+    {
+      "name": "Local selected with retained hosted actions at 320px",
+      "axeVersion": "4.13.0",
+      "violations": [],
+      "incomplete": [],
+      "passes": 29
+    }
+  ],
+  "layout": [
+    {
+      "width": 320,
+      "documentWidth": 320,
+      "bodyWidth": 320,
+      "keyVisible": true,
+      "keyType": "password",
+      "autocomplete": "off",
+      "pass": true
+    },
+    {
+      "width": 390,
+      "documentWidth": 390,
+      "bodyWidth": 390,
+      "keyVisible": true,
+      "keyType": "password",
+      "autocomplete": "off",
+      "pass": true
+    },
+    {
+      "width": 768,
+      "documentWidth": 768,
+      "bodyWidth": 768,
+      "keyVisible": true,
+      "keyType": "password",
+      "autocomplete": "off",
+      "pass": true
+    },
+    {
+      "width": 1280,
+      "documentWidth": 1280,
+      "bodyWidth": 1280,
+      "keyVisible": true,
+      "keyType": "password",
+      "autocomplete": "off",
+      "pass": true
+    }
+  ],
+  "source_sha256": {
+    "web/app.js": "2e9f29a0e60eeaa82a512dd6075e2954ed2b58d8eafd5ebaea666d026bc3bf31",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "761926b1e0c23b59acca02265a89e36c2f6412b3c4a8b151f78e4f357b7a33a9"
+  },
+  "scope": "Synthetic browser API fixtures only. No hosted inference, real API keys, or private notes."
+}

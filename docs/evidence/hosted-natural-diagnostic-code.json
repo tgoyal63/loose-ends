@@ -1,0 +1,19 @@
+{
+  "recorded_at": "2026-10-22T07:45:41.312655+00:00",
+  "scope": "Synthetic full natural meeting; allowlisted provider code diagnostics.",
+  "status": 502,
+  "elapsed_seconds": 35.1,
+  "input_sha256": "585da2ad6be0b5fac64d3942a0fca463b5670b34285007cae1ffaeaa9aec4ee7",
+  "response": {
+    "error": {
+      "code": "hosted_request_rejected",
+      "message": "Groq rejected the input or request settings. Check the app configuration before retrying.",
+      "details": {
+        "provider_status": 400,
+        "tokens_per_minute_limit": 8000,
+        "remaining_tokens": 748,
+        "provider_code": "json_validate_failed"
+      }
+    }
+  }
+}

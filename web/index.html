@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f3f4f5">
-    <meta name="description" content="Turn messy notes into a small, source-backed action list. Runs locally with an open model.">
+    <meta name="description" content="Turn messy notes into a small, source-backed action list. Choose a local or hosted open model.">
     <title>Loose Ends — action workspace</title>
     <link rel="icon" href="data:,">
     <link rel="stylesheet" href="/styles.css">
@@ -20,7 +20,7 @@
           </svg>
           <span>Loose Ends</span>
         </a>
-        <div class="header-note"><span>Local workspace</span><span class="header-divider" aria-hidden="true">/</span><span class="header-context">Notes → actions</span></div>
+        <div class="header-note"><span>Action workspace</span><span class="header-divider" aria-hidden="true">/</span><span class="header-context">Notes → actions</span></div>
       </header>
 
       <main>
@@ -31,7 +31,7 @@
           </div>
           <p class="privacy-note">
             <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="5" y="10" width="14" height="11" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3M12 14v3"/></svg>
-            <span>Processed on this machine.<br>Export your work before closing the tab.</span>
+            <span><span id="privacy-summary">Local mode processes notes on this machine.</span><br> Export your work before closing the tab.</span>
           </p>
         </section>
 
@@ -44,6 +44,25 @@
             <div id="sample-confirm" class="inline-confirm" hidden>
               <p>Replace your notes with a made-up example?</p>
               <div><button id="sample-replace" class="button-small" type="button">Replace notes</button><button id="sample-cancel" class="button-text" type="button">Keep mine</button></div>
+            </div>
+            <div class="processing-settings">
+              <div class="processing-choice">
+                <label for="processing-mode">Process with</label>
+                <select id="processing-mode" aria-describedby="processing-help">
+                  <option value="local" selected>This Mac · local</option>
+                  <option value="hosted">Hosted · Groq</option>
+                </select>
+              </div>
+              <p id="processing-help" class="processing-help">Notes are processed on this machine. Switching modes keeps your current action list.</p>
+              <form id="hosted-form" class="hosted-settings" autocomplete="off" hidden>
+                <label for="hosted-key">Groq API key</label>
+                <div class="hosted-key-row">
+                  <input id="hosted-key" type="password" autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="512" aria-describedby="hosted-key-help" placeholder="Paste API key">
+                  <button id="hosted-connect" class="button-small" type="submit">Connect</button>
+                </div>
+                <p id="hosted-key-help" class="processing-help">The key is kept only in the local app's memory until you disconnect or restart it. It is never included in your exports.</p>
+                <div class="hosted-settings-footer"><p id="hosted-message" role="status" hidden></p><button id="hosted-disconnect" class="button-text" type="button" hidden>Disconnect Groq</button></div>
+              </form>
             </div>
             <form id="notes-form">
               <label for="notes" class="sr-only">Your notes</label>
@@ -73,7 +92,7 @@
             <div class="actions-body">
               <div id="feedback" class="feedback" hidden tabindex="-1"></div>
               <div id="stale-notice" class="context-note" hidden>Your notes have changed. These actions still refer to the previous version.</div>
-              <div id="loading-state" class="loading-state" hidden><span class="spinner" aria-hidden="true"></span><div><p>Finding draft actions…</p><span>Reading the text and checking its sources. Long transcripts can take longer; your text stays here if you stop waiting.</span></div></div>
+              <div id="loading-state" class="loading-state" hidden><span class="spinner" aria-hidden="true"></span><div><p>Finding draft actions…</p><span id="loading-copy">Reading the text and checking its sources. Long transcripts can take longer; your text stays here if you stop waiting.</span></div></div>
 
               <div id="empty-state" class="empty-state">
                 <p class="empty-kicker" aria-hidden="true">ACTION LIST</p>
@@ -90,10 +109,10 @@
           </section>
         </div>
 
-        <footer class="page-footer"><p>AI drafts need your review. Nothing is sent or scheduled.</p><details><summary>How it works &amp; privacy</summary><p>Your text goes to a model running on this machine. For notes, keep each action and its conditions on one line. Transcripts with speaker names and timestamps are recognized automatically; keep the full conversation so qualifications remain available. Drafts retain original source text and nearby transcript context. Source matching does not prove that an action, owner or condition is correct, or that every action was found. Remove sensitive information before sharing an export. Refreshing or closing this tab clears your work.</p></details></footer>
+        <footer class="page-footer"><p>AI drafts need your review. Actions are never sent or scheduled automatically.</p><details><summary>How it works &amp; privacy</summary><p>Local mode processes notes on this machine. In hosted mode, selecting Find actions sends the submitted notes to Groq for GPT-OSS 120B extraction and may use paid API credit. Connecting a key or checking the connection does not submit your notes. The app never switches providers automatically. Changing modes or stopping your wait cannot recall a request already sent.</p><p>The Groq key stays in the local app's memory until disconnection or restart. Notes and action lists are held in this tab without browser storage. For notes, keep each action and its conditions on one line. Transcripts with speaker names and timestamps are recognized automatically; keep the full conversation so qualifications remain available. Drafts retain original source text and nearby transcript context. Source matching does not prove that an action, owner or condition is correct, or that every action was found. Remove sensitive information before sharing an export. Refreshing or closing this tab clears your work.</p></details></footer>
       </main>
     </div>
     <div id="announcer" class="sr-only" role="status" aria-live="polite" aria-atomic="true"></div>
-    <noscript><p class="noscript-note">Loose Ends needs JavaScript to connect to your local model. Enable it and reload this page.</p></noscript>
+    <noscript><p class="noscript-note">Loose Ends needs JavaScript to connect to the local app. Enable it and reload this page.</p></noscript>
   </body>
 </html>

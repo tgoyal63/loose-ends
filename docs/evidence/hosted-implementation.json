@@ -1,0 +1,68 @@
+{
+  "recorded_at": "2026-10-22T06:41:35.005316+00:00",
+  "scope": "Local implementation verification only. Hosted live API and extraction acceptance not run; credential setup pending.",
+  "unit_http_transport": {
+    "passed": 142,
+    "failed": 0,
+    "hosted_transport_tests": 25,
+    "command": ".model-venv/bin/python -m unittest discover -s tests -q"
+  },
+  "syntax_and_diff": {
+    "javascript": "passed",
+    "git_diff_check": "passed"
+  },
+  "browser": {
+    "hosted_mock_checks": 24,
+    "recovery_mock_checks": 42,
+    "accessibility_states": 4,
+    "violations": 0,
+    "incomplete": 0,
+    "viewport_widths": [
+      320,
+      390,
+      768,
+      1280
+    ],
+    "independent_additional_checks": 31,
+    "independent_unique_total": 97
+  },
+  "actual_local_notes": {
+    "passed": 5,
+    "total": 5,
+    "receipt": "hosted-change-local-notes.json"
+  },
+  "hosted_live_acceptance": {
+    "status": "not_run",
+    "reason": "Groq credential not configured",
+    "expected_transcript_cases": 4,
+    "expected_natural_meeting_actions": 10,
+    "expected_notes_cases": 5
+  },
+  "independent_source_reviews": {
+    "completed": 2,
+    "unresolved_material_implementation_findings": 0,
+    "resolved_finding": "Bound DNS/TCP/TLS setup and prohibit late HTTP transmission."
+  },
+  "source_sha256": {
+    "loose_ends/hosted.py": "da00f400334fd82a27c7121ef219696810a02da5ccc9d787eff49ca0e1487a73",
+    "loose_ends/model.py": "6e0b2b35e1198c48e4e846da0b9480c84bd459df7b53c446e71516c900ff9884",
+    "loose_ends/transcript.py": "65e90cc5f42542d9cd5c8eb3e9ad6602f298e06784cb40a269503183fe516ed8",
+    "server.py": "715e12380ca9fd748c807720e41abdfe7ba48e8495d48670005afcd29c7a52f9",
+    "web/app.js": "2e9f29a0e60eeaa82a512dd6075e2954ed2b58d8eafd5ebaea666d026bc3bf31",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "761926b1e0c23b59acca02265a89e36c2f6412b3c4a8b151f78e4f357b7a33a9",
+    "tests/test_hosted.py": "23e51c837466322a78eac9c90d10dc80d022e91b2bbb5e3325dee29582c921a0",
+    "tests/test_http.py": "59a3c3347b6afce137bf8d1bae8da4153fa21236dca6d3fa48aea73bbba6992e",
+    "tests/test_model.py": "a1c94d06d54eeb420acc9c3ee681f85552483014a384099e7f7dacc3d9a6cbdf",
+    "tests/test_transcript.py": "7d9132635e757cf70d49caddf5abe30cb5b1adeb427fc07466a96849a6c75e8b",
+    "scripts/evaluate_model.py": "1aa01943a06b3761d36214ec2d96e1796115fc0cde684c32819b8eb7cd2f52c9",
+    "scripts/evaluate_transcripts.py": "a1769b79adcea5a81f906f1562990890433575c847f36d456ba8b645070cb655",
+    "tests/fixtures/notes_cases.json": "5ba7ea263e74da29a8ad3cb5b8560483adebdb1a9978b515b8d8a5773ca44eb5",
+    "tests/fixtures/natural_meeting.txt": "585da2ad6be0b5fac64d3942a0fca463b5670b34285007cae1ffaeaa9aec4ee7"
+  },
+  "independent_ui_review": {
+    "completed": true,
+    "unresolved_material_findings": 0,
+    "live_inference_used": false
+  }
+}

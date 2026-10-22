@@ -1,0 +1,127 @@
+{
+  "kind": "Actual final local-model browser run with ordinary synthetic notes; no API mocks",
+  "startedAt": "2026-10-22T06:14:40.223Z",
+  "checks": [
+    {
+      "name": "Fresh browser has no previous API fixture globals",
+      "pass": true
+    },
+    {
+      "name": "Actual API returns a successful ordinary-note plan",
+      "pass": true
+    },
+    {
+      "name": "Exactly three expected actions",
+      "pass": true
+    },
+    {
+      "name": "Meaningful action titles and attribution retained",
+      "pass": true
+    },
+    {
+      "name": "Every source is an exact original note line",
+      "pass": true
+    },
+    {
+      "name": "Blocked conditional action remains with its condition",
+      "pass": true
+    },
+    {
+      "name": "Completed and prohibited work is omitted",
+      "pass": true
+    },
+    {
+      "name": "Three actual browser cards rendered",
+      "pass": true
+    },
+    {
+      "name": "Full notes retained and editable",
+      "pass": true
+    },
+    {
+      "name": "Success shows no error-severity feedback",
+      "pass": true
+    },
+    {
+      "name": "No transcript context is invented for ordinary notes",
+      "pass": true
+    },
+    {
+      "name": "Human edit and completion retained",
+      "pass": true
+    },
+    {
+      "name": "Human edit retains original source",
+      "pass": true
+    },
+    {
+      "name": "Export contains human edit and completion",
+      "pass": true
+    },
+    {
+      "name": "Export retains conditional action",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    },
+    {
+      "name": "No application browser storage",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "status": 200,
+  "elapsedSeconds": 9.412,
+  "response": {
+    "tasks": [
+      {
+        "id": "5499b9290bcf05be",
+        "title": "send the draft",
+        "quote": "Priya will send the draft on Friday.",
+        "owner": "Priya",
+        "due": "Friday",
+        "condition": null
+      },
+      {
+        "id": "298343178f55cbc0",
+        "title": "test the mobile layout",
+        "quote": "Leo will test the mobile layout tomorrow.",
+        "owner": "Leo",
+        "due": "tomorrow",
+        "condition": null
+      },
+      {
+        "id": "9289f67e0439a3db",
+        "title": "archive the old checklist",
+        "quote": "If the review passes, Mina will archive the old checklist.",
+        "owner": "Mina",
+        "due": null,
+        "condition": "If the review passes, Mina will archive the old checklist."
+      }
+    ],
+    "rejected_count": 1,
+    "model": "Qwen3 4B Instruct \u00b7 local",
+    "input_kind": "notes"
+  },
+  "exported": "# Loose Ends\n\nAction list \u00b7 2026-10-22\n\nModel: Qwen3 4B Instruct \u00b7 local\n\nDrafts need human review. Source quotes were checked against the submitted text; user edits are marked below.\n\n- [x] Send the reviewed draft\n  - Who: Priya\n  - When: Friday\n  - Edited by you; original source quote retained.\n\n  Source:\n\n  > Priya will send the draft on Friday\\.\n\n- [ ] test the mobile layout\n  - Who: Leo\n  - When: tomorrow\n  - AI draft.\n\n  Source:\n\n  > Leo will test the mobile layout tomorrow\\.\n\n- [ ] archive the old checklist\n  - Who: Mina\n  - Conditions / context: If the review passes\\, Mina will archive the old checklist\\.\n  - AI draft.\n\n  Source:\n\n  > If the review passes\\, Mina will archive the old checklist\\.\n",
+  "sourceHashes": {
+    "loose_ends/extraction.py": "6f306a366c1652175ea188ce780999f0b82d02ea6bf95996558c8333168646c5",
+    "loose_ends/transcript.py": "8707b47b8403cf1124bd499d14eb1390126b23aa980c9b580fdddddb8b57750e",
+    "loose_ends/model.py": "6e0b2b35e1198c48e4e846da0b9480c84bd459df7b53c446e71516c900ff9884",
+    "server.py": "7844b8be073ef246114efdbb11cc424d2c588d33ee31ba6532ed807e59e30806",
+    "web/app.js": "58b0c499f2d0424a68a4ccdee3def32b7783732fa8e75ad5b837d5fe8228c15c",
+    "web/index.html": "f86e1afd038aa55fc3dccb9a8e94b1062d833e007c7fc8372193f565455f8e5f",
+    "web/styles.css": "b6033e8682501a37764068915a1cdfc3c13e9e4804b9edee8bc908d7abdaec52"
+  },
+  "feedback": {
+    "hidden": false,
+    "role": "status",
+    "text": "1 suggestion was left out by the checks for unsupported, duplicate or uncertain details. Review the remaining drafts too."
+  },
+  "fixtureCorrection": "Initial test incorrectly required hidden feedback after a partial success. The API rejected one unsupported suggestion and the UI correctly announced it as informational status. Corrected by inspecting the same still-open browser result; no additional inference or weakening of expected action/title/attribute checks.",
+  "passed": true,
+  "passedChecks": 17,
+  "totalChecks": 17
+}

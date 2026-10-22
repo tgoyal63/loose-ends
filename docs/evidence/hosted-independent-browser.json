@@ -1,0 +1,142 @@
+{
+  "kind": "Independent synthetic hosted UI edge cases; no live inference or real credentials",
+  "checks": [
+    {
+      "name": "Fresh page uses local even when hosted setup exists",
+      "pass": true
+    },
+    {
+      "name": "No automatic inference on page load",
+      "pass": true
+    },
+    {
+      "name": "Selecting hosted checks connection without submitting notes",
+      "pass": true
+    },
+    {
+      "name": "Key input has password and no autofill, autocaps or spellcheck",
+      "pass": true
+    },
+    {
+      "name": "Unsubmitted key clears on mode switch with no setup request",
+      "pass": true
+    },
+    {
+      "name": "Setup immediately clears key and locks mode, key and extraction",
+      "pass": true
+    },
+    {
+      "name": "Key setup does not lock note editing",
+      "pass": true
+    },
+    {
+      "name": "Lost setup response reconciles configured state without re-entering key",
+      "pass": true
+    },
+    {
+      "name": "Ambiguous setup reports unconfirmed update, not raw error",
+      "pass": true
+    },
+    {
+      "name": "Edits made during setup survive",
+      "pass": true
+    },
+    {
+      "name": "Key setup body contains only key and uses same-origin POST",
+      "pass": true
+    },
+    {
+      "name": "Status checks have no request body",
+      "pass": true
+    },
+    {
+      "name": "Inference locks notes and setup but permits cancellation/mode switch",
+      "pass": true
+    },
+    {
+      "name": "Hosted inference sends full Unicode input and explicit mode only",
+      "pass": true
+    },
+    {
+      "name": "Success restores note editability",
+      "pass": true
+    },
+    {
+      "name": "Open unsaved action edit survives mode switch",
+      "pass": true
+    },
+    {
+      "name": "New inference is blocked while action edit remains open",
+      "pass": true
+    },
+    {
+      "name": "Export keeps hosted model, checked human edit and original quote after local switch",
+      "pass": true
+    },
+    {
+      "name": "Result summary retains actual extraction model",
+      "pass": true
+    },
+    {
+      "name": "Mismatched status mode fails closed without changing results",
+      "pass": true
+    },
+    {
+      "name": "Malformed configured status fails closed",
+      "pass": true
+    },
+    {
+      "name": "Malformed setup response clears key and reconciles readiness",
+      "pass": true
+    },
+    {
+      "name": "Unconfirmed disconnect reconciles actual disconnected state",
+      "pass": true
+    },
+    {
+      "name": "Setup failures and disconnect preserve notes and edited results",
+      "pass": true
+    },
+    {
+      "name": "Hosted rate limit preserves readiness, work and explicit mode",
+      "pass": true
+    },
+    {
+      "name": "Hosted authentication failure disables extraction with clear recovery",
+      "pass": true
+    },
+    {
+      "name": "No automatic local request after hosted failure",
+      "pass": true
+    },
+    {
+      "name": "Export remains available after hosted authentication failure",
+      "pass": true
+    },
+    {
+      "name": "Dummy key absent from DOM, plan bodies and exports after submission",
+      "pass": true
+    },
+    {
+      "name": "No browser persistence or external network attempts",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "unexpected": [],
+  "requestCounts": {
+    "status": 13,
+    "setup": 4,
+    "plan": 3
+  },
+  "source_sha256": {
+    "web/app.js": "2e9f29a0e60eeaa82a512dd6075e2954ed2b58d8eafd5ebaea666d026bc3bf31",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "761926b1e0c23b59acca02265a89e36c2f6412b3c4a8b151f78e4f357b7a33a9"
+  },
+  "scope": "Independent UI review using synthetic API responses only; no real key or hosted inference."
+}

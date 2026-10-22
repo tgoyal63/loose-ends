@@ -1,0 +1,181 @@
+{
+  "kind": "Synthetic API browser review; no model inference",
+  "checks": [
+    {
+      "name": "First failure shows failed draft empty state",
+      "pass": true
+    },
+    {
+      "name": "Failed empty state does not imply no actions",
+      "pass": true
+    },
+    {
+      "name": "First failure hides initial instructional caption",
+      "pass": true
+    },
+    {
+      "name": "Failure is alert and receives keyboard focus",
+      "pass": true
+    },
+    {
+      "name": "Complete long transcript including tail survives first failure",
+      "pass": true
+    },
+    {
+      "name": "502 preserves ready status and enables retry",
+      "pass": true
+    },
+    {
+      "name": "Failed draft is not exportable and input unlocked",
+      "pass": true
+    },
+    {
+      "name": "504 leaves ready status and retry enabled",
+      "pass": true
+    },
+    {
+      "name": "504 preserves full long input for retry",
+      "pass": true
+    },
+    {
+      "name": "503 marks unavailable and disables generation",
+      "pass": true
+    },
+    {
+      "name": "Status recovery restores generation and full notes",
+      "pass": true
+    },
+    {
+      "name": "Success after failures clears failed state",
+      "pass": true
+    },
+    {
+      "name": "Success focuses result heading",
+      "pass": true
+    },
+    {
+      "name": "model_output_limit preserves reviewed/completed action and source",
+      "pass": true
+    },
+    {
+      "name": "model_output_limit export preserves edits, completion, source and context",
+      "pass": true
+    },
+    {
+      "name": "model_output_limit retains full input",
+      "pass": true
+    },
+    {
+      "name": "model_empty_response preserves reviewed/completed action and source",
+      "pass": true
+    },
+    {
+      "name": "model_empty_response export preserves edits, completion, source and context",
+      "pass": true
+    },
+    {
+      "name": "model_empty_response retains full input",
+      "pass": true
+    },
+    {
+      "name": "invalid_model_json preserves reviewed/completed action and source",
+      "pass": true
+    },
+    {
+      "name": "invalid_model_json export preserves edits, completion, source and context",
+      "pass": true
+    },
+    {
+      "name": "invalid_model_json retains full input",
+      "pass": true
+    },
+    {
+      "name": "invalid_model_output preserves reviewed/completed action and source",
+      "pass": true
+    },
+    {
+      "name": "invalid_model_output export preserves edits, completion, source and context",
+      "pass": true
+    },
+    {
+      "name": "invalid_model_output retains full input",
+      "pass": true
+    },
+    {
+      "name": "model_timeout preserves reviewed/completed action and source",
+      "pass": true
+    },
+    {
+      "name": "model_timeout export preserves edits, completion, source and context",
+      "pass": true
+    },
+    {
+      "name": "model_timeout retains full input",
+      "pass": true
+    },
+    {
+      "name": "model_unavailable preserves reviewed/completed action and source",
+      "pass": true
+    },
+    {
+      "name": "model_unavailable export preserves edits, completion, source and context",
+      "pass": true
+    },
+    {
+      "name": "model_unavailable retains full input",
+      "pass": true
+    },
+    {
+      "name": "model_busy preserves reviewed/completed action and source",
+      "pass": true
+    },
+    {
+      "name": "model_busy export preserves edits, completion, source and context",
+      "pass": true
+    },
+    {
+      "name": "model_busy retains full input",
+      "pass": true
+    },
+    {
+      "name": "malformed failure preserves reviewed action and source",
+      "pass": true
+    },
+    {
+      "name": "network failure preserves reviewed action and source",
+      "pass": true
+    },
+    {
+      "name": "Cancellation ignores late successful result and keeps reviewed action",
+      "pass": true
+    },
+    {
+      "name": "Cancellation ignores late 503 status mutation",
+      "pass": true
+    },
+    {
+      "name": "Successful empty result clears failure state",
+      "pass": true
+    },
+    {
+      "name": "All submitted retries preserve full transcript",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    },
+    {
+      "name": "Application uses no browser storage",
+      "pass": true
+    }
+  ],
+  "calls": 16,
+  "errors": [],
+  "source_sha256": {
+    "web/app.js": "2e9f29a0e60eeaa82a512dd6075e2954ed2b58d8eafd5ebaea666d026bc3bf31",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "761926b1e0c23b59acca02265a89e36c2f6412b3c4a8b151f78e4f357b7a33a9"
+  },
+  "scope": "Synthetic browser API fixtures only. No hosted inference, real API keys, or private notes."
+}

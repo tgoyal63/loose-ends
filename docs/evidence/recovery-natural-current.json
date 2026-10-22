@@ -1,0 +1,69 @@
+{
+  "recorded_at": "2026-10-22T06:17:22.512426+00:00",
+  "scope": "Synthetic local-model transcript cases; not a general accuracy or completeness guarantee.",
+  "cases": [
+    {
+      "id": "natural-meeting-with-demos-and-corrections",
+      "input_characters": 19306,
+      "input_sha256": "585da2ad6be0b5fac64d3942a0fca463b5670b34285007cae1ffaeaa9aec4ee7",
+      "elapsed_seconds": 54.748,
+      "checks": {
+        "request_succeeded": true,
+        "expected_actions_and_attribution": false,
+        "source_and_context_match": true,
+        "no_duplicate_ids": true,
+        "conditional_commitments_preserved": false
+      },
+      "passed": false,
+      "response": {
+        "tasks": [
+          {
+            "id": "67a79b845098d1f0",
+            "title": "I will circulate the pilot agenda on Thursday.",
+            "quote": "Nora Ellis 10:01:45\nI will circulate the pilot agenda on Thursday.\nIt covers the arrival order, the reading tasks, and the closing discussion. The invitation is still a draft.",
+            "owner": "Nora Ellis",
+            "due": "Thursday",
+            "condition": null,
+            "source": {
+              "speaker": "Nora Ellis",
+              "timestamp": "10:01:45",
+              "context": "Nora Ellis 10:01:15\nRight. Can those six people find a letter, listen to its recording, and return to the collection without us narrating every click?\nTessa Wynn 10:01:30\nGood boundary. The recording is my voice reading an invented letter. No donor or interview-subject permission is needed for this demo.\nNora Ellis 10:01:45\nI will circulate the pilot agenda on Thursday.\nIt covers the arrival order, the reading tasks, and the closing discussion. The invitation is still a draft.\nJune Park 10:02:00\nI sent the printed timetable to Priya yesterday, including the break between groups. There is no timetable email waiting on me.\nPriya Cole 10:02:15\nYes, that arrived. The twenty-minute gap gives people time to leave slowly and gives us time to move the chairs."
+            }
+          },
+          {
+            "id": "e8e6ee5b02c5ac20",
+            "title": "I will arrange a second volunteer session on Saturday.",
+            "quote": "Nora Ellis 10:03:30\nI will arrange a second volunteer session on Saturday. That was the fallback idea in the planning note.",
+            "owner": "Nora Ellis",
+            "due": "Saturday",
+            "condition": null,
+            "source": {
+              "speaker": "Nora Ellis",
+              "timestamp": "10:03:30",
+              "context": "June Park 10:03:00\nThe year under the cover is the catalogue year, not the year the image was scanned. They happen to match in this preview.\nTessa Wynn 10:03:15\nFor example, a workshop could compare handwriting across three records. That is a demonstration idea, not a request for comparison panels.\nNora Ellis 10:03:30\nI will arrange a second volunteer session on Saturday. That was the fallback idea in the planning note.\nPriya Cole 10:03:45\nHold that thought. Saturday has a restriction that is easy to miss in this narrow calendar. I have no confirmed extra slot.\nRavi Mehta 10:04:00\nHere is the record page: heading, description, viewer. The sidebar has the shelf reference, transcription, and recording."
+            }
+          },
+          {
+            "id": "1b049a4c7c8b3c02",
+            "title": "I will replace the placeholder dates with catalogue estimates by Friday.",
+            "quote": "June Park 10:05:45\nI will replace the placeholder dates with catalogue estimates by Friday. My worksheet has estimates for all twelve sample records.",
+            "owner": "June Park",
+            "due": "Friday",
+            "condition": null,
+            "source": {
+              "speaker": "June Park",
+              "timestamp": "10:05:45",
+              "context": "June Park 10:05:15\nTwo dates say winter, our placeholder. The rest have an approximate year. That pattern looks accidental.\nNora Ellis 10:05:30\nWe need consistent uncertainty. No exact date when the source does not support one; empty is better than an invented day.\nJune Park 10:05:45\nI will replace the placeholder dates with catalogue estimates by Friday. My worksheet has estimates for all twelve sample records.\nRavi Mehta 10:06:00\nOkay. The page displays circa and a year as plain text. It does not turn them into a precise date.\nOmar Bell 10:06:15\nHelpful. An exact date would imply more certainty than the catalogue has."
+            }
+          }
+        ],
+        "rejected_count": 8,
+        "model": "Qwen3 4B Instruct \u00b7 local",
+        "input_kind": "transcript"
+      },
+      "error": null
+    }
+  ],
+  "passed": 0,
+  "total": 1
+}

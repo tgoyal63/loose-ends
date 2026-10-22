@@ -1,0 +1,57 @@
+{
+  "kind": "Independent synthetic hosted-mode accessibility and layout review",
+  "states": [
+    {
+      "name": "Hosted authentication failure, edited existing action, 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Hosted action editor, 320px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Hosted configured and ready, 1280px",
+      "violations": [],
+      "incomplete": []
+    },
+    {
+      "name": "Local mode with original hosted result, 1280px",
+      "violations": [],
+      "incomplete": []
+    }
+  ],
+  "widths": [
+    {
+      "width": 320,
+      "document": 320,
+      "body": 320,
+      "overflow": false
+    },
+    {
+      "width": 390,
+      "document": 390,
+      "body": 390,
+      "overflow": false
+    },
+    {
+      "width": 768,
+      "document": 768,
+      "body": 768,
+      "overflow": false
+    },
+    {
+      "width": 1280,
+      "document": 1280,
+      "body": 1280,
+      "overflow": false
+    }
+  ],
+  "source_sha256": {
+    "web/app.js": "2e9f29a0e60eeaa82a512dd6075e2954ed2b58d8eafd5ebaea666d026bc3bf31",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "761926b1e0c23b59acca02265a89e36c2f6412b3c4a8b151f78e4f357b7a33a9"
+  },
+  "scope": "Independent UI review using synthetic API responses only; no real key or hosted inference."
+}

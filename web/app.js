@@ -22,6 +22,11 @@
     undo: byId("undo-notice"), undoMessage: byId("undo-message"),
     undoButton: byId("undo-button"), announcer: byId("announcer"),
     replacementNote: byId("replacement-note"),
+    mode: byId("processing-mode"), modeHelp: byId("processing-help"),
+    privacy: byId("privacy-summary"), loadingCopy: byId("loading-copy"),
+    hostedForm: byId("hosted-form"), hostedKey: byId("hosted-key"),
+    hostedConnect: byId("hosted-connect"), hostedDisconnect: byId("hosted-disconnect"),
+    hostedMessage: byId("hosted-message"),
   };
 
   const SAMPLE_NOTES = [
@@ -37,9 +42,11 @@
 
   const state = {
     ready: false, statusPending: false, busy: false, hasRun: false,
-    inputKind: "notes",
+    inputKind: "notes", lastFailure: "",
     tasks: [], sourceNotes: "", model: "", rejected: 0, initialCount: 0,
     controller: null, requestNumber: 0, editing: null, removed: null,
+    mode: "local", hostedConfigured: false, configPending: false,
+    statusController: null, statusNumber: 0,
     nextUiId: 1,
   };
 
@@ -76,7 +83,7 @@
     ui.inputError.textContent = tooLong
       ? "Your full text is still here. Choose an excerpt of 60,000 characters or fewer before finding actions."
       : "";
-    ui.generate.disabled = state.busy || !state.ready || !ui.notes.value.trim();
+    ui.generate.disabled = state.busy || state.configPending || !state.ready || !ui.notes.value.trim();
     ui.generateLabel.textContent = state.busy ? "Finding actions…" : state.hasRun ? "Find actions again" : "Find actions";
     ui.notes.readOnly = state.busy;
     ui.sample.disabled = state.busy;
@@ -89,6 +96,13 @@
     ui.stale.hidden = !state.hasRun || ui.notes.value === state.sourceNotes;
     ui.undoButton.disabled = state.busy || state.editing !== null;
     ui.replacementNote.hidden = !state.tasks.length;
+    ui.mode.disabled = state.configPending;
+    ui.retry.disabled = state.statusPending || state.configPending || state.busy;
+    ui.hostedKey.disabled = state.busy || state.configPending;
+    ui.hostedConnect.disabled = state.busy || state.configPending || !ui.hostedKey.value.trim();
+    ui.hostedConnect.textContent = state.configPending ? "Updating…" : state.hostedConfigured ? "Replace key" : "Connect";
+    ui.hostedDisconnect.disabled = state.busy || state.configPending;
+    ui.hostedDisconnect.hidden = !state.hostedConfigured;
     for (const control of ui.list.querySelectorAll(".task-check, .task-controls button")) {
       const ownEdit = control.dataset.taskId === String(state.editing);
       control.disabled = state.busy || (state.editing !== null && !ownEdit);
@@ -101,14 +115,25 @@
     ui.taskCount.hidden = !state.hasRun;
     ui.taskCount.textContent = String(count);
     ui.summary.hidden = !state.hasRun || count === 0;
-    ui.summary.textContent = `${count} ${count === 1 ? "action" : "actions"} · ${done} done`;
+    ui.summary.textContent = `${count} ${count === 1 ? "action" : "actions"} · ${done} done · ${state.model}`;
     ui.resultNote.hidden = count === 0;
     ui.resultNote.textContent = state.inputKind === "transcript"
       ? "Review each draft against its source and nearby conversation, including prerequisites and later corrections. Unclear owners stay unassigned; other commitments may be missed."
       : "Quotes are checked against your text. Review the suggested actions, owners, dates and conditions before using them.";
     ui.empty.hidden = count > 0 || state.busy;
     ui.undo.hidden = state.removed === null;
-    if (!state.hasRun) return;
+    if (count === 0 && state.lastFailure) {
+      ui.emptyCaption.hidden = true;
+      ui.emptyTitle.textContent = "The draft couldn't be created.";
+      ui.emptyCopy.textContent = "Your text is still here. Check the error above, then try again. This failed request does not mean your notes contain no actions.";
+      return;
+    }
+    if (!state.hasRun) {
+      ui.emptyCaption.hidden = false;
+      ui.emptyTitle.textContent = "No draft actions yet.";
+      ui.emptyCopy.textContent = "Add notes or a meeting transcript and select Find actions. Each suggestion will keep its original source text.";
+      return;
+    }
     ui.emptyCaption.hidden = true;
     if (state.initialCount > 0 && count === 0) {
       ui.emptyTitle.textContent = "All actions removed.";
@@ -124,43 +149,147 @@
     }
   }
 
+  function updateModeCopy() {
+    const hosted = state.mode === "hosted";
+    ui.mode.value = state.mode;
+    ui.hostedForm.hidden = !hosted;
+    ui.privacy.textContent = hosted
+      ? "Hosted mode sends submitted notes to Groq."
+      : "Local mode processes notes on this machine.";
+    ui.modeHelp.textContent = hosted
+      ? "GPT-OSS 120B runs on Groq. Find actions sends your submitted notes there and may use paid API credit. Switching modes keeps your current action list."
+      : "Notes are processed on this machine. Switching modes keeps your current action list.";
+    ui.retry.setAttribute("aria-label", hosted ? "Check Groq connection again" : "Check local model connection again");
+    ui.loadingCopy.textContent = hosted
+      ? "Groq is reading the submitted text; the app will check its sources. Stopping your wait cannot recall the request and may still use API credit."
+      : "Reading the text and checking its sources. Long transcripts can take longer; your text stays here if you stop waiting.";
+  }
+
+  function cancelStatus() {
+    state.statusNumber++;
+    state.statusController?.abort();
+    state.statusController = null;
+    state.statusPending = false;
+  }
+
   async function checkStatus() {
-    if (state.statusPending) return;
+    if (state.statusPending || state.configPending || state.busy) return;
+    const mode = state.mode;
+    const hosted = mode === "hosted";
+    const request = ++state.statusNumber;
     state.statusPending = true;
-    ui.retry.disabled = true;
-    ui.statusLabel.textContent = "Checking your local model…";
+    state.ready = false;
+    ui.statusLabel.textContent = hosted ? "Checking Groq…" : "Checking your local model…";
+    ui.statusMessage.textContent = "Checking the connection without submitting your notes.";
     ui.statusDot.className = "status-dot checking";
     const controller = new AbortController();
+    state.statusController = controller;
     const timeout = setTimeout(() => controller.abort(), 12000);
+    updateControls();
     try {
-      const response = await fetch("/api/status", { signal: controller.signal, cache: "no-store" });
+      const response = await fetch(`/api/status?mode=${mode}`, { signal: controller.signal, cache: "no-store" });
       if (!response.ok) throw new Error("The local app could not check the model.");
       const data = await response.json();
-      if (typeof data.ready !== "boolean" || typeof data.model !== "string" || typeof data.message !== "string") {
+      if (request !== state.statusNumber) return;
+      if (typeof data.ready !== "boolean" || typeof data.model !== "string" || typeof data.message !== "string"
+        || data.mode !== mode || typeof data.configured !== "boolean") {
         throw new Error("The local app returned an unexpected status. Restart it and check again.");
       }
       state.ready = data.ready;
-      ui.statusLabel.textContent = data.ready ? "Local model ready" : "Local model isn't ready";
-      ui.statusMessage.textContent = data.ready ? `${data.model} · Runs on this machine` : data.message || "Start your local model, then check again. Your notes will stay on this page.";
+      if (hosted) state.hostedConfigured = data.configured;
+      ui.statusLabel.textContent = hosted
+        ? data.ready ? "Groq ready" : data.configured ? "Groq isn't ready" : "Connect Groq to continue"
+        : data.ready ? "Local model ready" : "Local model isn't ready";
+      ui.statusMessage.textContent = data.ready
+        ? `${data.model} · ${hosted ? "Submitted notes are sent to Groq" : "Runs on this machine"}`
+        : data.message || (hosted ? "Connect your Groq key, then check again." : "Start your local model, then check again. Your notes will stay on this page.");
     } catch (error) {
+      if (request !== state.statusNumber) return;
       state.ready = false;
-      ui.statusLabel.textContent = "Can't reach the local model";
+      ui.statusLabel.textContent = hosted ? "Can't check the Groq connection" : "Can't reach the local model";
       ui.statusMessage.textContent = error.name === "AbortError"
-        ? "The connection check timed out. Make sure the local app and model are running, then check again."
-        : "Make sure the local app and model are running, then check again. Your notes are still here.";
+        ? "The connection check timed out. Check again when the local app and selected model are available."
+        : "Make sure the local app and selected model are available, then check again. Your notes are still here.";
     } finally {
       clearTimeout(timeout);
+      if (request !== state.statusNumber) return;
       state.statusPending = false;
-      ui.retry.disabled = false;
+      state.statusController = null;
       ui.statusDot.className = `status-dot ${state.ready ? "ready" : "unavailable"}`;
       ui.status.classList.toggle("unavailable", !state.ready);
       updateControls();
-      announce(state.ready ? "Local model ready. Add notes to find actions." : "Local model unavailable. Check the connection message for next steps.");
+      const name = hosted ? "Groq" : "Local model";
+      announce(state.ready ? `${name} ready. Add notes to find actions.` : `${name} unavailable. Check the connection message for next steps.`);
     }
   }
 
-  function validatePlan(data, notes) {
+  function changeMode() {
+    if (state.configPending) { ui.mode.value = state.mode; return; }
+    const mode = ui.mode.value;
+    if (!["local", "hosted"].includes(mode) || mode === state.mode) return;
+    const waiting = state.busy;
+    const wasHosted = state.mode === "hosted";
+    state.requestNumber++;
+    state.controller?.abort();
+    state.controller = null;
+    state.busy = false;
+    cancelStatus();
+    state.ready = false;
+    state.mode = mode;
+    ui.hostedKey.value = "";
+    ui.hostedMessage.hidden = true;
+    updateModeCopy();
+    updateControls();
+    updateSummary();
+    if (waiting) {
+      showFeedback(`Switched modes and stopped waiting. Your notes and previous actions are still here. ${wasHosted ? "The request already sent to Groq may still finish and use API credit." : "The local model may take a moment to finish its current request."}`);
+    }
+    checkStatus();
+  }
+
+  async function configureHosted(disconnect = false) {
+    if (state.busy || state.configPending || state.mode !== "hosted") return;
+    if (!disconnect && !ui.hostedKey.value.trim()) { ui.hostedKey.focus(); return; }
+    const body = JSON.stringify({ api_key: disconnect ? "" : ui.hostedKey.value.trim() });
+    ui.hostedKey.value = "";
+    cancelStatus();
+    state.configPending = true;
+    state.ready = false;
+    ui.hostedMessage.hidden = false;
+    ui.hostedMessage.setAttribute("role", "status");
+    ui.hostedMessage.textContent = disconnect ? "Disconnecting Groq…" : "Connecting Groq…";
+    ui.statusLabel.textContent = "Updating Groq connection…";
+    ui.statusDot.className = "status-dot checking";
+    updateControls();
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 12000);
+    try {
+      const response = await fetch("/api/hosted", {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body, signal: controller.signal,
+      });
+      const data = await response.json();
+      if (!response.ok || typeof data.configured !== "boolean" || data.configured !== !disconnect) {
+        throw new Error("Connection setup failed");
+      }
+      state.hostedConfigured = data.configured;
+      ui.hostedMessage.textContent = disconnect
+        ? "Groq disconnected. Your notes and actions are still here."
+        : "Key held in the local app's memory.";
+    } catch {
+      ui.hostedMessage.setAttribute("role", "alert");
+      ui.hostedMessage.textContent = "The connection update could not be confirmed. Checking its current status; your notes and actions are still here.";
+    } finally {
+      clearTimeout(timeout);
+      state.configPending = false;
+      updateControls();
+      checkStatus();
+    }
+  }
+
+  function validatePlan(data, notes, mode) {
     if (!data || !Array.isArray(data.tasks) || typeof data.model !== "string"
+      || data.mode !== mode
       || !Number.isInteger(data.rejected_count) || data.rejected_count < 0
       || (data.input_kind !== undefined && !["notes", "transcript"].includes(data.input_kind))) {
       throw new Error("The model returned an unreadable action list. Your notes and previous actions have been kept.");
@@ -185,7 +314,7 @@
 
   async function generate(event) {
     event.preventDefault();
-    if (state.busy || !state.ready || !ui.notes.value.trim()) return;
+    if (state.busy || state.configPending || !state.ready || !ui.notes.value.trim()) return;
     if (state.editing !== null) {
       showFeedback("Save or cancel the open action edit before finding a new list.", "info", true);
       return;
@@ -195,10 +324,12 @@
       return;
     }
     const notes = ui.notes.value;
+    const mode = state.mode;
     const request = ++state.requestNumber;
     const controller = new AbortController();
     state.controller = controller;
     state.busy = true;
+    state.lastFailure = "";
     ui.sampleConfirm.hidden = true;
     clearFeedback();
     updateControls();
@@ -209,22 +340,25 @@
     try {
       const response = await fetch("/api/plan", {
         method: "POST", headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ notes }), signal: controller.signal,
+        body: JSON.stringify({ notes, mode }), signal: controller.signal,
       });
       let data;
       try { data = await response.json(); } catch { throw new Error("The local app returned an unreadable response. Your notes and previous actions have been kept."); }
+      if (request !== state.requestNumber) return;
       if (!response.ok) {
         if (response.status === 503) {
           state.ready = false;
-          ui.statusLabel.textContent = "Local model isn't ready";
-          ui.statusMessage.textContent = "Check that your local model is running, then select Check again.";
+          ui.statusLabel.textContent = mode === "hosted" ? "Groq isn't ready" : "Local model isn't ready";
+          ui.statusMessage.textContent = mode === "hosted"
+            ? "Check your Groq connection, then select Check again."
+            : "Check that your local model is running, then select Check again.";
           ui.statusDot.className = "status-dot unavailable";
           ui.status.classList.add("unavailable");
         }
-        const detail = typeof data?.error?.message === "string" ? data.error.message : "The local model couldn't make an action list. Please try again.";
+        const detail = typeof data?.error?.message === "string" ? data.error.message : "The selected model couldn't make an action list. Please try again.";
         throw new Error(`${detail} Your notes and previous actions have been kept.`);
       }
-      const plan = validatePlan(data, notes);
+      const plan = validatePlan(data, notes, mode);
       if (request !== state.requestNumber) return;
       state.tasks = plan.tasks.map((task) => ({ ...task, uiId: state.nextUiId++, done: false, humanEdited: false }));
       state.sourceNotes = notes;
@@ -244,10 +378,11 @@
     } catch (error) {
       if (request !== state.requestNumber) return;
       const message = timedOut
-        ? "The local model is taking longer than expected. Your notes and previous actions have been kept. Check the model before trying again."
+        ? "The selected model is taking longer than expected. Your notes and previous actions have been kept. Check the model before trying again."
         : error instanceof TypeError
           ? "The connection was interrupted. Your notes and previous actions have been kept. Check the local app, then try again."
           : error.message || "Something went wrong. Your notes and previous actions have been kept.";
+      state.lastFailure = message;
       showFeedback(message, "error", true);
     } finally {
       clearTimeout(timeout);
@@ -268,7 +403,7 @@
     state.busy = false;
     updateControls();
     updateSummary();
-    showFeedback("Stopped waiting. Your notes and previous actions are still here. The local model may take a moment to finish its current request.", "info", true);
+    showFeedback(`Stopped waiting. Your notes and previous actions are still here. ${state.mode === "hosted" ? "The request already sent to Groq may still finish and use API credit." : "The local model may take a moment to finish its current request."}`, "info", true);
   }
 
   function addMeta(container, label, value) {
@@ -457,10 +592,14 @@
     ui.sampleConfirm.hidden = true;
     updateControls();
     ui.notes.focus();
-    announce("Made-up sample notes inserted. Select Find actions to run the local model.");
+    announce(`Made-up sample notes inserted. Select Find actions to ${state.mode === "hosted" ? "send them to Groq" : "run the local model"}.`);
   }
 
   ui.form.addEventListener("submit", generate);
+  ui.mode.addEventListener("change", changeMode);
+  ui.hostedKey.addEventListener("input", updateControls);
+  ui.hostedForm.addEventListener("submit", (event) => { event.preventDefault(); configureHosted(); });
+  ui.hostedDisconnect.addEventListener("click", () => configureHosted(true));
   ui.notes.addEventListener("input", updateControls);
   ui.cancel.addEventListener("click", stopWaiting);
   ui.retry.addEventListener("click", checkStatus);
@@ -489,6 +628,7 @@
       event.returnValue = "";
     }
   });
+  updateModeCopy();
   updateControls();
   checkStatus();
 })();

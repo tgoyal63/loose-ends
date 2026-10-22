@@ -1,0 +1,108 @@
+{
+  "kind": "Synthetic hosted-mode browser behavior; no inference or real credentials",
+  "checks": [
+    {
+      "name": "Fresh load explicitly selects local",
+      "pass": true
+    },
+    {
+      "name": "Local hides hosted key form",
+      "pass": true
+    },
+    {
+      "name": "Local plan explicitly sends local mode and full note",
+      "pass": true
+    },
+    {
+      "name": "Mode change preserves edits completion and source",
+      "pass": true
+    },
+    {
+      "name": "Mode change retains original result model attribution",
+      "pass": true
+    },
+    {
+      "name": "Unconfigured hosted selection requires key and preserves notes",
+      "pass": true
+    },
+    {
+      "name": "Hosted privacy names provider and paid credit",
+      "pass": true
+    },
+    {
+      "name": "Key clears immediately and setup locks mode and extraction",
+      "pass": true
+    },
+    {
+      "name": "Configuration submits only key without notes",
+      "pass": true
+    },
+    {
+      "name": "Status calls never carry notes or key",
+      "pass": true
+    },
+    {
+      "name": "Configured hosted model enables extraction and disconnect",
+      "pass": true
+    },
+    {
+      "name": "Hosted plan explicitly sends hosted mode",
+      "pass": true
+    },
+    {
+      "name": "Hosted export records actual result model and excludes key",
+      "pass": true
+    },
+    {
+      "name": "Wrong response mode is rejected and prior result retained",
+      "pass": true
+    },
+    {
+      "name": "Switching to local keeps hosted result attribution",
+      "pass": true
+    },
+    {
+      "name": "Late hosted failure after mode switch cannot mutate local readiness",
+      "pass": true
+    },
+    {
+      "name": "Switching during inference retains prior result and explains possible charge",
+      "pass": true
+    },
+    {
+      "name": "Late local status cannot override selected hosted status",
+      "pass": true
+    },
+    {
+      "name": "Setup failure preserves notes actions and clears key",
+      "pass": true
+    },
+    {
+      "name": "Setup failure does not reflect provider response text",
+      "pass": true
+    },
+    {
+      "name": "Disconnect clears readiness without losing work",
+      "pass": true
+    },
+    {
+      "name": "No automatic local fallback after hosted disconnect",
+      "pass": true
+    },
+    {
+      "name": "No browser storage used",
+      "pass": true
+    },
+    {
+      "name": "No runtime errors",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "source_sha256": {
+    "web/app.js": "2e9f29a0e60eeaa82a512dd6075e2954ed2b58d8eafd5ebaea666d026bc3bf31",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "761926b1e0c23b59acca02265a89e36c2f6412b3c4a8b151f78e4f357b7a33a9"
+  },
+  "scope": "Synthetic browser API fixtures only. No hosted inference, real API keys, or private notes."
+}

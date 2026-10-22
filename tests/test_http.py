@@ -2,9 +2,13 @@ import http.client
 import json
 import threading
 import unittest
+from unittest.mock import patch
 
-from loose_ends.model import ModelUnavailable
+from loose_ends.model import (
+    ModelEmptyResponse, ModelInvalidJSON, ModelOutputLimit, ModelResponseError, ModelTimeout, ModelUnavailable,
+)
 from loose_ends.extraction import MAX_NOTES
+from loose_ends.hosted import HostedHTTPError, ModelAuthentication, ModelInputLimit, ModelRateLimit, ModelRequestRejected
 from server import AppServer, MAX_BODY
 
 
@@ -44,6 +48,7 @@ class HTTPTests(unittest.TestCase):
         cls.thread.join(timeout=2)
 
     def setUp(self):
+        self.server.hosted_model = None
         self.model.output = '{"tasks":[]}'
         self.model.available = True
         self.model.fail = False
@@ -165,8 +170,30 @@ class HTTPTests(unittest.TestCase):
 
     def test_invalid_model_json_is_an_error(self):
         self.model.output = '{"tasks":'
-        self.assertEqual(self.request()[0], 502)
+        status, data, _ = self.request()
+        self.assertEqual(status, 502)
+        self.assertEqual(json.loads(data)["error"]["code"], "invalid_model_json")
         self.assertEqual(self.request()[0], 502)  # semaphore released after the first error
+
+    def test_generation_failures_have_specific_safe_errors_and_release_inference(self):
+        cases = [
+            (ModelTimeout, 504, "model_timeout"),
+            (ModelOutputLimit, 502, "model_output_limit"),
+            (ModelEmptyResponse, 502, "model_empty_response"),
+            (ModelInvalidJSON, 502, "invalid_model_json"),
+            (ModelResponseError, 502, "invalid_model_output"),
+            (ModelUnavailable, 503, "model_unavailable"),
+        ]
+        for error_type, expected_status, expected_code in cases:
+            with self.subTest(error=error_type.__name__):
+                with patch.object(self.model, "propose", side_effect=error_type("PRIVATE UPSTREAM CONTENT")):
+                    status, data, _ = self.request()
+                error = json.loads(data)["error"]
+                self.assertEqual(status, expected_status)
+                self.assertEqual(error["code"], expected_code)
+                self.assertNotIn("PRIVATE UPSTREAM CONTENT", data.decode())
+                self.assertNotIn("shorter note", error["message"])
+                self.assertEqual(self.request()[0], 200)
 
     def test_model_outage_is_not_fake_success(self):
         self.model.fail = True
@@ -179,6 +206,155 @@ class HTTPTests(unittest.TestCase):
         status, data, _ = self.request(path="/api/status", method="GET")
         self.assertEqual(status, 200)
         self.assertFalse(json.loads(data)["ready"])
+
+    def test_hosted_mode_is_explicit_and_never_falls_back(self):
+        hosted = FakeModel()
+        hosted.label = "Hosted test model"
+        self.server.hosted_model = hosted
+        self.assertEqual(self.request()[0], 200)
+        self.assertEqual(self.model.calls, 1)
+        self.assertEqual(hosted.calls, 0)
+        status, data, _ = self.request(body={"notes": "Send the draft.", "mode": "hosted"})
+        self.assertEqual(status, 200)
+        self.assertEqual(json.loads(data)["model"], hosted.label)
+        self.assertEqual(json.loads(data)["mode"], "hosted")
+        self.assertEqual(hosted.calls, 1)
+        self.model.fail = True
+        self.assertEqual(self.request()[0], 503)
+        self.assertEqual(hosted.calls, 1)
+        hosted.fail = True
+        local_calls = self.model.calls
+        self.assertEqual(self.request(body={"notes": "Send the draft.", "mode": "hosted"})[0], 503)
+        self.assertEqual(self.model.calls, local_calls)
+
+    def test_unconfigured_hosted_request_cannot_use_local_model(self):
+        status, data, _ = self.request(body={"notes": "Send the draft.", "mode": "hosted"})
+        self.assertEqual(status, 503)
+        self.assertEqual(json.loads(data)["error"]["code"], "hosted_not_configured")
+        self.assertEqual(self.model.calls, 0)
+        status, data, _ = self.request(path="/api/status?mode=hosted", method="GET")
+        self.assertEqual(status, 200)
+        self.assertFalse(json.loads(data)["configured"])
+        self.assertFalse(json.loads(data)["ready"])
+
+    def test_invalid_modes_fail_before_inference(self):
+        for mode in (None, [], {}, "", "groq", "LOCAL"):
+            with self.subTest(mode=mode):
+                self.assertEqual(self.request(body={"notes": "Send the draft.", "mode": mode})[0], 400)
+        for query in ("mode=", "mode=unknown", "mode=local&mode=hosted"):
+            self.assertEqual(self.request(path="/api/status?" + query, method="GET")[0], 400)
+        self.assertEqual(self.model.calls, 0)
+
+    def test_hosted_setup_and_disconnect_do_not_submit_notes_or_return_keys(self):
+        key = "synthetic-test-key-never-valid"
+        with patch("server.HostedModel") as factory:
+            hosted = factory.return_value
+            hosted.label = "Hosted test model"
+            hosted.ready.return_value = True
+            status, data, _ = self.request(path="/api/hosted", body={"api_key": key})
+            self.assertEqual(status, 200)
+            self.assertEqual(json.loads(data), {"configured": True})
+            self.assertNotIn(key, data.decode())
+            factory.assert_called_once_with(key)
+            hosted.ready.assert_not_called()
+            hosted.propose.assert_not_called()
+            self.assertIs(self.server.hosted_model, hosted)
+            status, data, _ = self.request(path="/api/status?mode=hosted", method="GET")
+            self.assertEqual(status, 200)
+            self.assertNotIn(key, data.decode())
+            self.assertTrue(json.loads(data)["ready"])
+            status, data, _ = self.request(path="/api/hosted", body={"api_key": ""})
+            self.assertEqual(status, 200)
+            self.assertIsNone(self.server.hosted_model)
+            self.assertEqual(json.loads(data), {"configured": False})
+        self.assertEqual(self.model.calls, 0)
+
+    def test_hosted_setup_rejects_foreign_origin_host_and_form_posts(self):
+        for headers in ({"Origin": "https://other.example"}, {"Host": "other.example"},
+                        {"Origin": ""}, {"Content-Type": "application/x-www-form-urlencoded"}):
+            with self.subTest(headers=headers), patch("server.HostedModel") as factory:
+                self.assertIn(self.request(path="/api/hosted", body={"api_key": "synthetic-test-key-never-valid"}, headers=headers)[0], (403, 415))
+                factory.assert_not_called()
+        self.assertIsNone(self.server.hosted_model)
+
+    def test_hosted_setup_validation_preserves_previous_configuration(self):
+        previous = FakeModel()
+        self.server.hosted_model = previous
+        for key in (None, [], "short", "x" * 513, "x" * 24 + "\r\n", "x" * 24 + "\ud800"):
+            with self.subTest(key=repr(key)[:30]):
+                self.assertEqual(self.request(path="/api/hosted", body={"api_key": key})[0], 400)
+                self.assertIs(self.server.hosted_model, previous)
+
+    def test_hosted_setup_cannot_change_configuration_while_processing(self):
+        previous = FakeModel()
+        self.server.hosted_model = previous
+        self.server.inference.acquire()
+        try:
+            self.assertEqual(self.request(path="/api/hosted", body={"api_key": ""})[0], 429)
+            self.assertIs(self.server.hosted_model, previous)
+        finally:
+            self.server.inference.release()
+
+    def test_hosted_setup_body_limit_preserves_configuration(self):
+        previous = FakeModel()
+        self.server.hosted_model = previous
+        status, data, _ = self.request(path="/api/hosted", body={"api_key": "x" * 4100})
+        self.assertEqual(status, 413)
+        self.assertEqual(json.loads(data)["error"]["code"], "body_too_large")
+        self.assertIs(self.server.hosted_model, previous)
+
+    def test_hosted_output_still_requires_exact_source_provenance(self):
+        hosted = FakeModel()
+        self.server.hosted_model = hosted
+        notes = "Mira Shah 09:10:00\nOnce access works, I will send the sample on Friday."
+        hosted.output = json.dumps({"tasks": [
+            {"turn_id": "turn-1", "title": "send the sample", "owner": "Mira Shah", "due": "Friday"},
+            {"turn_id": "turn-1", "title": "charge the customer", "owner": "Mira Shah", "due": "Friday"},
+            {"turn_id": "turn-99", "title": "send the sample", "owner": "Mira Shah", "due": "Friday"},
+        ]})
+        status, data, _ = self.request(body={"notes": notes, "mode": "hosted"})
+        result = json.loads(data)
+        self.assertEqual(status, 200)
+        self.assertEqual(result["rejected_count"], 2)
+        self.assertEqual(len(result["tasks"]), 1)
+        task = result["tasks"][0]
+        self.assertEqual(task["quote"], notes)
+        self.assertIn("Once access works", task["condition"])
+        self.assertEqual(task["source"]["context"], notes)
+        self.assertEqual(self.model.calls, 0)
+
+    def test_hosted_errors_are_specific_and_do_not_expose_upstream_content(self):
+        hosted = FakeModel()
+        self.server.hosted_model = hosted
+        for error, status, code in ((ModelAuthentication, 503, "hosted_authentication"),
+                                    (ModelRateLimit, 429, "hosted_rate_limit"),
+                                    (ModelInputLimit, 413, "hosted_input_limit"),
+                                    (ModelRequestRejected, 502, "hosted_request_rejected"),
+                                    (HostedHTTPError, 503, "model_unavailable")):
+            with patch.object(hosted, "propose", side_effect=error("PRIVATE CONTENT AND KEY")):
+                actual_status, data, _ = self.request(body={"notes": "Send the draft.", "mode": "hosted"})
+            self.assertEqual(actual_status, status)
+            self.assertEqual(json.loads(data)["error"]["code"], code)
+            self.assertNotIn("PRIVATE", data.decode())
+            self.assertEqual(self.model.calls, 0)
+            self.assertEqual(self.request()[0], 200)
+            self.model.calls = 0
+
+    def test_hosted_limit_details_are_safe_and_do_not_replace_the_key(self):
+        hosted = FakeModel()
+        self.server.hosted_model = hosted
+        error = ModelInputLimit("PRIVATE UPSTREAM", status=413, headers={
+            "x-ratelimit-limit-tokens": "8000", "retry-after": "PRIVATE", "x-request-id": "PRIVATE",
+        })
+        with patch.object(hosted, "propose", side_effect=error):
+            status, data, _ = self.request(body={"notes": "Send the draft.", "mode": "hosted"})
+        self.assertEqual(status, 413)
+        result = json.loads(data)["error"]
+        self.assertEqual(result["details"], {"provider_status": 413, "tokens_per_minute_limit": 8000})
+        self.assertIn("not been shortened", result["message"])
+        self.assertNotIn("PRIVATE", data.decode())
+        self.assertIs(self.server.hosted_model, hosted)
+        self.assertEqual(self.model.calls, 0)
 
     def test_unknown_files_and_traversal_not_exposed(self):
         for path in ["/server.py", "/.env", "/../server.py", "/%2e%2e/server.py", "/logs/model.log"]:

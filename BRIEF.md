@@ -1,5 +1,11 @@
 # Loose Ends
 
+**Historical initial brief — October 20, 2026.** The scope and API limits below
+describe the first version. The current app also supports timestamped transcripts
+and explicitly selected Groq inference, with a 60,000-character input limit.
+See [the README](README.md) and [October 22 release scope](docs/release.md) for
+current behavior and known limitations.
+
 New project started October 20, 2026 for Hacktoberfest Week 3, “Slow and Steady.”
 
 Turn scattered notes into a small, editable action list using a locally running

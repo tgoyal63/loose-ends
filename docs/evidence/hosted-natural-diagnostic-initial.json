@@ -1,0 +1,10 @@
+{
+  "status": 503,
+  "elapsed_seconds": 0.4,
+  "response": {
+    "error": {
+      "code": "model_unavailable",
+      "message": "The selected model is unavailable. Check its status and try again."
+    }
+  }
+}

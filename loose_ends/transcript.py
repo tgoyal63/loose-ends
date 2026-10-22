@@ -82,10 +82,28 @@ _UNKNOWN_SPEAKERS = {
     "unknown", "unknown speaker", "unidentified", "speaker", "anonymous",
     "i", "we", "you", "he", "she", "they", "it", "someone", "everyone",
 }
-_QUOTED = re.compile(r'''"[^"]*(?:"|$)|“[^”]*(?:”|$)|(?<!\w)'[^']*'(?!\w)''')
+_QUOTED = re.compile(
+    r'''"[^"]*(?:"|$)|“[^”]*(?:”|$)|'''
+    r"(?<!\w)'(?:[^']|'(?=\w))*(?:'(?!\w)|$)|‘(?:[^’]|’(?=\w))*(?:’(?!\w)|$)"
+)
+_REPORTED_SPEECH = re.compile(
+    r"^(?:(?i:someone|somebody|he|she|they|we|i|the)\b[^.!?]*?"
+    r"|[A-Z][\w'’-]*(?:\s+[A-Z][\w'’-]*)*(?:\s+(?i:from|in|at|on)\b[^.!?]*?)?)\s+"
+    r"(?i:said|says|told|wrote|asked|replied|promised|quoted|mentioned)\b"
+)
+_ACKNOWLEDGEMENT = re.compile(
+    r"(?:(?:done|okay|ok|yes|yeah|yep|right|sure|thanks|thank you|got it|"
+    r"understood|cool|great|perfect|awesome|alright|all right|agreed|all good|"
+    r"m+h+m+|m+[- ]h+m+|h+m+|uh[- ]huh)(?:[\s,;.!…-]+|$))+",
+    re.I,
+)
 _OTHER_COMMITMENT = re.compile(r"\bwill\b|['’]ll\b|\bgoing\s+to\b", re.I)
 _OTHER_ACTOR = re.compile(r"\b(?:and|but|while)\s+(?:[A-Z][\w'-]*|you|we|they|he|she)\b")
-_DELEGATED = re.compile(r"\b(?:have|let)\s+\S+|\b(?:ask|tell|remind|want|need|expect|invite)\b.*\bto\b", re.I)
+_DELEGATED = re.compile(
+    # "Have to" expresses the speaker's necessity, not a delegated actor.
+    r"\b(?:have\s+(?!to(?:\s|$))\S+|let\s+\S+)|"
+    r"\b(?:ask|tell|remind|want|need|expect|invite)\b.*\bto\b", re.I,
+)
 
 
 def normalized(text: str) -> str:
@@ -127,12 +145,31 @@ def parse_turns(notes: str) -> list[Turn]:
 def _action_clause(text: str, title: str) -> str | None:
     # Newlines are deliberately not boundaries: a negation or prerequisite can
     # be on the line before the action. Keep the whole containing sentence.
-    sentences = re.split(r"(?<=[.!?])\s+", normalized(text))
+    if _ACKNOWLEDGEMENT.fullmatch(title):
+        return None
+    text = normalized(text)
+    sentences = re.split(r"(?<=[.!?])\s+", text)
     matches = [sentence for sentence in sentences if title in sentence]
     if len(matches) != 1:
         return None
     clause = matches[0]
     if "?" in clause or _UNSAFE_CLAUSE.search(clause):
+        return None
+    # Quote eligibility applies even when the model leaves the owner unknown.
+    # Mask the full turn first because a quotation may span several sentences.
+    start = text.index(clause)
+    unquoted = _QUOTED.sub(lambda match: " " * len(match[0]), text)[start:start + len(clause)]
+    title_start = clause.index(title)
+    if not re.search(r"\w", unquoted[title_start:title_start + len(title)]):
+        return None
+    if (
+        _REPORTED_SPEECH.search(unquoted)
+        and _OTHER_COMMITMENT.search(clause)
+        and not _OTHER_COMMITMENT.search(unquoted)
+    ):
+        # Copying the report's entire sentence cannot turn its quoted promise
+        # into a new commitment. Quoted object names with an unquoted action
+        # remain supported; this is not a general requirement for future tense.
         return None
     if _LEADING_CONDITION.search(clause):
         commitment = _OTHER_COMMITMENT.search(clause)

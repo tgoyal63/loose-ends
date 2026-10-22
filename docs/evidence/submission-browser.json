@@ -1,0 +1,377 @@
+{
+  "recorded_at": "2026-10-22T14:21:59.921780+00:00",
+  "scope": "Independent final release behavior review; real local notes demo and synthetic fixture suite. No source edits or remote mutations.",
+  "base_commit": "f3765dfd338ac6246b248d592b55b59f8ed7e3ab",
+  "head_at_review": "f3765dfd338ac6246b248d592b55b59f8ed7e3ab",
+  "source_sha256": {
+    "server.py": "67078c88c59e4e0a3aa38aca0f8df8deb2507eca6e158b4c1df7192b516df37e",
+    "loose_ends/model.py": "6e0b2b35e1198c48e4e846da0b9480c84bd459df7b53c446e71516c900ff9884",
+    "loose_ends/hosted.py": "76b5478688c438206fce12280a727014acd8017adf9fb93f1d357e58d94ca74a",
+    "loose_ends/transcript.py": "65e90cc5f42542d9cd5c8eb3e9ad6602f298e06784cb40a269503183fe516ed8",
+    "loose_ends/extraction.py": "6f306a366c1652175ea188ce780999f0b82d02ea6bf95996558c8333168646c5",
+    "web/app.js": "2e9f29a0e60eeaa82a512dd6075e2954ed2b58d8eafd5ebaea666d026bc3bf31",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "761926b1e0c23b59acca02265a89e36c2f6412b3c4a8b151f78e4f357b7a33a9"
+  },
+  "browser": {
+    "tool": "Playwright CLI skill fallback",
+    "session": "release20261022",
+    "url": "http://127.0.0.1:62140/",
+    "t3_fallback_reason": "Parent reported two failures of the same open-tab snapshot step: Preview automation snapshot timed out after 15000ms.",
+    "no_active_routes_before_demo": true,
+    "mocked_inference": false,
+    "browser_network_destinations_during_demo": [
+      "http://127.0.0.1:62140"
+    ],
+    "static_bytes_match_disk": [
+      "web/app.js",
+      "web/styles.css",
+      "web/index.html"
+    ],
+    "errors_before_intentional_offline_check": 0,
+    "warnings_before_intentional_offline_check": 0
+  },
+  "initial_dependency_issue": {
+    "model_port": 62141,
+    "connection_refused": true,
+    "readiness": false,
+    "find_actions_disabled": true,
+    "notes_preserved": true,
+    "resolution": "Local model availability was restored outside this reviewer session. Reviewer did not restart the application or model, touch the connected key, or submit hosted inference."
+  },
+  "demo": {
+    "fixture": "tests/fixtures/notes_cases.json#explicit_actions",
+    "input": "Project handoff notes (synthetic example)\nPriya will send the draft on Friday.\nLeo will test the mobile layout tomorrow.\nIf the review passes, Mina will archive the old checklist.\nDo not publish the announcement yet.\nThe migration is completed.",
+    "input_sha256": "9914d706d2f20f078feb8b3edd3773de991768242ae84e8363548ce5433edb9d",
+    "request": {
+      "notes": "Project handoff notes (synthetic example)\nPriya will send the draft on Friday.\nLeo will test the mobile layout tomorrow.\nIf the review passes, Mina will archive the old checklist.\nDo not publish the announcement yet.\nThe migration is completed.",
+      "mode": "local"
+    },
+    "http_status": 200,
+    "response": {
+      "tasks": [
+        {
+          "id": "5499b9290bcf05be",
+          "title": "send the draft",
+          "quote": "Priya will send the draft on Friday.",
+          "owner": "Priya",
+          "due": "Friday",
+          "condition": null
+        },
+        {
+          "id": "298343178f55cbc0",
+          "title": "test the mobile layout",
+          "quote": "Leo will test the mobile layout tomorrow.",
+          "owner": "Leo",
+          "due": "tomorrow",
+          "condition": null
+        },
+        {
+          "id": "9289f67e0439a3db",
+          "title": "archive the old checklist",
+          "quote": "If the review passes, Mina will archive the old checklist.",
+          "owner": "Mina",
+          "due": null,
+          "condition": "If the review passes, Mina will archive the old checklist."
+        }
+      ],
+      "rejected_count": 1,
+      "model": "Qwen3 4B Instruct · local",
+      "mode": "local",
+      "input_kind": "notes"
+    },
+    "browser_resource_duration_ms": 5624.399999976158,
+    "duration_method": "PerformanceResourceTiming for POST /api/plan, one observed browser request; not a latency guarantee.",
+    "checks": {
+      "real_response_local_mode": true,
+      "exact_expected_quotes": true,
+      "meaningful_action_titles": true,
+      "expected_attribution_and_conditions": true,
+      "full_conditional_line": true,
+      "all_quotes_in_submitted_notes": true,
+      "source_quotes_retained_in_download": true,
+      "human_edit_in_download": true,
+      "edit_disclosed_in_download": true,
+      "one_done_two_pending": true,
+      "condition_in_download": true,
+      "model_attribution_in_download": true,
+      "recovery_export_byte_identical": true
+    },
+    "export_text": "# Loose Ends\n\nAction list · 2026-10-22\n\nModel: Qwen3 4B Instruct · local\n\nDrafts need human review. Source quotes were checked against the submitted text; user edits are marked below.\n\n- [x] Send the draft to the project team\n  - Who: Priya\n  - When: Friday\n  - Edited by you; original source quote retained.\n\n  Source:\n\n  > Priya will send the draft on Friday\\.\n\n- [ ] test the mobile layout\n  - Who: Leo\n  - When: tomorrow\n  - AI draft.\n\n  Source:\n\n  > Leo will test the mobile layout tomorrow\\.\n\n- [ ] archive the old checklist\n  - Who: Mina\n  - Conditions / context: If the review passes\\, Mina will archive the old checklist\\.\n  - AI draft.\n\n  Source:\n\n  > If the review passes\\, Mina will archive the old checklist\\.\n"
+  },
+  "recovery": {
+    "method": "After the video, set only this isolated browser offline, select Find actions again, inspect the real fetch failure, then restore online. No response routes or mocks. Export again and compare exact bytes.",
+    "checks": {
+      "local_mode": true,
+      "notes_retained": true,
+      "three_tasks": true,
+      "edit_retained": true,
+      "source_retained": true,
+      "completion_retained": true,
+      "condition_retained": true,
+      "failure_explicit": true,
+      "export_enabled": true,
+      "readiness_preserved": true,
+      "no_mobile_overflow": true,
+      "no_local_storage": true,
+      "no_session_storage": true
+    },
+    "expected_console_error": "One failed browser request after deliberate offline mode; zero errors before it.",
+    "synthetic_only": true
+  },
+  "responsive": [
+    {
+      "viewport_width": 1440,
+      "viewport_height": 1000,
+      "scroll_width": 1440
+    },
+    {
+      "viewport_width": 390,
+      "viewport_height": 844,
+      "scroll_width": 390
+    },
+    {
+      "viewport_width": 320,
+      "viewport_height": 800,
+      "scroll_width": 320
+    }
+  ],
+  "video": {
+    "original": "docs/demo/release-walkthrough.webm",
+    "shareable": "docs/demo/release-walkthrough.mp4",
+    "recording_start_observed_utc": "2026-10-22T14:15:19.312Z",
+    "recording_stop_observed_utc": "2026-10-22T14:16:28.878Z",
+    "observed_wall_seconds": 69.566,
+    "encoded_duration_seconds": 69.68,
+    "width": 1440,
+    "height": 1000,
+    "fps": 25,
+    "original_codec": "vp8",
+    "shareable_codec": "h264",
+    "conversion": "ffmpeg -i release-walkthrough.webm -c:v libx264 -preset fast -crf 20 -pix_fmt yuv420p -movflags +faststart release-walkthrough.mp4",
+    "cuts": false,
+    "retimed": false,
+    "artificial_model_output": false,
+    "recorder_animated_pointer": true,
+    "latency_claim": "No timing claim inferred from video duration. Full wait retained.",
+    "frames_and_screenshots_visually_inspected": true
+  },
+  "real_local_notes_suite": {
+    "recorded_at": "2026-10-22T14:18:44.260839+00:00",
+    "scope": "Synthetic model checks; not a general accuracy guarantee.",
+    "mode": "local",
+    "cases": [
+      {
+        "id": "explicit_actions",
+        "elapsed_seconds": 5.793,
+        "checks": {
+          "request_succeeded": true,
+          "exact_quote_set": true,
+          "no_duplicate_tasks": true,
+          "no_invented_titles": true,
+          "attributes_preserved": true
+        },
+        "passed": true,
+        "response": {
+          "tasks": [
+            {
+              "id": "5499b9290bcf05be",
+              "title": "send the draft",
+              "quote": "Priya will send the draft on Friday.",
+              "owner": "Priya",
+              "due": "Friday",
+              "condition": null
+            },
+            {
+              "id": "298343178f55cbc0",
+              "title": "test the mobile layout",
+              "quote": "Leo will test the mobile layout tomorrow.",
+              "owner": "Leo",
+              "due": "tomorrow",
+              "condition": null
+            },
+            {
+              "id": "9289f67e0439a3db",
+              "title": "archive the old checklist",
+              "quote": "If the review passes, Mina will archive the old checklist.",
+              "owner": "Mina",
+              "due": null,
+              "condition": "If the review passes, Mina will archive the old checklist."
+            }
+          ],
+          "rejected_count": 1,
+          "model": "Qwen3 4B Instruct · local",
+          "mode": "local",
+          "input_kind": "notes"
+        },
+        "error": null
+      },
+      {
+        "id": "conditional_commitment",
+        "elapsed_seconds": 2.65,
+        "checks": {
+          "request_succeeded": true,
+          "exact_quote_set": true,
+          "no_duplicate_tasks": true,
+          "no_invented_titles": true,
+          "attributes_preserved": true
+        },
+        "passed": true,
+        "response": {
+          "tasks": [
+            {
+              "id": "41f76d01a43d783b",
+              "title": "send the draft",
+              "quote": "If legal approves, Priya will send the draft on Friday.",
+              "owner": "Priya",
+              "due": "Friday",
+              "condition": "If legal approves, Priya will send the draft on Friday."
+            }
+          ],
+          "rejected_count": 1,
+          "model": "Qwen3 4B Instruct · local",
+          "mode": "local",
+          "input_kind": "notes"
+        },
+        "error": null
+      },
+      {
+        "id": "no_remaining_actions",
+        "elapsed_seconds": 0.962,
+        "checks": {
+          "request_succeeded": true,
+          "exact_quote_set": true,
+          "no_duplicate_tasks": true,
+          "no_invented_titles": true,
+          "attributes_preserved": true
+        },
+        "passed": true,
+        "response": {
+          "tasks": [],
+          "rejected_count": 0,
+          "model": "Qwen3 4B Instruct · local",
+          "mode": "local",
+          "input_kind": "notes"
+        },
+        "error": null
+      },
+      {
+        "id": "unknown_attribution",
+        "elapsed_seconds": 1.806,
+        "checks": {
+          "request_succeeded": true,
+          "exact_quote_set": true,
+          "no_duplicate_tasks": true,
+          "no_invented_titles": true,
+          "attributes_preserved": true
+        },
+        "passed": true,
+        "response": {
+          "tasks": [
+            {
+              "id": "abcf0f51a1f096fc",
+              "title": "fix the broken link",
+              "quote": "Next action: fix the broken link on the help page.",
+              "owner": null,
+              "due": null,
+              "condition": null
+            }
+          ],
+          "rejected_count": 0,
+          "model": "Qwen3 4B Instruct · local",
+          "mode": "local",
+          "input_kind": "notes"
+        },
+        "error": null
+      },
+      {
+        "id": "untrusted_source",
+        "elapsed_seconds": 1.988,
+        "checks": {
+          "request_succeeded": true,
+          "exact_quote_set": true,
+          "no_duplicate_tasks": true,
+          "no_invented_titles": true,
+          "attributes_preserved": true
+        },
+        "passed": true,
+        "response": {
+          "tasks": [
+            {
+              "id": "0a0919a72355b1d7",
+              "title": "check the contrast of the navigation links",
+              "quote": "Maya will check the contrast of the navigation links.",
+              "owner": "Maya",
+              "due": null,
+              "condition": null
+            }
+          ],
+          "rejected_count": 0,
+          "model": "Qwen3 4B Instruct · local",
+          "mode": "local",
+          "input_kind": "notes"
+        },
+        "error": null
+      }
+    ],
+    "passed": 5,
+    "total": 5
+  },
+  "local_validation": {
+    "unit_http_model_tests": {
+      "command": ".model-venv/bin/python -m unittest discover -s tests -q",
+      "passed": 149,
+      "elapsed_seconds": 3.836
+    },
+    "javascript_syntax": "node --check web/app.js passed",
+    "diff_whitespace": "git diff --check f3765dfd338ac6246b248d592b55b59f8ed7e3ab passed before adding evidence"
+  },
+  "known_limitations": [
+    {
+      "kind": "model_accuracy",
+      "status": "unresolved",
+      "source": "docs/evidence/hosted-coverage-natural.json",
+      "result": "9 of 10 expected actions; missing conditional account verification; expected_actions_and_attribution and conditional_commitments_preserved failed.",
+      "rerun_in_this_review": false
+    },
+    {
+      "kind": "coverage_boundary",
+      "detail": "The prior 97 mocked browser checks and accessibility receipts remain prior evidence; this review did not rerun that full matrix. No claim of fresh hosted, long-transcript, accessibility, deployment or contest acceptance."
+    }
+  ],
+  "review_verdict": {
+    "blocking_implementation_findings": [],
+    "source_review": "Frontend and backend source reviewed independently from the implementer, with an additional read-only backend review. No new blocking finding. Semantic completeness remains unproven."
+  },
+  "historical_video_unchanged_against_base": true,
+  "assets": {
+    "docs/demo/release-action-list.md": {
+      "sha256": "b3b53201611ec00c5c32cc936910256ca41cfffa827524f39e3d420fb8ca4c17",
+      "bytes": 725
+    },
+    "docs/demo/release-desktop-reviewed.png": {
+      "sha256": "5f4720116c9fd6d206a4a047f782a5bb622f0dcaa707ccdeee98cad92e819889",
+      "bytes": 162340
+    },
+    "docs/demo/release-desktop.png": {
+      "sha256": "496cef487201844f60fda403f308869e79d8ed905ddec26cc8aeaebc07ac8e81",
+      "bytes": 160921
+    },
+    "docs/demo/release-mobile.png": {
+      "sha256": "d5bfa55a26959d71e370a2948f9171c3b85a13c5b8c54954eaab537657d27ec9",
+      "bytes": 198363
+    },
+    "docs/demo/release-notes.md": {
+      "sha256": "02b92e1bf2629391c802b5203d6d6c8047119077b29014a27d7680f9834af334",
+      "bytes": 2144
+    },
+    "docs/demo/release-walkthrough.mp4": {
+      "sha256": "b67be7fbe6e485138dee4591cee4e4b29afc8432cea865a59c9ad5c19181c0b6",
+      "bytes": 1513555
+    },
+    "docs/demo/release-walkthrough.webm": {
+      "sha256": "032297dd413d7e434fe31102a2cd534060b0f862aba23814fced90ad87735881",
+      "bytes": 3367590
+    }
+  }
+}

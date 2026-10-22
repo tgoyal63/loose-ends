@@ -20,10 +20,10 @@
 
 * { box-sizing: border-box; }
 body { margin: 0; background: var(--paper); color: var(--ink); font-size: 15px; line-height: 1.5; }
-button, input, textarea { font: inherit; }
+button, input, textarea, select { font: inherit; }
 button { border: 0; cursor: pointer; touch-action: manipulation; }
 button:disabled { cursor: not-allowed; }
-button, a, input, textarea, summary, [tabindex] { -webkit-tap-highlight-color: transparent; }
+button, a, input, textarea, select, summary, [tabindex] { -webkit-tap-highlight-color: transparent; }
 :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
 [hidden] { display: none !important; }
 svg { flex-shrink: 0; }
@@ -50,6 +50,20 @@ h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spac
 .button-text:hover:not(:disabled) { text-decoration: underline; text-underline-offset: 4px; }
 .button-text:disabled { color: #7b828d; }
 #sample-button { white-space: nowrap; }
+.processing-settings { padding: 18px 24px 16px; border-bottom: 1px solid var(--line); }
+.processing-choice { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.processing-choice label, .hosted-settings > label { font-size: 12px; font-weight: 550; }
+.processing-choice select { min-width: 0; max-width: 100%; min-height: 40px; padding: 8px 26px 8px 10px; border: 1px solid #7c8796; border-radius: 3px; background: var(--surface); color: var(--ink); font-size: 13px; }
+.processing-help { margin: 9px 0 0; color: var(--muted); font-size: 12px; line-height: 1.65; }
+.hosted-settings { margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--line); }
+.hosted-settings > label { display: block; margin-bottom: 7px; }
+.hosted-key-row { display: flex; align-items: stretch; gap: 8px; }
+.hosted-key-row input { min-width: 0; width: 100%; min-height: 42px; padding: 9px 10px; border: 1px solid #7c8796; border-radius: 3px; background: var(--surface); color: var(--ink); font-size: 14px; }
+.hosted-key-row button { flex-shrink: 0; }
+.hosted-settings-footer { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 0 12px; }
+.hosted-settings-footer p { margin: 9px 0 0; color: var(--muted); font-size: 12px; line-height: 1.65; overflow-wrap: anywhere; }
+.hosted-settings-footer p[role="alert"] { color: var(--danger); }
+.hosted-settings-footer .button-text { margin: 3px 0 -6px; font-size: 12px; }
 #notes-form { display: flex; flex-direction: column; }
 #notes { width: calc(100% - 16px); min-height: 300px; resize: vertical; padding: 22px 16px; margin: 8px; border: 1px solid transparent; border-radius: 2px; background: var(--surface); color: var(--ink); line-height: 1.85; font-size: 15px; display: block; }
 #notes::placeholder { color: #6b7480; opacity: 1; }
@@ -98,7 +112,7 @@ h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spac
 .loading-state span:not(.spinner) { display: block; font-size: 13px; color: #52617a; line-height: 1.65; }
 .spinner { width: 18px; height: 18px; border: 2px solid #c4d1f3; border-top-color: var(--accent); border-radius: 50%; animation: turn 1s linear infinite; flex: 0 0 auto; margin-top: 3px; }
 @keyframes turn { to { transform: rotate(360deg); } }
-.results-summary { font-size: 12px; color: var(--muted); margin: -1px 0 18px; font-variant-numeric: tabular-nums; }
+.results-summary { font-size: 12px; color: var(--muted); margin: -1px 0 18px; font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
 .task-list { list-style: none; padding: 0; margin: 0; }
 .task-card { border-top: 1px solid var(--line); padding: 22px 0 17px; min-width: 0; }
 .task-card:first-child { border-top: 1px solid var(--line-strong); }
@@ -153,7 +167,7 @@ h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spac
   .panel-heading { padding-left: 20px; padding-right: 20px; gap: 10px; }
   .heading-with-number { gap: 10px; }
   .actions-body { padding: 20px; }
-  .notes-tools, .model-status { padding-left: 20px; padding-right: 20px; }
+  .notes-tools, .model-status, .processing-settings { padding-left: 20px; padding-right: 20px; }
   #notes { padding-left: 12px; padding-right: 12px; }
   .export-suffix { display: none; }
   .privacy-note { max-width: 230px; }
@@ -182,6 +196,7 @@ h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spac
   .empty-state { padding: 22px 0 24px; max-width: 420px; }
   .empty-state h3 { font-size: 21px; }
   .edit-panel input, .edit-panel textarea { font-size: 16px; }
+  .processing-choice select, .hosted-key-row input { font-size: 16px; min-height: 44px; }
   .page-footer { gap: 16px; }
   .page-footer details { max-width: 290px; flex-shrink: 0; }
 }
@@ -196,7 +211,8 @@ h2 { margin: 0; font-size: 15px; line-height: 1.4; font-weight: 650; letter-spac
   h2 { font-size: 14px; }
   .step-number { font-size: 12px; }
   #sample-button { font-size: 12px; }
-  .notes-tools, .model-status { padding-left: 16px; padding-right: 16px; }
+  .notes-tools, .model-status, .processing-settings { padding-left: 16px; padding-right: 16px; }
+  .processing-choice { align-items: stretch; flex-direction: column; gap: 7px; }
   #notes { padding-left: 8px; padding-right: 8px; min-height: 250px; }
   .notes-meta { font-size: 12px; }
   #notes-help { max-width: 170px; }

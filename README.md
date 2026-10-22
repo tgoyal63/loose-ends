@@ -1,20 +1,32 @@
 # Loose Ends
 
 Turn scattered notes into an editable action list, with the source kept beside
-every task. Loose Ends uses an open-weight language model running on your own
-machine. It does not send messages, schedule tasks or act on your behalf.
+every task. Choose an open-weight model on your own machine or explicitly select
+optional Groq-hosted GPT-OSS 120B. It does not send messages, schedule tasks or
+act on your behalf.
 
 Built for Hacktoberfest 2026 Week 3, **Slow and Steady**.
 
-![Loose Ends showing source-backed action drafts](docs/demo/desktop.png)
+![Loose Ends showing three source-backed action drafts](docs/demo/release-desktop.png)
 
-[Watch the local-model demo](docs/demo/walkthrough.mp4) ·
-[See current validation evidence](docs/transcript-support.md)
+[Watch the local-model demo](https://tgoyal63.github.io/loose-ends/) ·
+[See release evidence and limits](docs/release.md)
+
+The October 22 release demonstrates the ordinary-notes workflow. Long-meeting
+extraction remains incomplete: the latest hosted natural-meeting run found nine
+of ten expected actions and failed acceptance. Review every draft against its
+source. See [the hosted validation report](docs/hosted-validation.md).
 
 ## Run
 
 The web application needs Python 3.11 or later and no third-party Python packages.
-The model service is a separate local process.
+Local inference uses a separate model process. For hosted setup without a local
+model download, run `python3 server.py` using Python 3.11+, open the local app,
+select **Hosted · Groq**, and use the password field to configure a dedicated
+Groq API key. See [hosted processing](docs/hosted-processing.md) for data handling,
+account setup and the remaining live acceptance checks.
+
+For local inference:
 
 1. Start the pinned local model using [the runtime instructions](docs/model-runtime.md).
 2. Use the exact model ID returned by that service's `GET /v1/models` endpoint:
@@ -37,14 +49,19 @@ Transcripts with a `Speaker Name HH:MM:SS` header followed by that person's
 utterance are recognized automatically. Keep speaker names, timestamps and
 the complete exchanges; wrapped speech is supported.
 
-The whole supported input is sent in one bounded local-model request. Pasting
+The whole supported input is sent to the selected model. Local requests with
+completed invalid formatting can be retried once automatically, within the same
+150-second overall deadline. Hosted requests have no automatic retry.
+Conversation text is never silently shortened. Pasting
 over the limit keeps the text and shows an error; it is not silently truncated.
 Load the labelled synthetic example to try the ordinary notes flow without
 personal data. Review the drafts, edit or remove tasks, then export Markdown.
 Editing a task keeps its original source evidence and marks it as human-edited.
 
-An OpenAI-compatible local model server is required. This project does not use
-the OpenAI service, require an API key or silently fall back to a cloud provider.
+Local mode requires an OpenAI-compatible model server with streamed chat
+completions; it does not require an API key. Hosted mode uses Groq's API and may
+consume paid credit. This project does not use the OpenAI service or silently
+fall back between local and hosted processing.
 The example runtime uses MLX on Apple silicon; other compatible loopback servers
 can be configured explicitly. Verify their response format and model IDs.
 
@@ -73,21 +90,27 @@ is part of the workflow.
 
 ## Privacy and boundaries
 
-- The app and model listen on loopback only; no public deployment is required.
-- Notes, drafts and edits stay in browser/request memory until you export.
+- The app and local model listen on loopback only; no public deployment is required.
+- Fresh pages default to local mode. Hosted processing must be selected explicitly
+  and sends the complete submitted source to Groq. Switching modes never submits it.
+- The app keeps notes, drafts and edits in browser/request memory until export;
+  hosted provider handling is separate and described in the hosted guide.
+- API keys stay in server process memory. The app clears the password field
+  on submission and does not store the key in files or browser storage.
 - The application does not store notes, use analytics, load a CDN or write request
   contents to access logs.
 - Export creates a local file. Closing/reloading the page clears the unsaved draft.
 - The separately configured model service has its own behavior; inspect its
   logging and settings before using sensitive material.
 - Model output and pasted content render as text, not HTML.
-- Requests from another website are rejected; the local model client rejects
-  remote URLs, credentials, redirects and environment proxy routing.
+- Requests from another website are rejected. The local client rejects remote
+  URLs and credentials; the separate hosted client uses only Groq's fixed HTTPS
+  endpoint. Neither client follows redirects or environment proxies.
 
 ## Validate
 
 ```bash
-python3 -m unittest discover -s tests -v
+.model-venv/bin/python -m unittest discover -s tests -v
 node --check web/app.js
 ```
 
@@ -97,16 +120,21 @@ With both local services running, evaluate five synthetic source-fidelity cases:
 python3 scripts/evaluate_model.py --output logs/model-evaluation.json
 ```
 
-Exercise fragmented speech, separate speakers, a long transcript and later
-cancellation through the running local application:
+Exercise fragmented speech, separate speakers, long transcripts, natural
+conversation, and later cancellation through the running local application:
 
 ```sh
 python3 scripts/evaluate_transcripts.py --output logs/transcript-evaluation.json
 ```
 
+To evaluate an explicitly configured hosted model, add `--mode hosted` to either
+evaluator. This submits synthetic fixtures to Groq and may consume API credit;
+the expected actions and source checks are identical in both modes.
+
 This is a small reproducible check, not a universal model benchmark. Real model
 results and browser evidence are recorded separately from tests using a fake
-model. See [validation](docs/validation.md) for the final measured results.
+model. See [release validation](docs/release.md) for measured results,
+including the unresolved accuracy failure on a longer natural meeting.
 
 ## Open development
 

@@ -1,0 +1,137 @@
+{
+  "recorded_at": "2026-10-22T06:49:59.604422+00:00",
+  "scope": "Actual Groq GPT-OSS 120B calls with synthetic fixtures. Captured before the typed upstream HTTP diagnostic update; long-input failures do not establish their provider cause.",
+  "mode": "hosted",
+  "cases": [
+    {
+      "id": "fragmented-speakers-and-conditions",
+      "input_characters": 565,
+      "input_sha256": "641f7fa4a05f0e6c8e9675da2534dfd6e5d3487e67fc82d0ad60d9011e41c687",
+      "elapsed_seconds": 6.189,
+      "checks": {
+        "request_succeeded": true,
+        "expected_actions_and_attribution": true,
+        "source_and_context_match": true,
+        "no_duplicate_ids": true,
+        "cross_turn_prerequisites_preserved": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [
+          {
+            "id": "09e0a6fbdbba3621",
+            "title": "create the sample listing",
+            "quote": "Mira Shah 09:10:25\nI will\ncreate the sample listing on Friday.",
+            "owner": "Mira Shah",
+            "due": "Friday",
+            "condition": null,
+            "source": {
+              "speaker": "Mira Shah",
+              "timestamp": "09:10:25",
+              "context": "Mira Shah 09:10:00\nThanks for joining.\nWe still need access to the staging account.\nLee Park 09:10:12\nOnce account access works and the sample is ready,\nwe can run the test.\nMira Shah 09:10:25\nI will\ncreate the sample listing on Friday.\nLee Park 09:10:36\nOnly after finance approves the test.\nMira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee."
+            }
+          },
+          {
+            "id": "7a35b63e33e2bd74",
+            "title": "notify Lee",
+            "quote": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.",
+            "owner": "Mira Shah",
+            "due": null,
+            "condition": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.",
+            "source": {
+              "speaker": "Mira Shah",
+              "timestamp": "09:10:42",
+              "context": "Mira Shah 09:10:25\nI will\ncreate the sample listing on Friday.\nLee Park 09:10:36\nOnly after finance approves the test.\nMira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.\nLee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday."
+            }
+          },
+          {
+            "id": "ba6dacc8f7f9136f",
+            "title": "review the sample",
+            "quote": "Lee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.",
+            "owner": "Lee Park",
+            "due": "Monday",
+            "condition": null,
+            "source": {
+              "speaker": "Lee Park",
+              "timestamp": "09:11:02",
+              "context": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.\nLee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.\nLee Patel 09:11:14\nI will review the sample on Monday."
+            }
+          },
+          {
+            "id": "73cc2d9f3c91f713",
+            "title": "review the sample",
+            "quote": "Lee Patel 09:11:14\nI will review the sample on Monday.",
+            "owner": "Lee Patel",
+            "due": "Monday",
+            "condition": null,
+            "source": {
+              "speaker": "Lee Patel",
+              "timestamp": "09:11:14",
+              "context": "Lee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.\nLee Patel 09:11:14\nI will review the sample on Monday."
+            }
+          }
+        ],
+        "rejected_count": 0,
+        "model": "GPT-OSS 120B \u00b7 Groq",
+        "mode": "hosted",
+        "input_kind": "transcript"
+      },
+      "error": null
+    },
+    {
+      "id": "long-meeting-tail-preserved",
+      "input_characters": 21768,
+      "input_sha256": "20dff3f033c88cd7b4ad024c27d874e48d8c778f9249067a87104d48b9520821",
+      "elapsed_seconds": 0.119,
+      "checks": {
+        "request_succeeded": false,
+        "expected_actions_and_attribution": false,
+        "source_and_context_match": true,
+        "no_duplicate_ids": true,
+        "cross_turn_prerequisites_preserved": false
+      },
+      "passed": false,
+      "response": {},
+      "error": "HTTPError"
+    },
+    {
+      "id": "later-cancellation-and-speculation",
+      "input_characters": 258,
+      "input_sha256": "b753b84da1dfa431a0ae082d1670e56b5f24b6f853c7141fdb4293cab6ac1438",
+      "elapsed_seconds": 2.976,
+      "checks": {
+        "request_succeeded": true,
+        "expected_actions_and_attribution": true,
+        "source_and_context_match": true,
+        "no_duplicate_ids": true
+      },
+      "passed": true,
+      "response": {
+        "tasks": [],
+        "rejected_count": 0,
+        "model": "GPT-OSS 120B \u00b7 Groq",
+        "mode": "hosted",
+        "input_kind": "transcript"
+      },
+      "error": null
+    },
+    {
+      "id": "natural-meeting-with-demos-and-corrections",
+      "input_characters": 19306,
+      "input_sha256": "585da2ad6be0b5fac64d3942a0fca463b5670b34285007cae1ffaeaa9aec4ee7",
+      "elapsed_seconds": 0.123,
+      "checks": {
+        "request_succeeded": false,
+        "expected_actions_and_attribution": false,
+        "source_and_context_match": true,
+        "no_duplicate_ids": true,
+        "conditional_commitments_preserved": false
+      },
+      "passed": false,
+      "response": {},
+      "error": "HTTPError"
+    }
+  ],
+  "passed": 2,
+  "total": 4
+}

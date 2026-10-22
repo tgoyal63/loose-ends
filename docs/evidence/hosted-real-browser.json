@@ -1,0 +1,180 @@
+{
+  "kind": "Actual hosted browser run using only synthetic repository meeting; no API mocks",
+  "startedAt": "2026-10-22T06:57:07.905Z",
+  "checks": [
+    {
+      "name": "Fresh browser starts in local mode",
+      "pass": true
+    },
+    {
+      "name": "No synthetic API fixtures installed",
+      "pass": true
+    },
+    {
+      "name": "Hosted ready without key entry",
+      "pass": true
+    },
+    {
+      "name": "During inference notes are read-only and hosted destination disclosed",
+      "pass": true
+    },
+    {
+      "name": "Exactly one real request sends full synthetic input and explicit hosted mode",
+      "pass": true
+    },
+    {
+      "name": "Actual response succeeds with hosted transcript plan",
+      "pass": true
+    },
+    {
+      "name": "Actual model label identifies Groq and GPT-OSS 120B",
+      "pass": true
+    },
+    {
+      "name": "Four meaningful commitments with correct speakers, dates and turn identity",
+      "pass": true
+    },
+    {
+      "name": "Original source quotes and nearby contexts match exact input",
+      "pass": true
+    },
+    {
+      "name": "Speculation, completed and prerequisite-only turns omitted",
+      "pass": true
+    },
+    {
+      "name": "Cross-turn account/sample and finance prerequisites remain visible in source context",
+      "pass": true
+    },
+    {
+      "name": "Notification retains its explicit finance condition",
+      "pass": true
+    },
+    {
+      "name": "All returned actions render and full notes survive",
+      "pass": true
+    },
+    {
+      "name": "Success does not leave error-severity feedback",
+      "pass": true
+    },
+    {
+      "name": "Success restores note editing",
+      "pass": true
+    },
+    {
+      "name": "Human edit and completion are applied",
+      "pass": true
+    },
+    {
+      "name": "Human edit retains exact original source",
+      "pass": true
+    },
+    {
+      "name": "Real Markdown download succeeds",
+      "pass": true
+    },
+    {
+      "name": "Switching local retains edited completed results and original hosted model",
+      "pass": true
+    },
+    {
+      "name": "Mode switch causes no additional inference request",
+      "pass": true
+    },
+    {
+      "name": "No browser runtime errors",
+      "pass": true
+    },
+    {
+      "name": "No browser persistence",
+      "pass": true
+    }
+  ],
+  "errors": [],
+  "planRequests": 1,
+  "status": 200,
+  "elapsedSeconds": 4.388,
+  "response": {
+    "tasks": [
+      {
+        "id": "09e0a6fbdbba3621",
+        "title": "create the sample listing",
+        "quote": "Mira Shah 09:10:25\nI will\ncreate the sample listing on Friday.",
+        "owner": "Mira Shah",
+        "due": "Friday",
+        "condition": null,
+        "source": {
+          "speaker": "Mira Shah",
+          "timestamp": "09:10:25",
+          "context": "Mira Shah 09:10:00\nThanks for joining.\nWe still need access to the staging account.\nLee Park 09:10:12\nOnce account access works and the sample is ready,\nwe can run the test.\nMira Shah 09:10:25\nI will\ncreate the sample listing on Friday.\nLee Park 09:10:36\nOnly after finance approves the test.\nMira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee."
+        }
+      },
+      {
+        "id": "7a35b63e33e2bd74",
+        "title": "notify Lee",
+        "quote": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.",
+        "owner": "Mira Shah",
+        "due": null,
+        "condition": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.",
+        "source": {
+          "speaker": "Mira Shah",
+          "timestamp": "09:10:42",
+          "context": "Mira Shah 09:10:25\nI will\ncreate the sample listing on Friday.\nLee Park 09:10:36\nOnly after finance approves the test.\nMira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.\nLee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday."
+        }
+      },
+      {
+        "id": "ba6dacc8f7f9136f",
+        "title": "review the sample",
+        "quote": "Lee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.",
+        "owner": "Lee Park",
+        "due": "Monday",
+        "condition": null,
+        "source": {
+          "speaker": "Lee Park",
+          "timestamp": "09:11:02",
+          "context": "Mira Shah 09:10:42\nYes, after finance approves the test,\nI will notify Lee.\nLee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.\nLee Patel 09:11:14\nI will review the sample on Monday."
+        }
+      },
+      {
+        "id": "73cc2d9f3c91f713",
+        "title": "review the sample",
+        "quote": "Lee Patel 09:11:14\nI will review the sample on Monday.",
+        "owner": "Lee Patel",
+        "due": "Monday",
+        "condition": null,
+        "source": {
+          "speaker": "Lee Patel",
+          "timestamp": "09:11:14",
+          "context": "Lee Patel 09:10:51\nMaybe we could automate this someday.\nLee Park 09:11:02\nI already sent the checklist.\nI will review the sample on Monday.\nLee Patel 09:11:14\nI will review the sample on Monday."
+        }
+      }
+    ],
+    "rejected_count": 0,
+    "model": "GPT-OSS 120B \u00b7 Groq",
+    "mode": "hosted",
+    "input_kind": "transcript"
+  },
+  "exportFile": "logs/review-hosted-real-export.md",
+  "switchedExportFile": "logs/review-hosted-real-export-after-switch.md",
+  "artifact_checks": {
+    "submitted_text_equals_repository_fixture": true,
+    "download_has_original_hosted_model": true,
+    "download_has_human_edit_and_completed_marker": true,
+    "all_original_quotes_exported_verbatim_after_markdown_unescaping": true,
+    "all_nearby_source_contexts_exported": true,
+    "exports_identical_after_switching_to_local": true
+  },
+  "input_characters": 565,
+  "input_sha256": "641f7fa4a05f0e6c8e9675da2534dfd6e5d3487e67fc82d0ad60d9011e41c687",
+  "source_sha256": {
+    "web/app.js": "2e9f29a0e60eeaa82a512dd6075e2954ed2b58d8eafd5ebaea666d026bc3bf31",
+    "web/index.html": "a1015f501244fa7831c2c7a42f2166684f7cbc7c760b3c82e3bff51323bcbc70",
+    "web/styles.css": "761926b1e0c23b59acca02265a89e36c2f6412b3c4a8b151f78e4f357b7a33a9",
+    "server.py": "67078c88c59e4e0a3aa38aca0f8df8deb2507eca6e158b4c1df7192b516df37e",
+    "loose_ends/hosted.py": "5fdeac3424780a46dbda979da2f2c0005bb7e161df603b976aa83054b1179e08"
+  },
+  "scope": "One actual hosted inference with the 565-character synthetic repository meeting, followed by browser review and export. Does not establish long-meeting accuracy or account capacity.",
+  "tooling_note": "Two pre-generation harness attempts crashed on a URL global unavailable in the CLI VM; corrected to string matching before the sole inference request.",
+  "source_snapshot_note": "Web hashes match the prior reviewed freeze. Python hashes record files observed after this browser run; this reviewer did not restart the server or prove that concurrently edited Python bytes were loaded by the process."
+}

@@ -1,0 +1,149 @@
+{
+  "recorded_at": "2026-10-22T09:59:25.044212+00:00",
+  "scope": "Synthetic model transcript cases; not a general accuracy or completeness guarantee.",
+  "mode": "hosted",
+  "cases": [
+    {
+      "id": "natural-meeting-with-demos-and-corrections",
+      "input_characters": 19306,
+      "input_sha256": "585da2ad6be0b5fac64d3942a0fca463b5670b34285007cae1ffaeaa9aec4ee7",
+      "elapsed_seconds": 21.828,
+      "checks": {
+        "request_succeeded": true,
+        "expected_actions_and_attribution": false,
+        "source_and_context_match": true,
+        "no_duplicate_ids": true,
+        "conditional_commitments_preserved": false
+      },
+      "passed": false,
+      "response": {
+        "tasks": [
+          {
+            "id": "4ef2945fe34466db",
+            "title": "circulate the pilot agenda",
+            "quote": "Nora Ellis 10:01:45\nI will circulate the pilot agenda on Thursday.\nIt covers the arrival order, the reading tasks, and the closing discussion. The invitation is still a draft.",
+            "owner": "Nora Ellis",
+            "due": "Thursday",
+            "condition": null,
+            "source": {
+              "speaker": "Nora Ellis",
+              "timestamp": "10:01:45",
+              "context": "Nora Ellis 10:01:15\nRight. Can those six people find a letter, listen to its recording, and return to the collection without us narrating every click?\nTessa Wynn 10:01:30\nGood boundary. The recording is my voice reading an invented letter. No donor or interview-subject permission is needed for this demo.\nNora Ellis 10:01:45\nI will circulate the pilot agenda on Thursday.\nIt covers the arrival order, the reading tasks, and the closing discussion. The invitation is still a draft.\nJune Park 10:02:00\nI sent the printed timetable to Priya yesterday, including the break between groups. There is no timetable email waiting on me.\nPriya Cole 10:02:15\nYes, that arrived. The twenty-minute gap gives people time to leave slowly and gives us time to move the chairs."
+            }
+          },
+          {
+            "id": "9f034faf41a784b0",
+            "title": "replace the placeholder dates with catalogue estimates",
+            "quote": "June Park 10:05:45\nI will replace the placeholder dates with catalogue estimates by Friday. My worksheet has estimates for all twelve sample records.",
+            "owner": "June Park",
+            "due": "Friday",
+            "condition": null,
+            "source": {
+              "speaker": "June Park",
+              "timestamp": "10:05:45",
+              "context": "June Park 10:05:15\nTwo dates say winter, our placeholder. The rest have an approximate year. That pattern looks accidental.\nNora Ellis 10:05:30\nWe need consistent uncertainty. No exact date when the source does not support one; empty is better than an invented day.\nJune Park 10:05:45\nI will replace the placeholder dates with catalogue estimates by Friday. My worksheet has estimates for all twelve sample records.\nRavi Mehta 10:06:00\nOkay. The page displays circa and a year as plain text. It does not turn them into a precise date.\nOmar Bell 10:06:15\nHelpful. An exact date would imply more certainty than the catalogue has."
+            }
+          },
+          {
+            "id": "d2f57b05469d8db9",
+            "title": "test the recording controls with keyboard navigation",
+            "quote": "Omar Bell 10:14:15\nI will test the recording controls with keyboard navigation on Monday. Starting, pausing, seeking, and returning focus to the heading.",
+            "owner": "Omar Bell",
+            "due": "Monday",
+            "condition": null,
+            "source": {
+              "speaker": "Omar Bell",
+              "timestamp": "10:14:15",
+              "context": "Priya Cole 10:13:45\nCould a volunteer overwrite the transcription? That text cursor makes it look editable, although there is no Save.\nRavi Mehta 10:14:00\nNo, just selectable text. Editing is in the separate staff application, outside this pilot.\nOmar Bell 10:14:15\nI will test the recording controls with keyboard navigation on Monday. Starting, pausing, seeking, and returning focus to the heading.\nJune Park 10:14:30\nThanks. The return path could confuse people after a related-record link takes them away from their starting collection.\nRavi Mehta 10:14:45\nThe breadcrumb keeps the collection name. Browser Back restores the scroll position, rather than dropping people at the top."
+            }
+          },
+          {
+            "id": "337f0bce9055e066",
+            "title": "reserve the east room for the volunteer trial",
+            "quote": "Priya Cole 10:18:45\nIf the building coordinator confirms the east room is available, I'll reserve the east room for the volunteer trial.\nUntil that confirmation, the location stays tentative.",
+            "owner": "Priya Cole",
+            "due": null,
+            "condition": "Priya Cole 10:18:45\nIf the building coordinator confirms the east room is available, I'll reserve the east room for the volunteer trial.\nUntil that confirmation, the location stays tentative.",
+            "source": {
+              "speaker": "Priya Cole",
+              "timestamp": "10:18:45",
+              "context": "Priya Cole 10:18:15\nThe desk has a wired connection and a current browser. I checked those yesterday with the existing display, so a network inspection is not another pending task.\nJune Park 10:18:30\nUseful. The printed letters are also available as an emergency alternative, although using paper would change what we learn about the viewer.\nPriya Cole 10:18:45\nIf the building coordinator confirms the east room is available, I'll reserve the east room for the volunteer trial.\nUntil that confirmation, the location stays tentative.\nNora Ellis 10:19:00\nThat gives us one room dependency and one account dependency. Neither needs to be translated into an invented deadline; the named prerequisites are the meaningful information.\nOmar Bell 10:19:15\nOn the written task cards, large print would be helpful even for volunteers who do not describe themselves as having a visual impairment. The room lighting is fairly soft."
+            }
+          },
+          {
+            "id": "b19d9daa4dc9d2d3",
+            "title": "prepare the large-print task cards",
+            "quote": "Tessa Wynn 10:21:30\nI'll prepare the large-print task cards by Wednesday. Each card will contain one task, the starting address, and the reminder that a break is welcome.",
+            "owner": "Tessa Wynn",
+            "due": "Wednesday",
+            "condition": null,
+            "source": {
+              "speaker": "Tessa Wynn",
+              "timestamp": "10:21:30",
+              "context": "Tessa Wynn 10:21:00\nThe feedback card is separate again, correct? I do not want the last question on the task sheet to suggest that every participant must fill in a survey before leaving.\nNora Ellis 10:21:15\nSeparate and optional. The facilitator can invite a spoken comment instead. The small trial is about learning from people, and it does not require collecting names on feedback cards.\nTessa Wynn 10:21:30\nI'll prepare the large-print task cards by Wednesday. Each card will contain one task, the starting address, and the reminder that a break is welcome.\nJune Park 10:21:45\nGood. The wording of the first task is settled, so there is no hidden approval round on those cards. The final question asks how certain the participant felt about the source date.\nRavi Mehta 10:22:00\nBack on the screen, this menu has Download image and Copy reference. A download produces the watermarked sample scan; it does not include any unseen catalogue fields."
+            }
+          },
+          {
+            "id": "54571e7af0d2e86f",
+            "title": "add a screen-reader confirmation to Copy reference",
+            "quote": "Ravi Mehta 10:24:15\nI will add a screen-reader confirmation to Copy reference on Tuesday. The confirmation will use the existing status area and the same short wording as the visual message.",
+            "owner": "Ravi Mehta",
+            "due": "Tuesday",
+            "condition": null,
+            "source": {
+              "speaker": "Ravi Mehta",
+              "timestamp": "10:24:15",
+              "context": "Omar Bell 10:23:45\nThe missing status announcement is the actionable part of that discussion. A short Reference copied message is enough; reading the entire reference aloud again would be distracting.\nPriya Cole 10:24:00\nSorry, someone knocked at the office door. I am back. I heard the part about announcing the copy result, and I have no room update to add.\nRavi Mehta 10:24:15\nI will add a screen-reader confirmation to Copy reference on Tuesday. The confirmation will use the existing status area and the same short wording as the visual message.\nTessa Wynn 10:24:30\nThat covers the important distinction: someone knows the action succeeded without losing their place in the record. It is not a new dialog that has to be dismissed.\nNora Ellis 10:24:45\nWe have a few minutes left. Let us separate actual commitments from the ideas we mentioned while looking at the interface, so the notes do not turn the whole demonstration into a backlog."
+            }
+          },
+          {
+            "id": "1edba2eb80f40f40",
+            "title": "check the two donor-credit lines against the approved worksheet",
+            "quote": "June Park 10:27:00\nI will check the two donor-credit lines against the approved worksheet. That is a verification task; any correction depends on what the worksheet actually says.",
+            "owner": "June Park",
+            "due": null,
+            "condition": null,
+            "source": {
+              "speaker": "June Park",
+              "timestamp": "10:27:00",
+              "context": "Nora Ellis 10:26:30\nA check sounds proportionate. If the worksheet permits both forms, the result could be that nothing changes, rather than an automatic rewrite of the credits.\nJune Park 10:26:45\nExactly. I do not yet know whether one is a legacy form. The worksheet is the source for that decision, and the inconsistent wording alone does not settle it.\nJune Park 10:27:00\nI will check the two donor-credit lines against the approved worksheet. That is a verification task; any correction depends on what the worksheet actually says.\nOmar Bell 10:27:15\nThat makes sense. The task title should describe the check, without assuming the outcome. Readers ought to see a consistent explanation of who provided the material.\nTessa Wynn 10:27:30\nOne update from me: I typed the pronunciation guide while we were discussing the room. The two place names and the repeated-line note are in the shared pilot folder now."
+            }
+          },
+          {
+            "id": "e6db4d18ba435c73",
+            "title": "send the final action summary",
+            "quote": "Nora Ellis 10:29:00\nI will send the final action summary at 16:00. It will distinguish the room reservation and account verification prerequisites from the tasks with calendar deadlines.",
+            "owner": "Nora Ellis",
+            "due": "16:00",
+            "condition": null,
+            "source": {
+              "speaker": "Nora Ellis",
+              "timestamp": "10:29:00",
+              "context": "Ravi Mehta 10:28:30\nYes. The account verification waits for the administrator's repair. The copy confirmation does not depend on that repair, because it can be exercised with the working preview accounts.\nOmar Bell 10:28:45\nMy Monday keyboard pass can also use a working account. The review includes the recording controls, while the copy announcement has its own implementation owner.\nNora Ellis 10:29:00\nI will send the final action summary at 16:00. It will distinguish the room reservation and account verification prerequisites from the tasks with calendar deadlines.\nJune Park 10:29:15\nThanks. A short summary is enough; the recording is useful context, but nobody needs the entire conversation copied into every task description.\nTessa Wynn 10:29:30\nAgreed. The cards are mine, the guide is done, and the optional storytelling exercise remains just an idea. That is the complete state from my side."
+            }
+          },
+          {
+            "id": "8c2ea1f74324da0d",
+            "title": "update the volunteer contact sheet",
+            "quote": "Priya Cole 10:29:45\nI'll update the volunteer contact sheet by Friday. The update is limited to preferred names and arrival groups, using the responses that are already in the private registration folder.",
+            "owner": "Priya Cole",
+            "due": "Friday",
+            "condition": null,
+            "source": {
+              "speaker": "Priya Cole",
+              "timestamp": "10:29:45",
+              "context": "June Park 10:29:15\nThanks. A short summary is enough; the recording is useful context, but nobody needs the entire conversation copied into every task description.\nTessa Wynn 10:29:30\nAgreed. The cards are mine, the guide is done, and the optional storytelling exercise remains just an idea. That is the complete state from my side.\nPriya Cole 10:29:45\nI'll update the volunteer contact sheet by Friday. The update is limited to preferred names and arrival groups, using the responses that are already in the private registration folder."
+            }
+          }
+        ],
+        "rejected_count": 0,
+        "model": "GPT-OSS 120B \u00b7 Groq",
+        "mode": "hosted",
+        "input_kind": "transcript"
+      },
+      "error": null
+    }
+  ],
+  "passed": 0,
+  "total": 1
+}

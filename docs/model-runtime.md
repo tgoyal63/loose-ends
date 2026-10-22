@@ -1,22 +1,25 @@
 # Local open-model runtime
 
-Loose Ends was exercised with real inference from
+The local runtime uses
 [`mlx-community/Qwen3-4B-Instruct-2507-4bit`](https://huggingface.co/mlx-community/Qwen3-4B-Instruct-2507-4bit),
 a community MLX conversion of
 [`Qwen/Qwen3-4B-Instruct-2507`](https://huggingface.co/Qwen/Qwen3-4B-Instruct-2507).
-Both model cards identify the license as Apache-2.0. The upstream model is a
-4-billion-parameter, non-thinking instruction model; the conversion stores its
-weights at 4-bit precision.
+The upstream model is Apache-2.0 licensed. This is a text-only instruction model.
 
 The pinned conversion revision is
-`50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b`. Its weight file is
-2,263,022,417 bytes; the complete downloaded snapshot is 2,278,972,236 bytes.
+`50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b`, a roughly 2.28 GB snapshot.
 This is an optional local model download, separate from the application source.
-No API key or paid inference service is used.
+Local mode uses no API key or paid inference service. The separately selected
+[optional hosted mode](hosted-processing.md) uses Groq and requires an API key.
+
+The 2026-10-22 investigation found that this model is not reliable on every
+long natural meeting. Qwen3.5 4B and 9B variants also missed actions; the 9B
+variant's repeated-request latency was unsuitable on the tested 16 GB Mac.
+They were not adopted as a validated upgrade. See [the recovery report](draft-recovery.md).
 
 ## Tested environment
 
-The local checks on 2026-10-20 used an Apple Silicon Mac with 16 GB of unified
+The local checks on 2026-10-22 used an Apple Silicon Mac with 16 GB of unified
 memory, macOS 27.0.1, and a project-local Python 3.13.16 virtual environment.
 
 | Package | Tested version |
@@ -88,19 +91,22 @@ HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 HF_HUB_DISABLE_IMPLICIT_TOKEN=1 \
   --allowed-origins http://127.0.0.1:62140 \
   --decode-concurrency 1 --prompt-concurrency 1 \
   --prefill-step-size 256 \
-  --prompt-cache-size 1 --prompt-cache-bytes 128MB \
-  --max-tokens 2400 --temp 0
+  --prompt-cache-size 0 --prompt-cache-bytes 128MB \
+  --max-tokens 4800 --temp 0
 ```
 
 The downloaded snapshot is loaded by path so this run remains on the pinned
 revision. Offline flags prevent model-library downloads during inference.
-One concurrent request and a bounded retained prompt cache reduce memory demand;
-these settings do not constitute a total process-memory limit.
+One concurrent request and no retained completed prompt caches reduce memory
+demand between meetings. Long active requests still use a KV cache; these settings
+do not constitute a total process-memory limit. Disabling retained caches also
+avoids copying a previous long meeting's cache before trimming it for the next
+request. It trades cross-request reuse for more predictable memory use.
 
 The API base URL is `http://127.0.0.1:62141/v1`. In this configuration
 `GET /v1/models` advertises the resolved snapshot path as its model ID. Supply
 that path to the application's model option, and use
-`Qwen3 4B · local` as its separate display label. The server also recognizes the
+`Qwen3 4B Instruct · local` as its separate display label. The server also recognizes the
 `default_model` request alias, but does not list that alias in `/v1/models`;
 the advertised path works with the application's exact readiness check.
 
@@ -110,19 +116,36 @@ curl --fail http://127.0.0.1:62141/v1/models
 ```
 
 Stop a foreground server with Control-C. For the supervised development run,
-the ignored `logs/model-runtime.json` records its PID, start time, command and
-stop command. Verify that PID still belongs to this model server before sending
+the ignored `logs/model-qwen3-chunk-runtime.json` records its PID and command.
+Verify that PID still belongs to this model server before sending
 it `SIGTERM`; process IDs can be reused.
 
 ## API behavior and validation
 
 MLX-LM provides an OpenAI-compatible chat-completions shape:
 `POST /v1/chat/completions`, a `messages` array, and generated text under
-`choices[0].message.content`. The application uses non-streamed requests,
-temperature zero and a 2,400-token output cap for ordinary notes. Transcript
-requests use a 4,800-token output cap and the same 120-second client timeout.
-The app accepts up to 60,000 input characters; the whole transcript is included
-in one request. The retained cache setting above is not an input-context limit.
+`choices[0].delta.content` in streamed responses. The application assembles the
+stream internally and returns a complete validated list to the browser.
+Temperature remains zero, with a 2,400-token output cap for ordinary notes and
+4,800 for transcripts. It requires both a successful stop and the final stream
+marker; truncated results are never presented as completed drafts.
+
+The total deadline is 150 seconds, including at most one format retry for a
+completed malformed or empty response. A watchdog closes the upstream socket
+when the deadline expires, including while waiting for headers or a slow stream.
+Connection failures, truncated output and valid empty action lists are not
+retried. The browser has a separate 180-second waiting limit.
+
+The app accepts up to 60,000 input characters. Every transcript turn is included
+as a named JSON object with its ID, speaker, timestamp and complete text.
+A format retry retains that entire source. The input bound is not a
+guarantee of processing latency or model accuracy at that length.
+
+MLX logs HTTP 200 when it accepts generation, before completion. With nonstream
+requests, an abandoned client can leave generation running until the final body
+write. Stream closure lets MLX detect disconnection at a subsequent write; it
+does not guarantee immediate cancellation of queued GPU work. The status endpoint
+confirms the selected model is listed, not that every request will finish.
 
 Inspection of the installed 0.32.2 server and its
 [tagged source](https://github.com/ml-explore/mlx-lm/blob/v0.32.2/mlx_lm/server.py)
@@ -137,7 +160,15 @@ describes this as a basic local server rather than a production-hardened service
 Keep it bound to loopback. The application communicates with it from the local
 backend; no public model endpoint or authentication layer was deployed.
 
-## Initial real inference evidence
+## Initial 4B inference evidence (historical)
+
+The initial 2026-10-20 checks below used
+[`mlx-community/Qwen3-4B-Instruct-2507-4bit`](https://huggingface.co/mlx-community/Qwen3-4B-Instruct-2507-4bit),
+revision `50d427756c6b1b2fe0c0a10f67fbda1fc8e82c1b` (a 2.28 GB snapshot).
+Later long-meeting checks exposed missed commitments and incorrect action
+selection with that runtime. Further local model experiments are recorded
+in [draft-recovery.md](draft-recovery.md). Successful transport alone
+does not establish extraction quality.
 
 Before the review corrections, three synthetic cases were submitted to the running model, with the resulting
 JSON passed through the application's validator. All three produced the expected

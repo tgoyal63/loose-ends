@@ -1,5 +1,21 @@
 # Demonstration
 
+## October 22 release
+
+Watch [release-walkthrough.mp4](release-walkthrough.mp4), recorded with actual
+local Qwen inference on synthetic project-handoff notes. It shows three expected
+actions, one rejected proposal, the complete checklist condition, editing,
+completion and a Markdown download. The video is about 70 seconds and contains
+the full model wait, without cuts or retiming.
+
+See the [desktop](release-desktop.png), [edited desktop](release-desktop-reviewed.png),
+[mobile](release-mobile.png), [actual export](release-action-list.md),
+[recording details](release-notes.md), and
+[browser receipt](../evidence/submission-browser.json).
+This local-notes demonstration does not establish hosted or long-meeting accuracy.
+
+## Historical October 20 demonstration
+
 Recorded locally on 20 October 2026 with the actual pinned Qwen3 model and
 explicitly synthetic notes. No API mocks were installed for this run.
 

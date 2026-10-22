@@ -1,5 +1,12 @@
 # Transcript support and validation — 20 October 2026
 
+This records the initial transcript change at `f3765df`. The subsequent
+[draft recovery report](draft-recovery.md) covers streaming, bounded format
+retry, explicit model input fields and clearer failure states. It also records
+the remaining extraction-quality limitation found with a natural meeting.
+The later [optional hosted mode](hosted-processing.md) retains these source
+checks and has its own explicit processing and credential boundaries.
+
 ## What failed
 
 The original interface accepted only 12,000 characters through a native

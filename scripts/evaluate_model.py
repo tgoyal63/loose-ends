@@ -16,6 +16,7 @@ ROOT = Path(__file__).resolve().parents[1]
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--url", default="http://127.0.0.1:62140")
+    parser.add_argument("--mode", choices=("local", "hosted"), default="local", help="Explicit processing destination; hosted sends synthetic cases to Groq and may use API credit.")
     parser.add_argument("--output", type=Path, default=ROOT / "logs" / "model-evaluation.json")
     args = parser.parse_args()
     cases = json.loads((ROOT / "tests/fixtures/notes_cases.json").read_text())
@@ -24,7 +25,7 @@ def main():
         started = time.monotonic()
         request = Request(
             args.url.rstrip("/") + "/api/plan",
-            data=json.dumps({"notes": case["notes"]}).encode(),
+            data=json.dumps({"notes": case["notes"], "mode": args.mode}).encode(),
             headers={"Origin": args.url.rstrip("/"), "Content-Type": "application/json"},
             method="POST",
         )
@@ -62,7 +63,8 @@ def main():
         print(json.dumps({key: record[key] for key in ("id", "elapsed_seconds", "passed", "checks")}), flush=True)
     output = {
         "recorded_at": datetime.now(timezone.utc).isoformat(),
-        "scope": "Synthetic local-model checks; not a general accuracy guarantee.",
+        "scope": "Synthetic model checks; not a general accuracy guarantee.",
+        "mode": args.mode,
         "cases": records,
         "passed": sum(record["passed"] for record in records),
         "total": len(records),

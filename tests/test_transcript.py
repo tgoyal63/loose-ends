@@ -1,4 +1,6 @@
 from pathlib import Path
+import subprocess
+import sys
 import unittest
 
 from loose_ends.extraction import validate_proposals
@@ -111,6 +113,97 @@ class TranscriptRegressionTests(unittest.TestCase):
         note = 'Mira Shah 09:10:00\nJordan said, "I will send the sample. The report is separate."'
         self.assertEqual(validate_proposals(note, [proposal(owner="Mira Shah")]), ([], 1))
 
+    def test_quoted_actions_are_rejected_even_without_an_owner(self):
+        utterances = [
+            'Jordan said, "I will send the sample on Friday."',
+            "Jordan said, “I will send the sample on Friday.”",
+            "Jordan said, 'I will send the sample on Friday.'",
+            "Jordan said, 'I'll send the sample on Friday.'",
+            "Jordan said, ‘I will send the sample on Friday.’",
+            "Jordan said, ‘I’ll send the sample on Friday.’",
+            'Jordan said, "The report is separate. I will\nsend the sample on Friday."',
+        ]
+        for utterance in utterances:
+            with self.subTest(utterance=utterance):
+                note = f"Mira Shah 09:10:00\n{utterance}"
+                self.assertEqual(validate_proposals(note, [proposal()]), ([], 1))
+
+    def test_reported_promise_cannot_become_a_task_by_selecting_the_whole_sentence(self):
+        utterances = [
+            'Jordan said, "I will send the sample on Friday."',
+            'Someone in the workshop wrote, "Lee will send the sample on Friday."',
+            'The earlier speaker promised, "I am going to send the sample."',
+            'Jordan from design said, "I will send the sample."',
+            "Jordan said, 'I'll send the sample on Friday.'",
+            "Jordan said, ‘I’ll send the sample on Friday.’",
+        ]
+        for utterance in utterances:
+            with self.subTest(utterance=utterance):
+                note = f"Mira Shah 09:10:00\n{utterance}"
+                self.assertEqual(validate_proposals(note, [proposal(title=utterance)]), ([], 1))
+
+    def test_unclosed_quotations_cannot_expose_reported_actions(self):
+        for quote in ('"I will', "“I will", "'I will", "'I'll", "‘I will", "‘I’ll"):
+            with self.subTest(quote=quote):
+                note = f"Mira Shah 09:10:00\nJordan said, {quote} send the sample on Friday."
+                self.assertEqual(validate_proposals(note, [proposal()]), ([], 1))
+
+    def test_many_unclosed_quotes_do_not_stall_validation(self):
+        # Run the real validator in a bounded process: the old quote expression
+        # repeatedly scanned the suffix after every unmatched apostrophe.
+        program = """
+from loose_ends.extraction import validate_proposals
+notes = "Mira Shah 09:10:00\\nI will send the sample.\\n" + " 'a" * 19000
+tasks, rejected = validate_proposals(notes, [{
+    "turn_id": "turn-1", "title": "send the sample", "owner": "Mira Shah", "due": None,
+}])
+assert len(tasks) == 1 and rejected == 0
+assert tasks[0]["quote"] == notes
+"""
+        subprocess.run(
+            [sys.executable, "-c", program], check=True, timeout=3,
+            capture_output=True, cwd=Path(__file__).resolve().parents[1],
+        )
+
+    def test_quoted_object_names_do_not_hide_real_actions(self):
+        cases = [
+            ('I will update "Sample" on Friday.', 'update "Sample"', None),
+            ('I will update "Sample" on Friday.', 'update', "Mira Shah"),
+            ('Update "Will Call" before Friday.', 'Update "Will Call"', None),
+            ('Review the "I will send the sample" example.', 'Review the "I will send the sample" example', None),
+            ('Review what Jordan said, "I will send the sample."', 'Review what Jordan said', None),
+            ('Update the "We will" label as Jordan said.', 'Update the "We will" label', None),
+            ('Jordan said the button is "Publish". I will update the label.', 'update the label', "Mira Shah"),
+            ('I will review Jordan\'s statement, "I will send the sample."', "review Jordan's statement", "Mira Shah"),
+            ("I'll update Jordan's sample.", "update Jordan's sample", "Mira Shah"),
+            ("I’ll update Jordan’s sample.", "update Jordan’s sample", "Mira Shah"),
+        ]
+        for utterance, title, owner in cases:
+            with self.subTest(utterance=utterance, title=title):
+                note = f"Mira Shah 09:10:00\n{utterance}"
+                tasks, rejected = validate_proposals(note, [proposal(title=title, owner=owner)])
+                self.assertEqual(rejected, 0)
+                self.assertEqual(tasks[0]["title"], title)
+                self.assertEqual(tasks[0]["owner"], owner)
+                self.assertEqual(tasks[0]["quote"], note)
+
+    def test_acknowledgement_only_titles_are_not_actions(self):
+        for title in (
+            "Done", "Done.", "Okay", "Yeah", "Yes", "Got it", "Thanks", "Okay, cool.", "Yep, yep",
+            "Mmhm.", "Mm-hmm.", "Mm-hm.", "Mhm.", "Hmm.", "Agreed.", "Uh-huh.", "All good.",
+        ):
+            with self.subTest(title=title):
+                note = f"Mira Shah 09:10:00\n{title}"
+                self.assertEqual(validate_proposals(note, [proposal(title=title)]), ([], 1))
+
+    def test_acknowledgement_does_not_hide_a_following_commitment(self):
+        note = "Mira Shah 09:10:00\nOkay, I will send the sample."
+        for title in ("send the sample", "Okay, I will send the sample"):
+            with self.subTest(title=title):
+                tasks, rejected = validate_proposals(note, [proposal(title=title, owner="Mira Shah")])
+                self.assertEqual(rejected, 0)
+                self.assertEqual(tasks[0]["owner"], "Mira Shah")
+
     def test_delegated_action_does_not_become_speakers_own_action(self):
         note = "Mira Shah 09:10:00\nI will ask Jordan to send the sample."
         self.assertEqual(validate_proposals(note, [proposal(owner="Mira Shah")]), ([], 1))
@@ -123,6 +216,32 @@ class TranscriptRegressionTests(unittest.TestCase):
             self.assertEqual(validate_proposals(note, [proposal(
                 title=f"{verb} Jordan send the sample", owner="Mira Shah",
             )])[1], 0)
+
+    def test_have_to_necessity_does_not_look_like_delegation(self):
+        for words in ("I'll have to", "I’ll have to", "I will have\nto"):
+            with self.subTest(words=words):
+                note = f"Mira Shah 09:10:00\n{words} play with the scheduling tool."
+                tasks, rejected = validate_proposals(note, [proposal(
+                    title="play with the scheduling tool", owner="Mira Shah",
+                )])
+                self.assertEqual(rejected, 0)
+                self.assertEqual(tasks[0]["owner"], "Mira Shah")
+                self.assertEqual(tasks[0]["quote"], note)
+                self.assertEqual(validate_proposals(note, [proposal(
+                    title="play with the scheduling tool", owner="Jordan",
+                )]), ([], 1))
+
+    def test_have_to_does_not_transfer_a_delegated_action_to_the_speaker(self):
+        for words in ("have Jordan", "have to ask Jordan to", "have to let Jordan", "have to have Jordan"):
+            with self.subTest(words=words):
+                note = f"Mira Shah 09:10:00\nI'll {words} send the sample."
+                self.assertEqual(validate_proposals(note, [proposal(owner="Mira Shah")]), ([], 1))
+        note = "Mira Shah 09:10:00\nI'll have to ask Jordan to send the sample."
+        tasks, rejected = validate_proposals(note, [proposal(
+            title="ask Jordan to send the sample", owner="Mira Shah",
+        )])
+        self.assertEqual(rejected, 0)
+        self.assertEqual(tasks[0]["owner"], "Mira Shah")
 
     def test_forged_ids_quotes_dates_or_fields_are_rejected(self):
         note = "Mira Shah 09:10:00\nI will send the sample on Friday.\nLee Park 09:10:30\nLet's discuss Monday."

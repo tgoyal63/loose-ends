@@ -1,0 +1,38 @@
+{
+  "kind": "One mocked hosted 413 recovery case; no real inference or key setup",
+  "checks": [
+    {
+      "name": "413 displays safe actionable error with preserved-work copy",
+      "pass": true
+    },
+    {
+      "name": "413 retains model readiness and allows another explicit request",
+      "pass": true
+    },
+    {
+      "name": "413 preserves full notes and restores editing",
+      "pass": true
+    },
+    {
+      "name": "413 preserves previous human edit, completion and exact source",
+      "pass": true
+    },
+    {
+      "name": "413 retains actual result model and export availability",
+      "pass": true
+    },
+    {
+      "name": "Export remains unchanged after 413",
+      "pass": true
+    },
+    {
+      "name": "No automatic fallback, retry or key setup",
+      "pass": true
+    },
+    {
+      "name": "No runtime errors or browser persistence",
+      "pass": true
+    }
+  ],
+  "errors": []
+}

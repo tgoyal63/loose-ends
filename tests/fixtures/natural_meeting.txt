@@ -1,0 +1,244 @@
+Nora Ellis 10:00:00
+Morning. This is the reading-room pilot review, not the public opening. We have half an hour for the viewer and the volunteer trial preparations.
+June Park 10:00:15
+Morning, yes. That noise is the scanner. There are twelve letters in the sample collection, all invented for the demonstration.
+Ravi Mehta 10:00:30
+I can hear you. A little echo, but your voice is clear. My preview is the version marked amber, with the larger controls.
+Omar Bell 10:00:45
+Amber here too. My browser zoom is one hundred and fifty percent. The buttons have not mysteriously grown since yesterday.
+Priya Cole 10:01:00
+Thanks. I have the room schedule open. This is still a private session with six volunteers, with no ticket page or public invitation.
+Nora Ellis 10:01:15
+Right. Can those six people find a letter, listen to its recording, and return to the collection without us narrating every click?
+Tessa Wynn 10:01:30
+Good boundary. The recording is my voice reading an invented letter. No donor or interview-subject permission is needed for this demo.
+Nora Ellis 10:01:45
+I will circulate the pilot agenda on Thursday.
+It covers the arrival order, the reading tasks, and the closing discussion. The invitation is still a draft.
+June Park 10:02:00
+I sent the printed timetable to Priya yesterday, including the break between groups. There is no timetable email waiting on me.
+Priya Cole 10:02:15
+Yes, that arrived. The twenty-minute gap gives people time to leave slowly and gives us time to move the chairs.
+Ravi Mehta 10:02:30
+Each cover is a representative scan. Opening one takes you to its record; it does not play sound or download a high-resolution file.
+Omar Bell 10:02:45
+Good. That unexpected download was confusing in the old demo. View record is much clearer than Open.
+June Park 10:03:00
+The year under the cover is the catalogue year, not the year the image was scanned. They happen to match in this preview.
+Tessa Wynn 10:03:15
+For example, a workshop could compare handwriting across three records. That is a demonstration idea, not a request for comparison panels.
+Nora Ellis 10:03:30
+I will arrange a second volunteer session on Saturday. That was the fallback idea in the planning note.
+Priya Cole 10:03:45
+Hold that thought. Saturday has a restriction that is easy to miss in this narrow calendar. I have no confirmed extra slot.
+Ravi Mehta 10:04:00
+Here is the record page: heading, description, viewer. The sidebar has the shelf reference, transcription, and recording.
+June Park 10:04:15
+The shelf reference is fictional too. Volunteers can practise copying it, but it points to nothing in the real stores.
+Omar Bell 10:04:30
+Sorry, stop scrolling a moment? Yes, the description precedes the viewer in the screen reader, despite sitting beside it visually.
+Ravi Mehta 10:04:45
+Stopped. That indicator means page two of four. Zoom stays the same across pages, which helps with consistently small handwriting.
+Tessa Wynn 10:05:00
+Mm-hm. I expected the recording button above the transcription. Habit from the previous version, rather than a problem.
+June Park 10:05:15
+Two dates say winter, our placeholder. The rest have an approximate year. That pattern looks accidental.
+Nora Ellis 10:05:30
+We need consistent uncertainty. No exact date when the source does not support one; empty is better than an invented day.
+June Park 10:05:45
+I will replace the placeholder dates with catalogue estimates by Friday. My worksheet has estimates for all twelve sample records.
+Ravi Mehta 10:06:00
+Okay. The page displays circa and a year as plain text. It does not turn them into a precise date.
+Omar Bell 10:06:15
+Helpful. An exact date would imply more certainty than the catalogue has.
+Priya Cole 10:06:30
+Quick interruption: I have a sign-in screen. I used the meeting-notes link rather than my bookmark.
+Ravi Mehta 10:06:45
+Which heading: Reading room preview or Staff library? No need to share your email or anything in the form.
+Priya Cole 10:07:00
+Staff library. Ah. Two links with almost identical names, and I picked the first.
+Nora Ellis 10:07:15
+The second link, under Volunteer trial, is the preview. It has no connection to the staff catalogue.
+Priya Cole 10:07:30
+Opening it. Reading room preview now, but a blank collection. The headings are there and the spinner disappeared.
+Ravi Mehta 10:07:45
+That can mean an older preview permission. The status underneath should distinguish that from an empty collection.
+Omar Bell 10:08:00
+No status message on the shared screen either. A panel boundary, but nothing explaining whether it is loading or blocked.
+Tessa Wynn 10:08:15
+I get a collection. Fresh invitation this morning, and no staff-library visit in this browser.
+June Park 10:08:30
+Fine here too. The first cover is the blue envelope. We can keep discussing the records while Priya describes what happens.
+Priya Cole 10:08:45
+Reload: same blank panel. Private window: no difference. No error banner or message asking me to wait.
+Ravi Mehta 10:09:00
+Probably the preview role. The invitation tool shows reader access, but collection permission is separate.
+Nora Ellis 10:09:15
+Do we need to change anything now, or do we have a useful reproduction? We can keep the walkthrough moving.
+Ravi Mehta 10:09:30
+The pilot administrator is out this morning. I cannot confirm a repaired assignment until the administrator applies it.
+Priya Cole 10:09:45
+Understood. Page furniture and no records. I can describe that without a screenshot of the other tabs.
+Ravi Mehta 10:10:00
+After the pilot administrator restores collection access, I will verify Priya's preview account.
+The test is to open the blue envelope and return to the collection with that account.
+Omar Bell 10:10:15
+Right test. Signing in does not establish that someone can read the collection when those permissions are separate.
+Tessa Wynn 10:10:30
+The audio controls have ordinary labels: play, pause, position. The waveform is a visual cue, not a required control.
+Ravi Mehta 10:10:45
+For a hypothetical long interview, the player could show chapters. This forty-second reading has no chapter markers to prepare.
+June Park 10:11:00
+Forty seconds is plenty. We are testing discovery and following the transcription, not attention through a long interview.
+Tessa Wynn 10:11:15
+I will write a short pronunciation guide for the sample recording. Two invented place names and the repeated-line note.
+Omar Bell 10:11:30
+Can it start without a mouse? Normal tab order, I mean, rather than a shortcut someone has to memorise.
+Ravi Mehta 10:11:45
+Yes. Tab reaches Play, Enter starts it. Tab again reaches the position slider; arrow keys then move through the clip.
+Omar Bell 10:12:00
+Enter works. The time announcement is verbose, but it is one announcement, not continuous speech over the recording.
+Priya Cole 10:12:15
+Following your shared screen. The room computer has speakers beside its display, so headphones are optional for this small trial.
+June Park 10:12:30
+The transcription is the letter text. Captions also include the spoken introduction, which is not part of the letter.
+Tessa Wynn 10:12:45
+Right. The captions include the introduction and two pauses. Corrected yesterday; the corrected file is already attached here.
+Nora Ellis 10:13:00
+Good, the caption correction is complete, even though the earlier notes still mention it as a problem.
+Ravi Mehta 10:13:15
+Text size changes the transcription panel only. It does not alter the navigation or browser zoom.
+Omar Bell 10:13:30
+Larger text wraps correctly. Checking the bottom edge... yes, the final word is visible. No horizontal scrolling.
+Priya Cole 10:13:45
+Could a volunteer overwrite the transcription? That text cursor makes it look editable, although there is no Save.
+Ravi Mehta 10:14:00
+No, just selectable text. Editing is in the separate staff application, outside this pilot.
+Omar Bell 10:14:15
+I will test the recording controls with keyboard navigation on Monday. Starting, pausing, seeking, and returning focus to the heading.
+June Park 10:14:30
+Thanks. The return path could confuse people after a related-record link takes them away from their starting collection.
+Ravi Mehta 10:14:45
+The breadcrumb keeps the collection name. Browser Back restores the scroll position, rather than dropping people at the top.
+Nora Ellis 10:15:00
+We are halfway through. Before the room question, does anyone see a reason that the volunteer tasks themselves need to become more complicated than find, read, and return?
+Tessa Wynn 10:15:15
+No. Maybe we could add a storytelling exercise in a later workshop, but that is a different learning goal. It is not a remaining deliverable for this trial.
+Omar Bell 10:15:30
+Agreed. Giving someone a larger creative task would make it difficult to tell whether hesitation came from the interface or from thinking about what to write.
+June Park 10:15:45
+The sample questions do not assume specialist archive knowledge. One asks for the name in the salutation, and another asks which page describes the weather.
+Priya Cole 10:16:00
+About the rooms: the east room is the proposed location because it has level access and the adjustable desk. The west room has a step at the doorway.
+Nora Ellis 10:16:15
+Is the east room currently a tentative hold, or is it unavailable? I see a pale block on the calendar, but that colour is not explained in the printout.
+Priya Cole 10:16:30
+It is tentative. The coordinator is waiting for the building inspection to finish before confirming any bookings in that wing, including ours.
+Omar Bell 10:16:45
+The inspection is a real dependency, then. We should not describe the east room as confirmed in the agenda just because it is the preferred accessible option.
+Priya Cole 10:17:00
+Correct. The calendar legend says pale blocks are requests. A solid block is a confirmed booking, and a crossed block means the room is closed.
+June Park 10:17:15
+I see the crossed block on Saturday now. It covers the full day, not merely the morning. The note says the building is closed for electrical maintenance.
+Nora Ellis 10:17:30
+Then cancel my earlier promise to arrange a second volunteer session on Saturday.
+There will be no Saturday session, and no replacement second session is being scheduled in this pilot.
+Tessa Wynn 10:17:45
+Clear. That removes the fallback, rather than moving it to a different day. The six-person trial remains the only session under discussion.
+Ravi Mehta 10:18:00
+For the demo computer, does the room have a wired connection? I am asking because the largest scan takes noticeably longer over the guest wireless network.
+Priya Cole 10:18:15
+The desk has a wired connection and a current browser. I checked those yesterday with the existing display, so a network inspection is not another pending task.
+June Park 10:18:30
+Useful. The printed letters are also available as an emergency alternative, although using paper would change what we learn about the viewer.
+Priya Cole 10:18:45
+If the building coordinator confirms the east room is available, I'll reserve the east room for the volunteer trial.
+Until that confirmation, the location stays tentative.
+Nora Ellis 10:19:00
+That gives us one room dependency and one account dependency. Neither needs to be translated into an invented deadline; the named prerequisites are the meaningful information.
+Omar Bell 10:19:15
+On the written task cards, large print would be helpful even for volunteers who do not describe themselves as having a visual impairment. The room lighting is fairly soft.
+Tessa Wynn 10:19:30
+The current cards are twelve-point text with generous margins. If we were designing a museum label, we might make them much larger, but these are handheld sheets.
+June Park 10:19:45
+They can still be larger than twelve point. The entire task fits in three short sentences, and the cards do not need to share a page with instructions for the facilitators.
+Nora Ellis 10:20:00
+Yes, the facilitator notes are a separate sheet. Volunteers only need the task, a reminder that there is no test of their knowledge, and a way to ask for a break.
+Ravi Mehta 10:20:15
+I have a question about the screenshot on that sheet. Does it help people recognise the starting point, or does it accidentally reveal the answer to the first navigation task?
+Omar Bell 10:20:30
+The current screenshot only shows the collection heading. That seems fine. A red circle around the correct cover would turn the task into following an instruction.
+Priya Cole 10:20:45
+Mm, yes. We can give people the starting address without telling them where to click. It is also useful to say that they can stop at any point.
+Tessa Wynn 10:21:00
+The feedback card is separate again, correct? I do not want the last question on the task sheet to suggest that every participant must fill in a survey before leaving.
+Nora Ellis 10:21:15
+Separate and optional. The facilitator can invite a spoken comment instead. The small trial is about learning from people, and it does not require collecting names on feedback cards.
+Tessa Wynn 10:21:30
+I'll prepare the large-print task cards by Wednesday. Each card will contain one task, the starting address, and the reminder that a break is welcome.
+June Park 10:21:45
+Good. The wording of the first task is settled, so there is no hidden approval round on those cards. The final question asks how certain the participant felt about the source date.
+Ravi Mehta 10:22:00
+Back on the screen, this menu has Download image and Copy reference. A download produces the watermarked sample scan; it does not include any unseen catalogue fields.
+Omar Bell 10:22:15
+Copy reference needs a confirmation message. At the moment it changes the button label briefly, and I can miss that change when focus stays on the button.
+Ravi Mehta 10:22:30
+The visual label changes to Copied for two seconds. There is no live status region associated with that change yet, so your observation matches the implementation.
+Tessa Wynn 10:22:45
+Someone in the earlier workshop said, "I will copy every reference into my notebook." That was a participant describing their own habit, not a new assignment for anyone in this meeting.
+June Park 10:23:00
+And the reference itself should be stable. People sometimes save it and come back weeks later, when the descriptive title may have been corrected.
+Nora Ellis 10:23:15
+Does the reference need to contain the full title, or is the collection name plus the identifier enough for this limited dataset? The printed examples currently include both.
+June Park 10:23:30
+The identifier is essential; the title is helpful. The current text contains both, which is fine. There is no request to change the reference format today.
+Omar Bell 10:23:45
+The missing status announcement is the actionable part of that discussion. A short Reference copied message is enough; reading the entire reference aloud again would be distracting.
+Priya Cole 10:24:00
+Sorry, someone knocked at the office door. I am back. I heard the part about announcing the copy result, and I have no room update to add.
+Ravi Mehta 10:24:15
+I will add a screen-reader confirmation to Copy reference on Tuesday. The confirmation will use the existing status area and the same short wording as the visual message.
+Tessa Wynn 10:24:30
+That covers the important distinction: someone knows the action succeeded without losing their place in the record. It is not a new dialog that has to be dismissed.
+Nora Ellis 10:24:45
+We have a few minutes left. Let us separate actual commitments from the ideas we mentioned while looking at the interface, so the notes do not turn the whole demonstration into a backlog.
+Ravi Mehta 10:25:00
+The comparison panels and chapter markers were hypothetical examples. I have not agreed to build either of them for this pilot, and neither is needed for the three volunteer tasks.
+Omar Bell 10:25:15
+Likewise, we discussed a future storytelling workshop without deciding to hold one. The keyboard pass is the concrete accessibility commitment I made today.
+June Park 10:25:30
+The approximate dates are my editing work. I also noticed that the last two records use different wording for the same donor credit, which is worth checking against the worksheet.
+Priya Cole 10:25:45
+Does that mean the displayed names are wrong, or just that one line says Donated by and the other says Gift of? I want to understand whether a correction is already established.
+June Park 10:26:00
+Only the wording difference is established. The names are synthetic in this preview, but matching the approved credit format still matters for the real workflow we are rehearsing.
+Tessa Wynn 10:26:15
+The recording mentions neither credit line, so there is no audio change tied to that check. The captions can stay as they are.
+Nora Ellis 10:26:30
+A check sounds proportionate. If the worksheet permits both forms, the result could be that nothing changes, rather than an automatic rewrite of the credits.
+June Park 10:26:45
+Exactly. I do not yet know whether one is a legacy form. The worksheet is the source for that decision, and the inconsistent wording alone does not settle it.
+June Park 10:27:00
+I will check the two donor-credit lines against the approved worksheet. That is a verification task; any correction depends on what the worksheet actually says.
+Omar Bell 10:27:15
+That makes sense. The task title should describe the check, without assuming the outcome. Readers ought to see a consistent explanation of who provided the material.
+Tessa Wynn 10:27:30
+One update from me: I typed the pronunciation guide while we were discussing the room. The two place names and the repeated-line note are in the shared pilot folder now.
+Tessa Wynn 10:27:45
+The pronunciation guide I promised earlier is complete and shared. There is no remaining pronunciation-guide task; the large-print task cards are still pending.
+Priya Cole 10:28:00
+I see the guide in the folder, thanks. That is a completed item, separate from the cards. The room is still tentative because the coordinator has not replied during the call.
+Nora Ellis 10:28:15
+For the recap, there is no Saturday session, no comparison feature, and no new chapter system. We have the catalogue edits, the two access dependencies, and the focused trial preparations.
+Ravi Mehta 10:28:30
+Yes. The account verification waits for the administrator's repair. The copy confirmation does not depend on that repair, because it can be exercised with the working preview accounts.
+Omar Bell 10:28:45
+My Monday keyboard pass can also use a working account. The review includes the recording controls, while the copy announcement has its own implementation owner.
+Nora Ellis 10:29:00
+I will send the final action summary at 16:00. It will distinguish the room reservation and account verification prerequisites from the tasks with calendar deadlines.
+June Park 10:29:15
+Thanks. A short summary is enough; the recording is useful context, but nobody needs the entire conversation copied into every task description.
+Tessa Wynn 10:29:30
+Agreed. The cards are mine, the guide is done, and the optional storytelling exercise remains just an idea. That is the complete state from my side.
+Priya Cole 10:29:45
+I'll update the volunteer contact sheet by Friday. The update is limited to preferred names and arrival groups, using the responses that are already in the private registration folder.
